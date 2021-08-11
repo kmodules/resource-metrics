@@ -99,7 +99,7 @@ func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 
-		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus")
+		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}

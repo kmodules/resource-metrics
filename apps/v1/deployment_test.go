@@ -79,29 +79,29 @@ func TestDeployment(t *testing.T) {
 			if got, err := c.Replicas(obj); err != nil {
 				t.Errorf("Replicas() error = %v", err)
 			} else if got != tt.want.replicas {
-				t.Errorf("Replicas = %v, want %v", got, tt.want)
+				t.Errorf("Replicas found = %v, expected = %v", got, tt.want.replicas)
 			}
 
 			if got, err := c.TotalResourceLimits(obj); err != nil {
 				t.Errorf("TotalResourceLimits() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.totalResources.Limits) {
-				t.Errorf("TotalResourceLimits() difference = %v", cmp.Diff(got, tt.want.totalResources.Limits))
+			} else if !cmp.Equal(tt.want.totalResources.Limits, got) {
+				t.Errorf("TotalResourceLimits() difference = %v", cmp.Diff(tt.want.totalResources.Limits, got))
 			}
 			if got, err := c.TotalResourceRequests(obj); err != nil {
 				t.Errorf("TotalResourceRequests() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.totalResources.Requests) {
-				t.Errorf("TotalResourceRequests() difference = %v", cmp.Diff(got, tt.want.totalResources.Requests))
+			} else if !cmp.Equal(tt.want.totalResources.Requests, got) {
+				t.Errorf("TotalResourceRequests() difference = %v", cmp.Diff(tt.want.totalResources.Requests, got))
 			}
 
 			if got, err := c.AppResourceLimits(obj); err != nil {
 				t.Errorf("AppResourceLimits() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.appResources.Limits) {
-				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(got, tt.want.appResources.Limits))
+			} else if !cmp.Equal(tt.want.appResources.Limits, got) {
+				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(tt.want.appResources.Limits, got))
 			}
 			if got, err := c.AppResourceRequests(obj); err != nil {
 				t.Errorf("AppResourceRequests() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.appResources.Requests) {
-				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(got, tt.want.appResources.Requests))
+			} else if !cmp.Equal(tt.want.appResources.Requests, got) {
+				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(tt.want.appResources.Requests, got))
 			}
 		})
 	}

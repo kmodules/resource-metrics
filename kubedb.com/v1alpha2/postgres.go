@@ -76,7 +76,7 @@ func (r Postgres) roleResourceFn(fn func(rr core.ResourceRequirements) core.Reso
 			return nil, err
 		}
 
-		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus")
+		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}
