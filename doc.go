@@ -14,4 +14,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package kutil // import "kmodules.xyz/resource-metrics"
+package resourcemetrics // import "kmodules.xyz/resource-metrics"
