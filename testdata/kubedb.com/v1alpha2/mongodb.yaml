@@ -1,0 +1,25 @@
+apiVersion: kubedb.com/v1alpha2
+kind: MongoDB
+metadata:
+  name: mongodb
+  namespace: demo
+spec:
+  version: "4.2.3"
+  storageType: Durable
+  storage:
+    storageClassName: "standard"
+    resources:
+      requests:
+        storage: 1Gi
+  monitor:
+    agent: prometheus.io
+    prometheus:
+      exporter:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+  terminationPolicy: WipeOut
