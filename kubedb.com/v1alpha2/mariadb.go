@@ -76,7 +76,7 @@ func (r MariaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 			return nil, err
 		}
 
-		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus")
+		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}

@@ -1,12 +1,19 @@
 apiVersion: kubedb.com/v1alpha2
-kind: Postgres
+kind: MariaDB
 metadata:
-  name: postgres
+  name: mariadb
   namespace: demo
 spec:
-  version: "13.2"
-  replicas: 3
-  standbyMode: Hot
+  version: "10.5.8"
+  podTemplate:
+    spec:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 500Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
   storageType: Durable
   storage:
     storageClassName: "standard"
@@ -15,19 +22,15 @@ spec:
     resources:
       requests:
         storage: 1Gi
-  terminationPolicy: WipeOut
   monitor:
-    agent: prometheus.io/operator
+    agent: prometheus.io
     prometheus:
-      serviceMonitor:
-        labels:
-          release: prometheus-stack
-        interval: 30s
       exporter:
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 250m
+            memory: 64Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 128Mi
+  terminationPolicy: WipeOut

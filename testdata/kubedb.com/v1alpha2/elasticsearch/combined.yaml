@@ -7,16 +7,25 @@ spec:
   version: xpack-7.13.2
   storageType: Durable
   replicas: 3
+  podTemplate:
+    spec:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 500Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
   monitor:
     agent: prometheus.io
     prometheus:
       exporter:
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 250m
+            memory: 64Mi
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 128Mi
   storage:
     storageClassName: "linode-block-storage"

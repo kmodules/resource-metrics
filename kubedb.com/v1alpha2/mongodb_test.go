@@ -37,31 +37,31 @@ func TestMongoDB(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1beta2/mongodb.yaml",
+			name: "testdata/kubedb.com/v1alpha2/mongodb/standalone.yaml",
 			want: want{
-				replicas: 3,
+				replicas: 1,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("1500m"),
-						core.ResourceMemory: resource.MustParse("384Mi"),
-						// core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1"),
+						core.ResourceMemory:  resource.MustParse("1152Mi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("750m"),
-						core.ResourceMemory: resource.MustParse("192Mi"),
-						// core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("564Mi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("1500m"),
-						core.ResourceMemory: resource.MustParse("384Mi"),
-						// core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("1Gi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("750m"),
-						core.ResourceMemory: resource.MustParse("192Mi"),
-						// core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("250m"),
+						core.ResourceMemory:  resource.MustParse("500Mi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 				},
 			},
@@ -79,29 +79,29 @@ func TestMongoDB(t *testing.T) {
 			if got, err := c.Replicas(obj); err != nil {
 				t.Errorf("Replicas() error = %v", err)
 			} else if got != tt.want.replicas {
-				t.Errorf("Replicas = %v, want %v", got, tt.want)
+				t.Errorf("Replicas found = %v, expected = %v", got, tt.want.replicas)
 			}
 
 			if got, err := c.TotalResourceLimits(obj); err != nil {
 				t.Errorf("TotalResourceLimits() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.totalResources.Limits) {
-				t.Errorf("TotalResourceLimits() difference = %v", cmp.Diff(got, tt.want.totalResources.Limits))
+			} else if !cmp.Equal(tt.want.totalResources.Limits, got) {
+				t.Errorf("TotalResourceLimits() difference = %v", cmp.Diff(tt.want.totalResources.Limits, got))
 			}
 			if got, err := c.TotalResourceRequests(obj); err != nil {
 				t.Errorf("TotalResourceRequests() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.totalResources.Requests) {
-				t.Errorf("TotalResourceRequests() difference = %v", cmp.Diff(got, tt.want.totalResources.Requests))
+			} else if !cmp.Equal(tt.want.totalResources.Requests, got) {
+				t.Errorf("TotalResourceRequests() difference = %v", cmp.Diff(tt.want.totalResources.Requests, got))
 			}
 
 			if got, err := c.AppResourceLimits(obj); err != nil {
 				t.Errorf("AppResourceLimits() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.appResources.Limits) {
-				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(got, tt.want.appResources.Limits))
+			} else if !cmp.Equal(tt.want.appResources.Limits, got) {
+				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(tt.want.appResources.Limits, got))
 			}
 			if got, err := c.AppResourceRequests(obj); err != nil {
 				t.Errorf("AppResourceRequests() error = %v", err)
-			} else if !cmp.Equal(got, tt.want.appResources.Requests) {
-				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(got, tt.want.appResources.Requests))
+			} else if !cmp.Equal(tt.want.appResources.Requests, got) {
+				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(tt.want.appResources.Requests, got))
 			}
 		})
 	}

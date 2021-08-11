@@ -110,7 +110,7 @@ func (r MongoDB) modeFn(obj map[string]interface{}) (string, error) {
 
 func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
-		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus")
+		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}
