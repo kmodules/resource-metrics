@@ -23,12 +23,12 @@ import (
 // EvalFuncs for https://github.com/gomodules/eval
 func EvalFuncs() map[string]func(arguments ...interface{}) (interface{}, error) {
 	return map[string]func(arguments ...interface{}) (interface{}, error){
-		"resourceReplicas":      resourceReplicas,
-		"resourceMode":          resourceMode,
-		"totalResourceLimits":   totalResourceLimits,
-		"totalResourceRequests": totalResourceRequests,
-		"appResourceLimits":     appResourceLimits,
-		"appResourceRequests":   appResourceRequests,
+		"resource_replicas":       resourceReplicas,
+		"resource_mode":           resourceMode,
+		"total_resource_limits":   totalResourceLimits,
+		"total_resource_requests": totalResourceRequests,
+		"app_resource_limits":     appResourceLimits,
+		"app_resource_requests":   appResourceRequests,
 	}
 }
 
