@@ -30,8 +30,8 @@ type Pod struct{}
 
 func (r Pod) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
 		RoleReplicasFn:         r.roleReplicasFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
 		RoleResourceRequestsFn: r.roleResourceFn(api.ResourceRequests),
@@ -39,7 +39,7 @@ func (r Pod) ResourceCalculator() api.ResourceCalculator {
 }
 
 func (_ Pod) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, error) {
-	return api.ReplicaList{api.DefaultPodRole: 1}, nil
+	return api.ReplicaList{api.PodRoleDefault: 1}, nil
 }
 
 func (r Pod) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
@@ -53,8 +53,8 @@ func (r Pod) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceL
 			return nil, err
 		}
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole: containers,
-			api.InitPodRole:    initContainer,
+			api.PodRoleDefault: containers,
+			api.PodRoleInit:    initContainer,
 		}, nil
 	}
 }

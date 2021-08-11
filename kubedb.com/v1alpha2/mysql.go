@@ -38,8 +38,8 @@ type MySQL struct{}
 
 func (r MySQL) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole, api.RouterPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole, api.ExporterPodRole, api.RouterPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleRouter},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter, api.PodRoleRouter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -56,9 +56,9 @@ func (r MySQL) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 	}
 	if !found {
-		result[api.DefaultPodRole] = 1
+		result[api.PodRoleDefault] = 1
 	} else {
-		result[api.DefaultPodRole] = replicas
+		result[api.PodRoleDefault] = replicas
 	}
 
 	// InnoDB Router
@@ -72,9 +72,9 @@ func (r MySQL) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			return nil, err
 		}
 		if !found {
-			result[api.RouterPodRole] = 1
+			result[api.PodRoleRouter] = 1
 		} else {
-			result[api.RouterPodRole] = replicas
+			result[api.PodRoleRouter] = replicas
 		}
 	}
 
@@ -105,8 +105,8 @@ func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		}
 
 		result := map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole:  api.MulResourceList(container, replicas),
-			api.ExporterPodRole: api.MulResourceList(exporter, replicas),
+			api.PodRoleDefault:  api.MulResourceList(container, replicas),
+			api.PodRoleExporter: api.MulResourceList(exporter, replicas),
 		}
 
 		// InnoDB Router
@@ -119,7 +119,7 @@ func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			if err != nil {
 				return nil, err
 			}
-			result[api.RouterPodRole] = api.MulResourceList(router, replicas)
+			result[api.PodRoleRouter] = api.MulResourceList(router, replicas)
 		}
 		return result, nil
 	}

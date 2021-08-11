@@ -31,8 +31,8 @@ type Job struct{}
 
 func (r Job) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
 		RoleReplicasFn:         r.roleReplicasFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
 		RoleResourceRequestsFn: r.roleResourceFn(api.ResourceRequests),
@@ -54,8 +54,8 @@ func (r Job) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceL
 			return nil, err
 		}
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole: containers,
-			api.InitPodRole:    initContainers,
+			api.PodRoleDefault: containers,
+			api.PodRoleInit:    initContainers,
 		}, nil
 	}
 }

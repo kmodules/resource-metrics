@@ -38,8 +38,8 @@ type MariaDB struct{}
 
 func (r MariaDB) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole, api.ExporterPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -53,9 +53,9 @@ func (r MariaDB) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, er
 		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 	}
 	if !found {
-		return api.ReplicaList{api.DefaultPodRole: 1}, nil
+		return api.ReplicaList{api.PodRoleDefault: 1}, nil
 	}
-	return api.ReplicaList{api.DefaultPodRole: replicas}, nil
+	return api.ReplicaList{api.PodRoleDefault: replicas}, nil
 }
 
 func (r MariaDB) modeFn(obj map[string]interface{}) (string, error) {
@@ -81,8 +81,8 @@ func (r MariaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 			return nil, err
 		}
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole:  api.MulResourceList(container, replicas),
-			api.ExporterPodRole: api.MulResourceList(exporter, replicas),
+			api.PodRoleDefault:  api.MulResourceList(container, replicas),
+			api.PodRoleExporter: api.MulResourceList(exporter, replicas),
 		}, nil
 	}
 }

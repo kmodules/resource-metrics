@@ -82,7 +82,7 @@ func (c ResourceCalculatorFuncs) TotalResourceLimits(obj map[string]interface{})
 	}
 	return MaxResourceList(
 		ResourceListForRoles(rr, c.RuntimeRoles),
-		ResourceListForRoles(rr, []PodRole{InitPodRole}),
+		ResourceListForRoles(rr, []PodRole{PodRoleInit}),
 	), nil
 }
 
@@ -93,7 +93,7 @@ func (c ResourceCalculatorFuncs) TotalResourceRequests(obj map[string]interface{
 	}
 	return MaxResourceList(
 		ResourceListForRoles(rr, c.RuntimeRoles),
-		ResourceListForRoles(rr, []PodRole{InitPodRole}),
+		ResourceListForRoles(rr, []PodRole{PodRoleInit}),
 	), nil
 }
 

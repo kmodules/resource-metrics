@@ -30,8 +30,8 @@ type PersistentVolume struct{}
 
 func (_ PersistentVolume) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
 		RoleReplicasFn:         nil,
 		RoleResourceLimitsFn:   nil,
 		RoleResourceRequestsFn: nil,

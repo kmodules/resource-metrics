@@ -38,8 +38,8 @@ type MongoDB struct{}
 
 func (r MongoDB) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole, api.TotalShardPodRole, api.ConfigServerPodRole, api.MongosPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole, api.TotalShardPodRole, api.ConfigServerPodRole, api.MongosPodRole, api.ExporterPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleTotalShard, api.PodRoleConfigServer, api.PodRoleMongos},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleTotalShard, api.PodRoleConfigServer, api.PodRoleMongos, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -71,11 +71,11 @@ func (r MongoDB) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, er
 			return nil, err
 		}
 		return api.ReplicaList{
-			api.TotalShardPodRole:   shards * shardReplicas,
-			api.ShardPodRole:        shards,
-			api.PerShardPodRole:     shardReplicas,
-			api.ConfigServerPodRole: configServerReplicas,
-			api.MongosPodRole:       mongosReplicas,
+			api.PodRoleTotalShard:   shards * shardReplicas,
+			api.PodRoleShard:        shards,
+			api.PodRolePerShard:     shardReplicas,
+			api.PodRoleConfigServer: configServerReplicas,
+			api.PodRoleMongos:       mongosReplicas,
 		}, nil
 	}
 
@@ -85,9 +85,9 @@ func (r MongoDB) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, er
 		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 	}
 	if !found {
-		return api.ReplicaList{api.DefaultPodRole: 1}, nil
+		return api.ReplicaList{api.PodRoleDefault: 1}, nil
 	}
-	return api.ReplicaList{api.DefaultPodRole: replicas}, nil
+	return api.ReplicaList{api.PodRoleDefault: replicas}, nil
 }
 
 func (r MongoDB) modeFn(obj map[string]interface{}) (string, error) {
@@ -144,10 +144,10 @@ func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 			}
 
 			return map[api.PodRole]core.ResourceList{
-				api.TotalShardPodRole:   api.MulResourceList(shard, shards*shardReplicas),
-				api.ConfigServerPodRole: api.MulResourceList(configServer, configServerReplicas),
-				api.MongosPodRole:       api.MulResourceList(mongos, mongosReplicas),
-				api.ExporterPodRole:     api.MulResourceList(exporter, shards*shardReplicas+configServerReplicas+mongosReplicas),
+				api.PodRoleTotalShard:   api.MulResourceList(shard, shards*shardReplicas),
+				api.PodRoleConfigServer: api.MulResourceList(configServer, configServerReplicas),
+				api.PodRoleMongos:       api.MulResourceList(mongos, mongosReplicas),
+				api.PodRoleExporter:     api.MulResourceList(exporter, shards*shardReplicas+configServerReplicas+mongosReplicas),
 			}, nil
 		}
 
@@ -158,8 +158,8 @@ func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 		}
 
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole:  api.MulResourceList(container, replicas),
-			api.ExporterPodRole: api.MulResourceList(exporter, replicas),
+			api.PodRoleDefault:  api.MulResourceList(container, replicas),
+			api.PodRoleExporter: api.MulResourceList(exporter, replicas),
 		}, nil
 	}
 }

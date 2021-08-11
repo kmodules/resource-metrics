@@ -33,8 +33,8 @@ type ReplicationController struct{}
 
 func (r ReplicationController) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
 		RoleReplicasFn:         r.roleReplicasFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
 		RoleResourceRequestsFn: r.roleResourceFn(api.ResourceRequests),
@@ -47,9 +47,9 @@ func (_ ReplicationController) roleReplicasFn(obj map[string]interface{}) (api.R
 		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 	}
 	if !found {
-		return api.ReplicaList{api.DefaultPodRole: 1}, nil
+		return api.ReplicaList{api.PodRoleDefault: 1}, nil
 	}
-	return api.ReplicaList{api.DefaultPodRole: replicas}, nil
+	return api.ReplicaList{api.PodRoleDefault: replicas}, nil
 }
 
 func (r ReplicationController) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
@@ -58,7 +58,7 @@ func (r ReplicationController) roleResourceFn(fn func(rr core.ResourceRequiremen
 		if err != nil {
 			return nil, err
 		}
-		replicas := rr[api.DefaultPodRole]
+		replicas := rr[api.PodRoleDefault]
 
 		container, err := api.AggregateContainerResources(obj, fn, api.AddResourceList, "spec", "template", "spec", "containers")
 		if err != nil {
@@ -69,8 +69,8 @@ func (r ReplicationController) roleResourceFn(fn func(rr core.ResourceRequiremen
 			return nil, err
 		}
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole: api.MulResourceList(container, replicas),
-			api.InitPodRole:    api.MulResourceList(initContainers, replicas),
+			api.PodRoleDefault: api.MulResourceList(container, replicas),
+			api.PodRoleInit:    api.MulResourceList(initContainers, replicas),
 		}, nil
 	}
 }

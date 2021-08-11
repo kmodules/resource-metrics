@@ -41,8 +41,8 @@ type Elasticsearch struct{}
 
 func (r Elasticsearch) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.DefaultPodRole},
-		RuntimeRoles:           []api.PodRole{api.DefaultPodRole, api.ExporterPodRole},
+		AppRoles:               []api.PodRole{api.PodRoleDefault},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -69,7 +69,7 @@ func (r Elasticsearch) roleReplicasFn(obj map[string]interface{}) (api.ReplicaLi
 				replicas += roleReplicas
 			}
 		}
-		result[api.DefaultPodRole] = replicas
+		result[api.PodRoleDefault] = replicas
 	} else {
 		// Combined mode
 		replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
@@ -77,9 +77,9 @@ func (r Elasticsearch) roleReplicasFn(obj map[string]interface{}) (api.ReplicaLi
 			return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 		}
 		if !found {
-			result[api.DefaultPodRole] = 1
+			result[api.PodRoleDefault] = 1
 		} else {
-			result[api.DefaultPodRole] = replicas
+			result[api.PodRoleDefault] = replicas
 		}
 	}
 	return result, nil
@@ -123,8 +123,8 @@ func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core
 				totalResources = api.AddResourceList(totalResources, roleResources)
 			}
 
-			result[api.DefaultPodRole] = totalResources
-			result[api.ExporterPodRole] = api.MulResourceList(exporter, replicas)
+			result[api.PodRoleDefault] = totalResources
+			result[api.PodRoleExporter] = api.MulResourceList(exporter, replicas)
 			return result, nil
 		}
 
@@ -135,8 +135,8 @@ func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core
 		}
 
 		return map[api.PodRole]core.ResourceList{
-			api.DefaultPodRole:  api.MulResourceList(container, replicas),
-			api.ExporterPodRole: api.MulResourceList(exporter, replicas),
+			api.PodRoleDefault:  api.MulResourceList(container, replicas),
+			api.PodRoleExporter: api.MulResourceList(exporter, replicas),
 		}, nil
 	}
 }
