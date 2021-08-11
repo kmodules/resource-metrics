@@ -22,32 +22,30 @@ import (
 	core "k8s.io/api/core/v1"
 )
 
-// ExpressionFunction matches signature for https://github.com/gomodules/eval
-type ExpressionFunction func(arguments ...interface{}) (interface{}, error)
-
-func EvalFuncs() map[string]ExpressionFunction {
-	return map[string]ExpressionFunction{
-		"resource_replicas":       resource_replicas,
-		"resource_mode":           resource_mode,
-		"total_resource_limits":   total_resource_limits,
-		"total_resource_requests": total_resource_requests,
-		"app_resource_limits":     app_resource_limits,
-		"app_resource_requests":   app_resource_requests,
+// EvalFuncs for https://github.com/gomodules/eval
+func EvalFuncs() map[string]func(arguments ...interface{}) (interface{}, error) {
+	return map[string]func(arguments ...interface{}) (interface{}, error){
+		"resourceReplicas":      resourceReplicas,
+		"resourceMode":          resourceMode,
+		"totalResourceLimits":   totalResourceLimits,
+		"totalResourceRequests": totalResourceRequests,
+		"appResourceLimits":     appResourceLimits,
+		"appResourceRequests":   appResourceRequests,
 	}
 }
 
-// resource_replicas(resource_obj)
-func resource_replicas(args ...interface{}) (interface{}, error) {
+// resourceReplicas(resource_obj)
+func resourceReplicas(args ...interface{}) (interface{}, error) {
 	return api.Replicas(args[0].(map[string]interface{}))
 }
 
-// resource_mode(resource_obj)
-func resource_mode(args ...interface{}) (interface{}, error) {
+// resourceMode(resource_obj)
+func resourceMode(args ...interface{}) (interface{}, error) {
 	return api.Mode(args[0].(map[string]interface{}))
 }
 
-// total_resource_limits(resource_obj, resource_type) => cpu cores (float64)
-func total_resource_limits(args ...interface{}) (interface{}, error) {
+// totalResourceLimits(resource_obj, resource_type) => cpu cores (float64)
+func totalResourceLimits(args ...interface{}) (interface{}, error) {
 	rr, err := api.TotalResourceLimits(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
@@ -56,8 +54,8 @@ func total_resource_limits(args ...interface{}) (interface{}, error) {
 	return q.AsApproximateFloat64(), nil
 }
 
-// total_resource_requests(resource_obj, resource_type)
-func total_resource_requests(args ...interface{}) (interface{}, error) {
+// totalResourceRequests(resource_obj, resource_type)
+func totalResourceRequests(args ...interface{}) (interface{}, error) {
 	rr, err := api.TotalResourceRequests(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
@@ -66,8 +64,8 @@ func total_resource_requests(args ...interface{}) (interface{}, error) {
 	return q.AsApproximateFloat64(), nil
 }
 
-// app_resource_limits(resource_obj, resource_type)
-func app_resource_limits(args ...interface{}) (interface{}, error) {
+// appResourceLimits(resource_obj, resource_type)
+func appResourceLimits(args ...interface{}) (interface{}, error) {
 	rr, err := api.AppResourceLimits(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
@@ -76,8 +74,8 @@ func app_resource_limits(args ...interface{}) (interface{}, error) {
 	return q.AsApproximateFloat64(), nil
 }
 
-// app_resource_requests(resource_obj, resource_type)
-func app_resource_requests(args ...interface{}) (interface{}, error) {
+// appResourceRequests(resource_obj, resource_type)
+func appResourceRequests(args ...interface{}) (interface{}, error) {
 	rr, err := api.AppResourceRequests(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
