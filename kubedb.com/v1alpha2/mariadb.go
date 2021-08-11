@@ -66,7 +66,7 @@ func (r MariaDB) modeFn(obj map[string]interface{}) (string, error) {
 	if replicas > 1 {
 		return DBModeCluster, nil
 	}
-	return DBModeStandalone, nil
+	return DBStandalone, nil
 }
 
 func (r MariaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {

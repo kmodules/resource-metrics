@@ -105,7 +105,7 @@ func (r MongoDB) modeFn(obj map[string]interface{}) (string, error) {
 	if found && rs != nil {
 		return DBModeReplicaSet, nil
 	}
-	return DBModeStandalone, nil
+	return DBStandalone, nil
 }
 
 func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {

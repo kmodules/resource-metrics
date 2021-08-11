@@ -29,6 +29,7 @@ import (
 func TestJob(t *testing.T) {
 	type want struct {
 		replicas       int64
+		mode           string
 		totalResources core.ResourceRequirements
 		appResources   core.ResourceRequirements
 	}
@@ -40,6 +41,7 @@ func TestJob(t *testing.T) {
 			name: "testdata/batch/v1beta1/cronjob.yaml",
 			want: want{
 				replicas: 0,
+				mode:     "",
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:    resource.MustParse("500m"),
@@ -80,6 +82,12 @@ func TestJob(t *testing.T) {
 				t.Errorf("Replicas() error = %v", err)
 			} else if got != tt.want.replicas {
 				t.Errorf("Replicas found = %v, expected = %v", got, tt.want.replicas)
+			}
+
+			if got, err := c.Mode(obj); err != nil {
+				t.Errorf("Mode() error = %v", err)
+			} else if got != tt.want.mode {
+				t.Errorf("Mode found = %v, expected = %v", got, tt.want.mode)
 			}
 
 			if got, err := c.TotalResourceLimits(obj); err != nil {
