@@ -25,16 +25,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	ofst "kmodules.xyz/offshoot-api/api/v1"
 )
-
-// TODO(tamal): either use mutex or move to an internal package
-var plugins = map[schema.GroupVersionKind]ResourceCalculator{}
-
-func Register(gvk schema.GroupVersionKind, c ResourceCalculator) {
-	plugins[gvk] = c
-}
 
 type ResourceCalculator interface {
 	Replicas(obj map[string]interface{}) (int64, error)

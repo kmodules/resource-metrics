@@ -17,8 +17,6 @@ limitations under the License.
 package resourcemetrics
 
 import (
-	"kmodules.xyz/resource-metrics/api"
-
 	core "k8s.io/api/core/v1"
 )
 
@@ -36,17 +34,17 @@ func EvalFuncs() map[string]func(arguments ...interface{}) (interface{}, error) 
 
 // resourceReplicas(resource_obj)
 func resourceReplicas(args ...interface{}) (interface{}, error) {
-	return api.Replicas(args[0].(map[string]interface{}))
+	return Replicas(args[0].(map[string]interface{}))
 }
 
 // resourceMode(resource_obj)
 func resourceMode(args ...interface{}) (interface{}, error) {
-	return api.Mode(args[0].(map[string]interface{}))
+	return Mode(args[0].(map[string]interface{}))
 }
 
 // totalResourceLimits(resource_obj, resource_type) => cpu cores (float64)
 func totalResourceLimits(args ...interface{}) (interface{}, error) {
-	rr, err := api.TotalResourceLimits(args[0].(map[string]interface{}))
+	rr, err := TotalResourceLimits(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +54,7 @@ func totalResourceLimits(args ...interface{}) (interface{}, error) {
 
 // totalResourceRequests(resource_obj, resource_type)
 func totalResourceRequests(args ...interface{}) (interface{}, error) {
-	rr, err := api.TotalResourceRequests(args[0].(map[string]interface{}))
+	rr, err := TotalResourceRequests(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +64,7 @@ func totalResourceRequests(args ...interface{}) (interface{}, error) {
 
 // appResourceLimits(resource_obj, resource_type)
 func appResourceLimits(args ...interface{}) (interface{}, error) {
-	rr, err := api.AppResourceLimits(args[0].(map[string]interface{}))
+	rr, err := AppResourceLimits(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +74,7 @@ func appResourceLimits(args ...interface{}) (interface{}, error) {
 
 // appResourceRequests(resource_obj, resource_type)
 func appResourceRequests(args ...interface{}) (interface{}, error) {
-	rr, err := api.AppResourceRequests(args[0].(map[string]interface{}))
+	rr, err := AppResourceRequests(args[0].(map[string]interface{}))
 	if err != nil {
 		return nil, err
 	}
