@@ -89,7 +89,7 @@ func (r MySQL) modeFn(obj map[string]interface{}) (string, error) {
 	if found {
 		return mode, nil
 	}
-	return DBModeStandalone, nil
+	return DBStandalone, nil
 }
 
 func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {

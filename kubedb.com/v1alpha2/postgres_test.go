@@ -29,6 +29,7 @@ import (
 func TestPostgres(t *testing.T) {
 	type want struct {
 		replicas       int64
+		mode           string
 		totalResources core.ResourceRequirements
 		appResources   core.ResourceRequirements
 	}
@@ -40,6 +41,7 @@ func TestPostgres(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/postgres/hot-standby.yaml",
 			want: want{
 				replicas: 3,
+				mode:     "Hot",
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("3"),
@@ -80,6 +82,12 @@ func TestPostgres(t *testing.T) {
 				t.Errorf("Replicas() error = %v", err)
 			} else if got != tt.want.replicas {
 				t.Errorf("Replicas found = %v, expected = %v", got, tt.want.replicas)
+			}
+
+			if got, err := c.Mode(obj); err != nil {
+				t.Errorf("Mode() error = %v", err)
+			} else if got != tt.want.mode {
+				t.Errorf("Mode found = %v, expected = %v", got, tt.want.mode)
 			}
 
 			if got, err := c.TotalResourceLimits(obj); err != nil {
