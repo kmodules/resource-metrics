@@ -71,11 +71,11 @@ func (r MongoDB) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, er
 			return nil, err
 		}
 		return api.ReplicaList{
-			api.PodRoleTotalShard:   shards * shardReplicas,
-			api.PodRoleShard:        shards,
-			api.PodRolePerShard:     shardReplicas,
-			api.PodRoleConfigServer: configServerReplicas,
-			api.PodRoleMongos:       mongosReplicas,
+			api.PodRoleTotalShard:       shards * shardReplicas,
+			api.PodRoleShard:            shards,
+			api.PodRoleReplicasPerShard: shardReplicas,
+			api.PodRoleConfigServer:     configServerReplicas,
+			api.PodRoleMongos:           mongosReplicas,
 		}, nil
 	}
 
