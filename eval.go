@@ -99,6 +99,8 @@ func resourceQuantity(rr core.ResourceList, resourceName interface{}) (interface
 }
 
 func resourceQuantityAsFloat64(name core.ResourceName, q resource.Quantity) float64 {
+	// WARNING: q.AsApproximateFloat64() does not work
+	// ref: https://github.com/kubernetes/kube-state-metrics/blob/16e8f54c9e7f9f4b4ad73002e03e9d0dcee5b1ce/internal/store/pod.go#L234
 	switch name {
 	case core.ResourceCPU:
 		return float64(q.MilliValue()) / 1000
