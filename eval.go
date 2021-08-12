@@ -17,7 +17,11 @@ limitations under the License.
 package resourcemetrics
 
 import (
+	"fmt"
+	"reflect"
+
 	core "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 // EvalFuncs for https://github.com/gomodules/eval
@@ -48,8 +52,7 @@ func totalResourceLimits(args ...interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	q := rr[core.ResourceName(args[1].(string))]
-	return q.AsApproximateFloat64(), nil
+	return resourceQuantity(rr, args[1])
 }
 
 // totalResourceRequests(resource_obj, resource_type)
@@ -58,8 +61,7 @@ func totalResourceRequests(args ...interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	q := rr[core.ResourceName(args[1].(string))]
-	return q.AsApproximateFloat64(), nil
+	return resourceQuantity(rr, args[1])
 }
 
 // appResourceLimits(resource_obj, resource_type)
@@ -68,8 +70,7 @@ func appResourceLimits(args ...interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	q := rr[core.ResourceName(args[1].(string))]
-	return q.AsApproximateFloat64(), nil
+	return resourceQuantity(rr, args[1])
 }
 
 // appResourceRequests(resource_obj, resource_type)
@@ -78,6 +79,30 @@ func appResourceRequests(args ...interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	q := rr[core.ResourceName(args[1].(string))]
-	return q.AsApproximateFloat64(), nil
+	return resourceQuantity(rr, args[1])
+}
+
+func resourceQuantity(rr core.ResourceList, resourceName interface{}) (interface{}, error) {
+	var name core.ResourceName
+
+	switch u := resourceName.(type) {
+	case core.ResourceName:
+		name = u
+	case string:
+		name = core.ResourceName(u)
+	default:
+		return nil, fmt.Errorf("ResourceName %v with unrecognized type %v", resourceName, reflect.TypeOf(resourceName))
+	}
+
+	q := rr[name]
+	return resourceQuantityAsFloat64(name, q), nil
+}
+
+func resourceQuantityAsFloat64(name core.ResourceName, q resource.Quantity) float64 {
+	switch name {
+	case core.ResourceCPU:
+		return float64(q.MilliValue()) / 1000
+	default:
+		return float64(q.Value())
+	}
 }
