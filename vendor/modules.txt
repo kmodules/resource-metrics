@@ -50,7 +50,7 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
-# gomodules.xyz/encoding v0.0.1
+# gomodules.xyz/encoding v0.0.2
 gomodules.xyz/encoding/json
 gomodules.xyz/encoding/yaml
 # gomodules.xyz/pointer v0.1.0

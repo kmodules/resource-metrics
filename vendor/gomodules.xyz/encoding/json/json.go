@@ -35,6 +35,12 @@ func Marshal(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }
 
+// MarshalIndent delegates to json.MarshalIndent
+// It is only here so this package can be a drop-in for common encoding/json uses
+func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error) {
+	return json.MarshalIndent(v, prefix, indent)
+}
+
 // limit recursive depth to prevent stack overflow errors
 const maxDepth = 10000
 
