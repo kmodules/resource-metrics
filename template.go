@@ -35,7 +35,7 @@ func GenericFuncMap() map[string]interface{} {
 	}
 }
 
-func tplReplicaFn(data string) (int64, error) {
+func tplReplicaFn(data interface{}) (int64, error) {
 	obj, err := toObject(data)
 	if err != nil {
 		return 0, err
@@ -48,7 +48,7 @@ func tplReplicaFn(data string) (int64, error) {
 	return c.Replicas(obj)
 }
 
-func tplRoleReplicaFn(data string) (interface{}, error) {
+func tplRoleReplicaFn(data interface{}) (interface{}, error) {
 	obj, err := toObject(data)
 	if err != nil {
 		return nil, err
