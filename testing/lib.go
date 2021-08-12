@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"k8s.io/apimachinery/pkg/util/yaml"
+	"gomodules.xyz/encoding/yaml"
 )
 
 var rootDir = func() string {

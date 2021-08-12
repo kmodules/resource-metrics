@@ -68,6 +68,37 @@ func TestMongoDB(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/mongodb/replicaset.yaml",
+			want: want{
+				replicas: 3,
+				mode:     DBModeReplicaSet,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

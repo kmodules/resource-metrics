@@ -19,15 +19,15 @@ package api
 type PodRole string
 
 const (
-	PodRoleDefault      PodRole = ""
-	PodRoleInit         PodRole = "init"
-	PodRoleRouter       PodRole = "router"
-	PodRoleExporter     PodRole = "exporter"
-	PodRoleTotalShard   PodRole = "total_shard"
-	PodRoleShard        PodRole = "shard"
-	PodRolePerShard     PodRole = "per_shard"
-	PodRoleConfigServer PodRole = "config_server"
-	PodRoleMongos       PodRole = "mongos"
+	PodRoleDefault          PodRole = ""
+	PodRoleInit             PodRole = "init"
+	PodRoleRouter           PodRole = "router"
+	PodRoleExporter         PodRole = "exporter"
+	PodRoleTotalShard       PodRole = "total_shard"
+	PodRoleShard            PodRole = "shard"
+	PodRoleReplicasPerShard PodRole = "replicas_per_shard"
+	PodRoleConfigServer     PodRole = "config_server"
+	PodRoleMongos           PodRole = "mongos"
 )
 
 type ReplicaList map[PodRole]int64

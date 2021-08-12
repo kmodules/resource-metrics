@@ -62,10 +62,10 @@ func (r Redis) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			return nil, err
 		}
 		return api.ReplicaList{
-			api.PodRoleTotalShard: shards * shardReplicas,
-			api.PodRoleDefault:    shards * shardReplicas,
-			api.PodRoleShard:      shards,
-			api.PodRolePerShard:   shardReplicas,
+			api.PodRoleTotalShard:       shards * shardReplicas,
+			api.PodRoleDefault:          shards * shardReplicas,
+			api.PodRoleShard:            shards,
+			api.PodRoleReplicasPerShard: shardReplicas,
 		}, nil
 	}
 
