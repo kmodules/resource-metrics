@@ -132,11 +132,10 @@ func MaxResourceList(x, y core.ResourceList) core.ResourceList {
 
 func ResourceLimits(rr core.ResourceRequirements) core.ResourceList {
 	get := func(name core.ResourceName) (*resource.Quantity, bool) {
-		limit, limitExists := rr.Limits[name]
-		req, reqExists := rr.Requests[name]
-		if limitExists {
+		if limit, exists := rr.Limits[name]; exists {
 			return &limit, true
-		} else if reqExists {
+		}
+		if req, exists := rr.Requests[name]; exists {
 			return &req, true
 		}
 		return nil, false
