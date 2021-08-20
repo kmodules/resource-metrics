@@ -66,14 +66,15 @@ func run(clientGetter genericclioptions.RESTClientGetter, apiGroups sets.String)
 		return err
 	}
 
-	r2 := map[schema.GroupVersionKind]core.ResourceList{}
+	rsmap := map[schema.GroupVersionKind]core.ResourceList{}
+	var rrTotal core.ResourceList
 	for _, gvk := range api.RegisteredTypes() {
 		if apiGroups.Len() > 0 && !apiGroups.Has(gvk.Group) {
 			continue
 		}
 		mapping, err := mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
 		if meta.IsNoMatchError(err) {
-			r2[gvk] = nil // keep track
+			rsmap[gvk] = nil // keep track
 			continue
 		} else if err != nil {
 			return err
@@ -96,12 +97,13 @@ func run(clientGetter genericclioptions.RESTClientGetter, apiGroups sets.String)
 				}
 				summary = api.AddResourceList(summary, rr)
 			}
-			r2[gvk] = summary
+			rsmap[gvk] = summary
+			rrTotal = api.AddResourceList(rrTotal, summary)
 		}
 	}
 
-	gvks := make([]schema.GroupVersionKind, 0, len(r2))
-	for gvk := range r2 {
+	gvks := make([]schema.GroupVersionKind, 0, len(rsmap))
+	for gvk := range rsmap {
 		gvks = append(gvks, gvk)
 	}
 	sort.Slice(gvks, func(i, j int) bool {
@@ -115,12 +117,13 @@ func run(clientGetter genericclioptions.RESTClientGetter, apiGroups sets.String)
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, padding, ' ', tabwriter.TabIndent)
 	_, _ = fmt.Fprintln(w, "API VERSION\tKIND\tCPU\tMEMORY\tSTORAGE\t")
 	for _, gvk := range gvks {
-		rr := r2[gvk]
+		rr := rsmap[gvk]
 		if rr == nil {
 			_, _ = fmt.Fprintf(w, "%s\t%s\t-\t-\t-\t\n", gvk.GroupVersion(), gvk.Kind)
 		} else {
 			_, _ = fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t\n", gvk.GroupVersion(), gvk.Kind, rr.Cpu(), rr.Memory(), rr.Storage())
 		}
 	}
+	_, _ = fmt.Fprintf(w, "TOTAL\t=\t%s\t%s\t%s\t\n", rrTotal.Cpu(), rrTotal.Memory(), rrTotal.Storage())
 	return w.Flush()
 }
