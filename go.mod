@@ -3,11 +3,18 @@ module kmodules.xyz/resource-metrics
 go 1.12
 
 require (
-	github.com/google/go-cmp v0.5.4
+	github.com/google/go-cmp v0.5.5
+	github.com/spf13/cobra v1.1.3
 	gomodules.xyz/encoding v0.0.2
+	gomodules.xyz/logs v0.0.4
 	gomodules.xyz/pointer v0.1.0
+	gomodules.xyz/x v0.0.7
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
+	k8s.io/cli-runtime v0.21.1
+	k8s.io/client-go v0.21.1
+	k8s.io/component-base v0.21.1
+	k8s.io/kubectl v0.21.1
 	kmodules.xyz/offshoot-api v0.0.0-20210804100837-d0388be3e60d
 )
 
