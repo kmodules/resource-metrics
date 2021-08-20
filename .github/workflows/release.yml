@@ -37,6 +37,7 @@ jobs:
         with:
           files: |
             bin/resource-calculator-darwin-amd64.tar.gz
+            bin/resource-calculator-darwin-arm64.tar.gz
             bin/resource-calculator-linux-amd64.tar.gz
             bin/resource-calculator-linux-arm.tar.gz
             bin/resource-calculator-linux-arm64.tar.gz
