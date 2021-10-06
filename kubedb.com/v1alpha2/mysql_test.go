@@ -68,6 +68,68 @@ func TestMySQL(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/mysql/group-replication.yaml",
+			want: want{
+				replicas: 3,
+				mode:     "GroupReplication",
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("3"),
+						core.ResourceMemory:  resource.MustParse("3456Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1.5"),
+						core.ResourceMemory:  resource.MustParse("1692Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1.5"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("750m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+			},
+		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/mysql/innodb.yaml",
+			want: want{
+				replicas: 4,
+				mode:     "InnoDBCluster",
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("3.5"),
+						core.ResourceMemory:  resource.MustParse("4480Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1.75"),
+						core.ResourceMemory:  resource.MustParse("2192Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("2"),
+						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1"),
+						core.ResourceMemory:  resource.MustParse("2000Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
