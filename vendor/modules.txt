@@ -1,7 +1,7 @@
-# github.com/emicklei/go-restful/v3 v3.7.5-0.20220308211933-7c971ca4d0fd
-## explicit; go 1.13
-github.com/emicklei/go-restful/v3
-github.com/emicklei/go-restful/v3/log
+# github.com/emicklei/go-restful v2.9.5+incompatible
+## explicit
+github.com/emicklei/go-restful
+github.com/emicklei/go-restful/log
 # github.com/fatih/structs v1.1.0
 ## explicit
 github.com/fatih/structs
@@ -160,7 +160,7 @@ k8s.io/klog/v2/internal/buffer
 k8s.io/klog/v2/internal/clock
 k8s.io/klog/v2/internal/serialize
 k8s.io/klog/v2/internal/severity
-# k8s.io/kube-openapi v0.0.0-20220603121420-31174f50af60
+# k8s.io/kube-openapi v0.0.0-20220413171646-5e7f5fdc6da6
 ## explicit; go 1.16
 k8s.io/kube-openapi/pkg/builder3/util
 k8s.io/kube-openapi/pkg/common
@@ -173,7 +173,7 @@ k8s.io/kube-openapi/pkg/validation/spec
 k8s.io/utils/internal/third_party/forked/golang/net
 k8s.io/utils/net
 k8s.io/utils/strings/slices
-# kmodules.xyz/offshoot-api v0.24.0
+# kmodules.xyz/offshoot-api v0.24.1
 ## explicit; go 1.18
 kmodules.xyz/offshoot-api/api/v1
 # sigs.k8s.io/json v0.0.0-20211208200746-9f7c6b3444d2
