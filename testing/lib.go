@@ -17,7 +17,7 @@ limitations under the License.
 package testing
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"runtime"
 
@@ -30,7 +30,7 @@ var rootDir = func() string {
 }()
 
 func Load(filename string) (map[string]interface{}, error) {
-	data, err := ioutil.ReadFile(filepath.Join(rootDir, filename))
+	data, err := os.ReadFile(filepath.Join(rootDir, filename))
 	if err != nil {
 		return nil, err
 	}
