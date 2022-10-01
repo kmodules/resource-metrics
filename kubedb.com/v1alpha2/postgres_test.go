@@ -19,9 +19,8 @@ package v1alpha2
 import (
 	"testing"
 
-	mt "kmodules.xyz/resource-metrics/testing"
-
 	"github.com/google/go-cmp/cmp"
+	tl "gomodules.xyz/testing"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
@@ -71,7 +70,7 @@ func TestPostgres(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			obj, err := mt.Load(tt.name)
+			obj, err := tl.LoadFile(tt.name)
 			if err != nil {
 				t.Error(err)
 				return
