@@ -6,7 +6,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/pointer v0.1.0
-	gomodules.xyz/testing v0.0.2
+	gomodules.xyz/testing v0.0.4
 	k8s.io/api v0.25.1
 	k8s.io/apimachinery v0.25.1
 	kmodules.xyz/offshoot-api v0.25.0

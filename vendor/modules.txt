@@ -105,7 +105,7 @@ gomodules.xyz/encoding/yaml
 # gomodules.xyz/pointer v0.1.0
 ## explicit; go 1.15
 gomodules.xyz/pointer
-# gomodules.xyz/testing v0.0.2
+# gomodules.xyz/testing v0.0.4
 ## explicit; go 1.18
 gomodules.xyz/testing
 # google.golang.org/protobuf v1.28.0
