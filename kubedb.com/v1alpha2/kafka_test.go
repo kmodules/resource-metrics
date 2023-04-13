@@ -43,19 +43,19 @@ func TestKafka(t *testing.T) {
 				mode:     "Combined",
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3"),
-						core.ResourceMemory:  resource.MustParse("3456Mi"),
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
+						core.ResourceCPU:     resource.MustParse("750m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceCPU:     resource.MustParse("1.5"),
 						core.ResourceMemory:  resource.MustParse("3Gi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
