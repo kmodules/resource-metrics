@@ -1,0 +1,34 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: demo
+spec:
+  version: 3.4.0
+  storageType: Durable
+  replicas: 3
+  podTemplate:
+    spec:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 500Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9091
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
+  storage:
+    storageClassName: "linode-block-storage"
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
