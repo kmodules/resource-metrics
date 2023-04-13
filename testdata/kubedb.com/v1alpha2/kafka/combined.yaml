@@ -1,0 +1,38 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: demo
+spec:
+  podTemplate:
+    controller: {}
+    metadata: {}
+    spec:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+  replicas: 3
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+    storageClassName: linode-block-storage-retain
+  storageType: Durable
+  terminationPolicy: WipeOut
+  tls:
+    certificates:
+      - alias: server
+        secretName: kafka-server-cert
+      - alias: client
+        secretName: kafka-client-cert
+    issuerRef:
+      apiGroup: cert-manager.io
+      kind: Issuer
+      name: ca-issuer
+  version: 3.3.0
