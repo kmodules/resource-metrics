@@ -59,6 +59,7 @@ func (r Kafka) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 		return nil, err
 	}
 	if found && topology != nil {
+		// dedicated topology mode
 		var replicas int64 = 0
 		for role, roleSpec := range topology {
 			roleReplicas, found, err := unstructured.NestedInt64(roleSpec.(map[string]interface{}), "replicas")
