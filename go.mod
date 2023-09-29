@@ -12,8 +12,6 @@ require (
 	kmodules.xyz/offshoot-api v0.25.0
 )
 
-require github.com/fsnotify/fsnotify v1.5.4 // indirect
-
 require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
