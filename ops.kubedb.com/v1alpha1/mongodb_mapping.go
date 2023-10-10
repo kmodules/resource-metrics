@@ -56,6 +56,8 @@ func (m *MongoDBOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) ma
 	value, found, err := unstructured.NestedFieldNoCopy(dbObj, "spec", "replicaSet")
 	if err != nil && found && value != nil {
 		delete(mapping, "spec.verticalScaling.standalone")
+	} else {
+		delete(mapping, "spec.verticalScaling.replicaSet")
 	}
 
 	return mapping
@@ -73,6 +75,8 @@ func (m *MongoDBOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interfac
 	value, found, err := unstructured.NestedFieldNoCopy(dbObj, "spec", "replicaSet")
 	if err != nil && found && value != nil {
 		delete(mapping, "spec.volumeExpansion.replicaSet")
+	} else {
+		delete(mapping, "spec.volumeExpansion.standalone")
 	}
 
 	return mapping

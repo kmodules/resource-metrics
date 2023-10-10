@@ -104,11 +104,11 @@ func getMapping(opsObj, dbObj map[string]interface{}) (map[OpsReqPath]Referenced
 
 	switch scalingType {
 	case ScalingTypeHorizontal:
-		return opsMapper.HorizontalPathMapping(), nil
+		return opsMapper.HorizontalPathMapping(dbObj), nil
 	case ScalingTypeVertical:
-		return opsMapper.VerticalPathMapping(), nil
+		return opsMapper.VerticalPathMapping(dbObj), nil
 	case ScalingTypeVolumeExpansion:
-		return opsMapper.VolumeExpansionPathMapping(), nil
+		return opsMapper.VolumeExpansionPathMapping(dbObj), nil
 	}
 
 	return nil, fmt.Errorf("scaling type `%s` not supported", scalingType)

@@ -26,7 +26,7 @@ type kafkaOpsRequest struct{}
 
 var _ OpsPathMapper = (*kafkaOpsRequest)(nil)
 
-func (m *kafkaOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *kafkaOpsRequest) HorizontalPathMapping(_ map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.node":                "spec.replicas",
 		"spec.horizontalScaling.topology.broker":     "spec.topology.broker.replicas",
@@ -34,7 +34,7 @@ func (m *kafkaOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) ma
 	}
 }
 
-func (m *kafkaOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *kafkaOpsRequest) VerticalPathMapping(_ map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.node":                "spec.podTemplate.spec.resources",
 		"spec.verticalScaling.topology.broker":     "spec.topology.broker.resources",
@@ -42,12 +42,11 @@ func (m *kafkaOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[
 	}
 }
 
-func (m *kafkaOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *kafkaOpsRequest) VolumeExpansionPathMapping(_ map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.volumeExpansion.mode":                "",
-		"spec.volumeExpansion.node":                "",
-		"spec.volumeExpansion.topology.broker":     "",
-		"spec.volumeExpansion.topology.controller": "",
+		"spec.volumeExpansion.node":                "spec.storage.resources.requests",
+		"spec.volumeExpansion.topology.broker":     "spec.topology.broker.storage.resources.requests",
+		"spec.volumeExpansion.topology.controller": "spec.topology.controller.storage.resources.requests",
 	}
 }
 
