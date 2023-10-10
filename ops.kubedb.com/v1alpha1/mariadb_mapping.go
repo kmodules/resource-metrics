@@ -26,15 +26,15 @@ type MariaDBOpsRequest struct{}
 
 var _ OpsPathMapper = (*MariaDBOpsRequest)(nil)
 
-func (m *MariaDBOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MariaDBOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MariaDBOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MariaDBOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MariaDBOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MariaDBOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 

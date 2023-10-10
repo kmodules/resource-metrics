@@ -23,9 +23,9 @@ import (
 )
 
 type OpsPathMapper interface {
-	HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath
-	VerticalPathMapping() map[OpsReqPath]ReferencedObjPath
-	VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath
+	HorizontalPathMapping(map[string]interface{}) map[OpsReqPath]ReferencedObjPath
+	VerticalPathMapping(map[string]interface{}) map[OpsReqPath]ReferencedObjPath
+	VolumeExpansionPathMapping(map[string]interface{}) map[OpsReqPath]ReferencedObjPath
 	GetGroupVersionKind() schema.GroupVersionKind
 }
 

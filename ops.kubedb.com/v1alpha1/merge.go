@@ -39,7 +39,7 @@ func GetScaledObject(opsObj map[string]interface{}) (ScaledObject, error) {
 }
 
 func merge(opsObj, dbObj map[string]interface{}) (ScaledObject, error) {
-	mapping, err := getMapping(opsObj)
+	mapping, err := getMapping(opsObj, dbObj)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func getScalingType(opsObj map[string]interface{}) (string, error) {
 	return tp, nil
 }
 
-func getMapping(opsObj map[string]interface{}) (map[OpsReqPath]ReferencedObjPath, error) {
+func getMapping(opsObj, dbObj map[string]interface{}) (map[OpsReqPath]ReferencedObjPath, error) {
 	scalingType, err := getScalingType(opsObj)
 	if err != nil {
 		return nil, err

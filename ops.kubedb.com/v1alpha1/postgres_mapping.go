@@ -26,7 +26,7 @@ type PostgresOpsRequest struct{}
 
 var _ OpsPathMapper = (*PostgresOpsRequest)(nil)
 
-func (m *PostgresOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PostgresOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.replicas":      "",
 		"spec.horizontalScaling.standbyMode":   "",
@@ -34,7 +34,7 @@ func (m *PostgresOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedOb
 	}
 }
 
-func (m *PostgresOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PostgresOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.postgres":    "",
 		"spec.verticalScaling.exporter":    "",
@@ -42,7 +42,7 @@ func (m *PostgresOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjP
 	}
 }
 
-func (m *PostgresOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PostgresOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.postgres": "",
 		"spec.volumeExpansion.mode":     "",

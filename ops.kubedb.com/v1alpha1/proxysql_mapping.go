@@ -19,26 +19,26 @@ package v1alpha1
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
 func init() {
-	RegisterToPathMapperPlugin(&PostgresOpsRequest{})
+	RegisterToPathMapperPlugin(&ProxySQLOpsRequest{})
 }
 
 type ProxySQLOpsRequest struct{}
 
 var _ OpsPathMapper = (*ProxySQLOpsRequest)(nil)
 
-func (m *ProxySQLOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ProxySQLOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.member": "",
 	}
 }
 
-func (m *ProxySQLOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ProxySQLOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.proxysql": "",
 	}
 }
 
-func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 

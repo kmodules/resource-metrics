@@ -19,14 +19,14 @@ package v1alpha1
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
 func init() {
-	RegisterToPathMapperPlugin(&MariaDBOpsRequest{})
+	RegisterToPathMapperPlugin(&ElasticsearchOpsRequest{})
 }
 
 type ElasticsearchOpsRequest struct{}
 
 var _ OpsPathMapper = (*ElasticsearchOpsRequest)(nil)
 
-func (m *ElasticsearchOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.node":                  "",
 		"spec.horizontalScaling.topology.master":       "",
@@ -43,7 +43,7 @@ func (m *ElasticsearchOpsRequest) HorizontalPathMapping() map[OpsReqPath]Referen
 	}
 }
 
-func (m *ElasticsearchOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.node":                  "",
 		"spec.verticalScaling.exporter":              "",
@@ -61,7 +61,7 @@ func (m *ElasticsearchOpsRequest) VerticalPathMapping() map[OpsReqPath]Reference
 	}
 }
 
-func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.mode":                  "",
 		"spec.volumeExpansion.node":                  "",

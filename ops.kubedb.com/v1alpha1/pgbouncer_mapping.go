@@ -19,22 +19,22 @@ package v1alpha1
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
 func init() {
-	RegisterToPathMapperPlugin(&PostgresOpsRequest{})
+	RegisterToPathMapperPlugin(&PgBouncerOpsRequest{})
 }
 
 type PgBouncerOpsRequest struct{}
 
 var _ OpsPathMapper = (*PgBouncerOpsRequest)(nil)
 
-func (m *PgBouncerOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PgBouncerOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *PgBouncerOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PgBouncerOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 

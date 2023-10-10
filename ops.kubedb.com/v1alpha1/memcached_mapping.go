@@ -26,15 +26,15 @@ type MemcachedOpsRequest struct{}
 
 var _ OpsPathMapper = (*MemcachedOpsRequest)(nil)
 
-func (m *MemcachedOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MemcachedOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MemcachedOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MemcachedOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MemcachedOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MemcachedOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{}
 }
 

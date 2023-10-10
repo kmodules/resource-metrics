@@ -26,13 +26,13 @@ type MySqlOpsRequest struct{}
 
 var _ OpsPathMapper = (*MySqlOpsRequest)(nil)
 
-func (m *MySqlOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.member": "spec.replicas",
 	}
 }
 
-func (m *MySqlOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.mysql":       "",
 		"spec.verticalScaling.exporter":    "spec.monitor.prometheus.exporter.resources",
@@ -40,7 +40,7 @@ func (m *MySqlOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath
 	}
 }
 
-func (m *MySqlOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.mysql": "",
 		"spec.volumeExpansion.mode":  "",
