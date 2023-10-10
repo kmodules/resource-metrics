@@ -26,25 +26,25 @@ type MySqlOpsRequest struct{}
 
 var _ OpsPathMapper = (*MySqlOpsRequest)(nil)
 
-func (m *MySqlOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.member": "spec.replicas",
-	}
+	}, nil
 }
 
-func (m *MySqlOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.mysql":       "",
 		"spec.verticalScaling.exporter":    "spec.monitor.prometheus.exporter.resources",
 		"spec.verticalScaling.coordinator": "spec.coordinator.resources",
-	}
+	}, nil
 }
 
-func (m *MySqlOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MySqlOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.mysql": "",
 		"spec.volumeExpansion.mode":  "",
-	}
+	}, nil
 }
 
 func (m *MySqlOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

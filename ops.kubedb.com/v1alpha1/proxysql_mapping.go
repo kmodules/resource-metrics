@@ -26,20 +26,20 @@ type ProxySQLOpsRequest struct{}
 
 var _ OpsPathMapper = (*ProxySQLOpsRequest)(nil)
 
-func (m *ProxySQLOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *ProxySQLOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.member": "",
-	}
+	}, nil
 }
 
-func (m *ProxySQLOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *ProxySQLOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.proxysql": "",
-	}
+	}, nil
 }
 
-func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
-	return map[OpsReqPath]ReferencedObjPath{}
+func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+	return map[OpsReqPath]ReferencedObjPath{}, nil
 }
 
 func (m *ProxySQLOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

@@ -29,7 +29,7 @@ type MongoDBOpsRequest struct{}
 
 var _ OpsPathMapper = (*MongoDBOpsRequest)(nil)
 
-func (m *MongoDBOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MongoDBOpsRequest) HorizontalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.shard.shards":          "spec.shardTopology.shard.shards",
 		"spec.horizontalScaling.shard.replicas":        "spec.shardTopology.shard.replicas",
@@ -37,10 +37,10 @@ func (m *MongoDBOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) 
 		"spec.horizontalScaling.mongos.replicas":       "spec.shardTopology.mongos.replicas",
 		"spec.horizontalScaling.hidden.replicas":       "spec.hidden.replicas",
 		"spec.horizontalScaling.replicas":              "spec.replicas",
-	}
+	}, nil
 }
 
-func (m *MongoDBOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MongoDBOpsRequest) VerticalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	mapping := map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.standalone":   "spec.podTemplate.spec.resources",
 		"spec.verticalScaling.replicaSet":   "spec.podTemplate.spec.resources",
@@ -54,16 +54,19 @@ func (m *MongoDBOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) ma
 	}
 
 	value, found, err := unstructured.NestedFieldNoCopy(dbObj, "spec", "replicaSet")
-	if err != nil && found && value != nil {
+	if err != nil {
+		return nil, err
+	}
+	if found && value != nil {
 		delete(mapping, "spec.verticalScaling.standalone")
 	} else {
 		delete(mapping, "spec.verticalScaling.replicaSet")
 	}
 
-	return mapping
+	return mapping, nil
 }
 
-func (m *MongoDBOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *MongoDBOpsRequest) VolumeExpansionPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	mapping := map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.standalone":   "spec.storage.resources",
 		"spec.volumeExpansion.replicaSet":   "spec.storage.resources",
@@ -73,13 +76,16 @@ func (m *MongoDBOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interfac
 	}
 
 	value, found, err := unstructured.NestedFieldNoCopy(dbObj, "spec", "replicaSet")
-	if err != nil && found && value != nil {
-		delete(mapping, "spec.volumeExpansion.replicaSet")
-	} else {
+	if err != nil {
+		return nil, err
+	}
+	if found && value != nil {
 		delete(mapping, "spec.volumeExpansion.standalone")
+	} else {
+		delete(mapping, "spec.volumeExpansion.replicaSet")
 	}
 
-	return mapping
+	return mapping, nil
 }
 
 func (m *MongoDBOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

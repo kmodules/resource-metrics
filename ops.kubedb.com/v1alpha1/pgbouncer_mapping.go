@@ -26,16 +26,16 @@ type PgBouncerOpsRequest struct{}
 
 var _ OpsPathMapper = (*PgBouncerOpsRequest)(nil)
 
-func (m *PgBouncerOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
-	return map[OpsReqPath]ReferencedObjPath{}
+func (m *PgBouncerOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+	return map[OpsReqPath]ReferencedObjPath{}, nil
 }
 
-func (m *PgBouncerOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
-	return map[OpsReqPath]ReferencedObjPath{}
+func (m *PgBouncerOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+	return map[OpsReqPath]ReferencedObjPath{}, nil
 }
 
-func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
-	return map[OpsReqPath]ReferencedObjPath{}
+func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+	return map[OpsReqPath]ReferencedObjPath{}, nil
 }
 
 func (m *PgBouncerOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

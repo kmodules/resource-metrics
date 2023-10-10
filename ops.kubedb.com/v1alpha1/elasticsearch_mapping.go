@@ -26,7 +26,7 @@ type ElasticsearchOpsRequest struct{}
 
 var _ OpsPathMapper = (*ElasticsearchOpsRequest)(nil)
 
-func (m *ElasticsearchOpsRequest) HorizontalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) HorizontalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.node":                  "",
 		"spec.horizontalScaling.topology.master":       "",
@@ -40,10 +40,10 @@ func (m *ElasticsearchOpsRequest) HorizontalPathMapping(dbObj map[string]interfa
 		"spec.horizontalScaling.topology.ml":           "",
 		"spec.horizontalScaling.topology.transform":    "",
 		"spec.horizontalScaling.topology.coordinating": "",
-	}
+	}, nil
 }
 
-func (m *ElasticsearchOpsRequest) VerticalPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) VerticalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.node":                  "",
 		"spec.verticalScaling.exporter":              "",
@@ -58,10 +58,10 @@ func (m *ElasticsearchOpsRequest) VerticalPathMapping(dbObj map[string]interface
 		"spec.verticalScaling.topology.ml":           "",
 		"spec.verticalScaling.topology.transform":    "",
 		"spec.verticalScaling.topology.coordinating": "",
-	}
+	}, nil
 }
 
-func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(dbObj map[string]interface{}) map[OpsReqPath]ReferencedObjPath {
+func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.mode":                  "",
 		"spec.volumeExpansion.node":                  "",
@@ -76,7 +76,7 @@ func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(dbObj map[string]in
 		"spec.volumeExpansion.topology.ml":           "",
 		"spec.volumeExpansion.topology.transform":    "",
 		"spec.volumeExpansion.topology.coordinating": "",
-	}
+	}, nil
 }
 
 func (m *ElasticsearchOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {
