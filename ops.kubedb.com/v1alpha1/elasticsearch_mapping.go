@@ -26,56 +26,55 @@ type ElasticsearchOpsRequest struct{}
 
 var _ OpsPathMapper = (*ElasticsearchOpsRequest)(nil)
 
-func (m *ElasticsearchOpsRequest) HorizontalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.horizontalScaling.node":                  "",
-		"spec.horizontalScaling.topology.master":       "",
-		"spec.horizontalScaling.topology.ingest":       "",
-		"spec.horizontalScaling.topology.data":         "",
-		"spec.horizontalScaling.topology.dataContent":  "",
-		"spec.horizontalScaling.topology.dataHot":      "",
-		"spec.horizontalScaling.topology.dataWarm":     "",
-		"spec.horizontalScaling.topology.dataCold":     "",
-		"spec.horizontalScaling.topology.dataFrozen":   "",
-		"spec.horizontalScaling.topology.ml":           "",
-		"spec.horizontalScaling.topology.transform":    "",
-		"spec.horizontalScaling.topology.coordinating": "",
+		"spec.horizontalScaling.node":                  "spec.replicas",
+		"spec.horizontalScaling.topology.master":       "spec.topology.master.replicas",
+		"spec.horizontalScaling.topology.ingest":       "spec.topology.ingest.replicas",
+		"spec.horizontalScaling.topology.data":         "spec.topology.data.replicas",
+		"spec.horizontalScaling.topology.dataContent":  "spec.topology.dataContent.replicas",
+		"spec.horizontalScaling.topology.dataHot":      "spec.topology.dataHot.replicas",
+		"spec.horizontalScaling.topology.dataWarm":     "spec.topology.dataWarm.replicas",
+		"spec.horizontalScaling.topology.dataCold":     "spec.topology.dataCold.replicas",
+		"spec.horizontalScaling.topology.dataFrozen":   "spec.topology.dataFrozen.replicas",
+		"spec.horizontalScaling.topology.ml":           "spec.topology.ml.replicas",
+		"spec.horizontalScaling.topology.transform":    "spec.topology.transform.replicas",
+		"spec.horizontalScaling.topology.coordinating": "spec.topology.coordinating.replicas",
 	}, nil
 }
 
-func (m *ElasticsearchOpsRequest) VerticalPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.verticalScaling.node":                  "",
-		"spec.verticalScaling.exporter":              "",
-		"spec.verticalScaling.topology.master":       "",
-		"spec.verticalScaling.topology.ingest":       "",
-		"spec.verticalScaling.topology.data":         "",
-		"spec.verticalScaling.topology.dataContent":  "",
-		"spec.verticalScaling.topology.dataHot":      "",
-		"spec.verticalScaling.topology.dataWarm":     "",
-		"spec.verticalScaling.topology.dataCold":     "",
-		"spec.verticalScaling.topology.dataFrozen":   "",
-		"spec.verticalScaling.topology.ml":           "",
-		"spec.verticalScaling.topology.transform":    "",
-		"spec.verticalScaling.topology.coordinating": "",
+		"spec.verticalScaling.node":                  "spec.resources",
+		"spec.verticalScaling.exporter":              "spec.topology.exporter.resources",
+		"spec.verticalScaling.topology.master":       "spec.topology.master.resources",
+		"spec.verticalScaling.topology.ingest":       "spec.topology.ingest.resources",
+		"spec.verticalScaling.topology.data":         "spec.topology.data.resources",
+		"spec.verticalScaling.topology.dataContent":  "spec.topology.dataContent.resources",
+		"spec.verticalScaling.topology.dataHot":      "spec.topology.dataHot.resources",
+		"spec.verticalScaling.topology.dataWarm":     "spec.topology.dataWarm.resources",
+		"spec.verticalScaling.topology.dataCold":     "spec.topology.dataCold.resources",
+		"spec.verticalScaling.topology.dataFrozen":   "spec.topology.dataFrozen.resources",
+		"spec.verticalScaling.topology.ml":           "spec.topology.ml.resources",
+		"spec.verticalScaling.topology.transform":    "spec.topology.transform.resources",
+		"spec.verticalScaling.topology.coordinating": "spec.topology.coordinating.resources",
 	}, nil
 }
 
-func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(dbObj DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.volumeExpansion.mode":                  "",
-		"spec.volumeExpansion.node":                  "",
-		"spec.volumeExpansion.topology.master":       "",
-		"spec.volumeExpansion.topology.ingest":       "",
-		"spec.volumeExpansion.topology.data":         "",
-		"spec.volumeExpansion.topology.dataContent":  "",
-		"spec.volumeExpansion.topology.dataHot":      "",
-		"spec.volumeExpansion.topology.dataWarm":     "",
-		"spec.volumeExpansion.topology.dataCold":     "",
-		"spec.volumeExpansion.topology.dataFrozen":   "",
-		"spec.volumeExpansion.topology.ml":           "",
-		"spec.volumeExpansion.topology.transform":    "",
-		"spec.volumeExpansion.topology.coordinating": "",
+		"spec.volumeExpansion.node":                  "spec.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.master":       "spec.topology.master.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.ingest":       "spec.topology.ingest.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.data":         "spec.topology.data.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.dataContent":  "spec.topology.dataContent.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.dataHot":      "spec.topology.dataHot.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.dataWarm":     "spec.topology.dataWarm.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.dataCold":     "spec.topology.dataCold.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.dataFrozen":   "spec.topology.dataFrozen.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.ml":           "spec.topology.ml.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.transform":    "spec.topology.transform.storage.resources.requests.storage",
+		"spec.volumeExpansion.topology.coordinating": "spec.topology.coordinating.storage.resources.requests.storage",
 	}, nil
 }
 
