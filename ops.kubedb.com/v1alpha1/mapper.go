@@ -23,19 +23,19 @@ import (
 )
 
 type OpsPathMapper interface {
-	HorizontalPathMapping(DbObject) (map[OpsReqPath]ReferencedObjPath, error)
-	VerticalPathMapping(DbObject) (map[OpsReqPath]ReferencedObjPath, error)
-	VolumeExpansionPathMapping(DbObject) (map[OpsReqPath]ReferencedObjPath, error)
+	HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath
+	VerticalPathMapping() map[OpsReqPath]ReferencedObjPath
+	VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath
+	GetReferencedDbObjectPath() []string
 	GetGroupVersionKind() schema.GroupVersionKind
 }
 
 type OpsReqPath string
 type ReferencedObjPath string
 type ScaledObject map[string]interface{}
-type DbObject map[string]interface{}
 type OpsReqObject map[string]interface{}
 
-var PathMapperPlugin map[schema.GroupVersionKind]OpsPathMapper
+var PathMapperPlugin = map[schema.GroupVersionKind]OpsPathMapper{}
 
 func RegisterToPathMapperPlugin(opsObj OpsPathMapper) {
 	PathMapperPlugin[opsObj.GetGroupVersionKind()] = opsObj

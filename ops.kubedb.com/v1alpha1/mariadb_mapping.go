@@ -26,16 +26,20 @@ type MariaDBOpsRequest struct{}
 
 var _ OpsPathMapper = (*MariaDBOpsRequest)(nil)
 
-func (m *MariaDBOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MariaDBOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MariaDBOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MariaDBOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MariaDBOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MariaDBOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
+}
+
+func (m *MariaDBOpsRequest) GetReferencedDbObjectPath() []string {
+	return []string{"spec", "databaseRef", "referencedDB"}
 }
 
 func (m *MariaDBOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

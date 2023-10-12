@@ -26,7 +26,7 @@ type ElasticsearchOpsRequest struct{}
 
 var _ OpsPathMapper = (*ElasticsearchOpsRequest)(nil)
 
-func (m *ElasticsearchOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.horizontalScaling.node":                  "spec.replicas",
 		"spec.horizontalScaling.topology.master":       "spec.topology.master.replicas",
@@ -40,10 +40,10 @@ func (m *ElasticsearchOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqP
 		"spec.horizontalScaling.topology.ml":           "spec.topology.ml.replicas",
 		"spec.horizontalScaling.topology.transform":    "spec.topology.transform.replicas",
 		"spec.horizontalScaling.topology.coordinating": "spec.topology.coordinating.replicas",
-	}, nil
+	}
 }
 
-func (m *ElasticsearchOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.verticalScaling.node":                  "spec.resources",
 		"spec.verticalScaling.exporter":              "spec.topology.exporter.resources",
@@ -58,10 +58,10 @@ func (m *ElasticsearchOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPat
 		"spec.verticalScaling.topology.ml":           "spec.topology.ml.resources",
 		"spec.verticalScaling.topology.transform":    "spec.topology.transform.resources",
 		"spec.verticalScaling.topology.coordinating": "spec.topology.coordinating.resources",
-	}, nil
+	}
 }
 
-func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
 		"spec.volumeExpansion.node":                  "spec.storage.resources.requests.storage",
 		"spec.volumeExpansion.topology.master":       "spec.topology.master.storage.resources.requests.storage",
@@ -75,7 +75,11 @@ func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[Op
 		"spec.volumeExpansion.topology.ml":           "spec.topology.ml.storage.resources.requests.storage",
 		"spec.volumeExpansion.topology.transform":    "spec.topology.transform.storage.resources.requests.storage",
 		"spec.volumeExpansion.topology.coordinating": "spec.topology.coordinating.storage.resources.requests.storage",
-	}, nil
+	}
+}
+
+func (m *ElasticsearchOpsRequest) GetReferencedDbObjectPath() []string {
+	return []string{"spec", "databaseRef", "referencedDB"}
 }
 
 func (m *ElasticsearchOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

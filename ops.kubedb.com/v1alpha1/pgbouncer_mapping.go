@@ -26,16 +26,20 @@ type PgBouncerOpsRequest struct{}
 
 var _ OpsPathMapper = (*PgBouncerOpsRequest)(nil)
 
-func (m *PgBouncerOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *PgBouncerOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *PgBouncerOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *PgBouncerOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
+}
+
+func (m *PgBouncerOpsRequest) GetReferencedDbObjectPath() []string {
+	return []string{"spec", "databaseRef", "referencedDB"}
 }
 
 func (m *PgBouncerOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

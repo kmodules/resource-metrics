@@ -1,0 +1,91 @@
+apiVersion: ops.kubedb.com/v1alpha1
+kind: RedisOpsRequest
+metadata:
+  name: redisopsstandalone
+  namespace: demo
+spec:
+  type: VerticalScaling
+  databaseRef:
+    name: redis-quickstart
+    referencedDB:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Redis
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/last-applied-configuration: |
+            {"apiVersion":"kubedb.com/v1alpha2","kind":"Redis","metadata":{"annotations":{},"name":"redis-quickstart","namespace":"demo"},"spec":{"podTemplate":{"spec":{"resources":{"requests":{"cpu":"100m","memory":"100Mi"}}}},"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","version":"5.0.3-v1"}}
+        creationTimestamp: "2023-10-12T09:39:33Z"
+        finalizers:
+          - kubedb.com
+        generation: 2
+        name: redis-quickstart
+        namespace: demo
+        resourceVersion: "220731"
+        uid: 7376e6d2-0e67-4277-ad0d-79a943a131c0
+      spec:
+        allowedSchemas:
+          namespaces:
+            from: Same
+        authSecret:
+          name: redis-quickstart-auth
+        autoOps: { }
+        coordinator:
+          resources: { }
+        healthChecker:
+          failureThreshold: 1
+          periodSeconds: 10
+          timeoutSeconds: 10
+        mode: Standalone
+        podTemplate:
+          controller: { }
+          metadata: { }
+          spec:
+            affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - podAffinityTerm:
+                      labelSelector:
+                        matchLabels:
+                          app.kubernetes.io/instance: redis-quickstart
+                          app.kubernetes.io/managed-by: kubedb.com
+                          app.kubernetes.io/name: redises.kubedb.com
+                      namespaces:
+                        - demo
+                      topologyKey: kubernetes.io/hostname
+                    weight: 100
+                  - podAffinityTerm:
+                      labelSelector:
+                        matchLabels:
+                          app.kubernetes.io/instance: redis-quickstart
+                          app.kubernetes.io/managed-by: kubedb.com
+                          app.kubernetes.io/name: redises.kubedb.com
+                      namespaces:
+                        - demo
+                      topologyKey: failure-domain.beta.kubernetes.io/zone
+                    weight: 50
+            resources:
+              limits:
+                memory: 100Mi
+              requests:
+                cpu: 100m
+                memory: 100Mi
+            serviceAccountName: redis-quickstart
+        replicas: 1
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: standard
+        storageType: Durable
+        terminationPolicy: Delete
+        version: 5.0.3-v1
+  verticalScaling:
+    redis:
+      requests:
+        memory: "300Mi"
+        cpu: "200m"
+      limits:
+        memory: "800Mi"
+        cpu: "500m"

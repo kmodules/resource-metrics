@@ -1,0 +1,259 @@
+apiVersion: ops.kubedb.com/v1alpha1
+kind: MongoDBOpsRequest
+metadata:
+  name: mg-sharding
+  namespace: demo
+spec:
+  type: HorizontalScaling
+  databaseRef:
+    name: mg-sharding
+    referencedDB:
+      apiVersion: kubedb.com/v1alpha2
+      kind: MongoDB
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/last-applied-configuration: |
+            {"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"annotations":{},"name":"mg-sharding","namespace":"demo"},"spec":{"shardTopology":{"configServer":{"replicas":3,"storage":{"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"}},"mongos":{"replicas":2},"shard":{"replicas":3,"shards":2,"storage":{"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"}}},"version":"4.2.3"}}
+        creationTimestamp: "2023-10-11T11:04:13Z"
+        finalizers:
+          - kubedb.com
+        generation: 3
+        name: mg-sharding
+        namespace: demo
+        resourceVersion: "180410"
+        uid: f4ecf557-f783-4068-9df9-2db8654cf756
+      spec:
+        allowedSchemas:
+          namespaces:
+            from: Same
+        authSecret:
+          name: mg-sharding-auth
+        autoOps: { }
+        clusterAuthMode: keyFile
+        coordinator:
+          resources: { }
+        healthChecker:
+          failureThreshold: 1
+          periodSeconds: 10
+          timeoutSeconds: 10
+        keyFileSecret:
+          name: mg-sharding-key
+        shardTopology:
+          configServer:
+            podTemplate:
+              controller: { }
+              metadata: { }
+              spec:
+                affinity:
+                  podAntiAffinity:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.config: mg-sharding-configsvr
+                          namespaces:
+                            - demo
+                          topologyKey: kubernetes.io/hostname
+                        weight: 100
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.config: mg-sharding-configsvr
+                          namespaces:
+                            - demo
+                          topologyKey: failure-domain.beta.kubernetes.io/zone
+                        weight: 50
+                livenessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                readinessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                resources:
+                  limits:
+                    memory: 1Gi
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                serviceAccountName: mg-sharding
+            replicas: 3
+            storage:
+              resources:
+                requests:
+                  storage: 1Gi
+              storageClassName: standard
+          mongos:
+            podTemplate:
+              controller: { }
+              metadata: { }
+              spec:
+                affinity:
+                  podAntiAffinity:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.mongos: mg-sharding-mongos
+                          namespaces:
+                            - demo
+                          topologyKey: kubernetes.io/hostname
+                        weight: 100
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.mongos: mg-sharding-mongos
+                          namespaces:
+                            - demo
+                          topologyKey: failure-domain.beta.kubernetes.io/zone
+                        weight: 50
+                livenessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                readinessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                resources:
+                  limits:
+                    memory: 1Gi
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                serviceAccountName: mg-sharding
+            replicas: 2
+          shard:
+            podTemplate:
+              controller: { }
+              metadata: { }
+              spec:
+                affinity:
+                  podAntiAffinity:
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.shard: mg-sharding-shard${SHARD_INDEX}
+                          namespaces:
+                            - demo
+                          topologyKey: kubernetes.io/hostname
+                        weight: 100
+                      - podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/instance: mg-sharding
+                              app.kubernetes.io/managed-by: kubedb.com
+                              app.kubernetes.io/name: mongodbs.kubedb.com
+                              mongodb.kubedb.com/node.shard: mg-sharding-shard${SHARD_INDEX}
+                          namespaces:
+                            - demo
+                          topologyKey: failure-domain.beta.kubernetes.io/zone
+                        weight: 50
+                livenessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                readinessProbe:
+                  exec:
+                    command:
+                      - bash
+                      - -c
+                      - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                      --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                      --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then
+                      \n          exit 0\n        fi\n        exit 1"
+                  failureThreshold: 3
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 5
+                resources:
+                  limits:
+                    memory: 1Gi
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                serviceAccountName: mg-sharding
+            replicas: 3
+            shards: 2
+            storage:
+              resources:
+                requests:
+                  storage: 1Gi
+              storageClassName: standard
+        sslMode: disabled
+        storageEngine: wiredTiger
+        storageType: Durable
+        terminationPolicy: Delete
+        version: 4.2.3
+  horizontalScaling:
+    shard:
+      shards: 3
+      replicas: 4
+    mongos:
+      replicas: 3
+    configServer:
+      replicas: 4
+    hidden:
+      replicas: 2

@@ -1,0 +1,57 @@
+apiVersion: ops.kubedb.com/v1alpha1
+kind: ProxySQLOpsRequest
+metadata:
+  name: proxyops-vscale
+  namespace: demo
+spec:
+  type: VerticalScaling
+  proxyRef:
+    name: proxy-server
+    referencedDB:
+      apiVersion: kubedb.com/v1alpha2
+      kind: ProxySQL
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/last-applied-configuration: |
+            {"apiVersion":"kubedb.com/v1alpha2","kind":"ProxySQL","metadata":{"annotations":{},"name":"proxy-server","namespace":"demo"},"spec":{"backend":{"name":"mysql-server"},"podTemplate":{"spec":{"resources":{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"500m","memory":"1Gi"}}}},"replicas":3,"syncUsers":true,"terminationPolicy":"WipeOut","version":"2.3.2-debian"}}
+        creationTimestamp: "2023-10-12T06:01:56Z"
+        finalizers:
+          - kubedb.com
+        generation: 2
+        name: proxy-server
+        namespace: demo
+        resourceVersion: "207032"
+        uid: bb86d8c8-7d91-4ebd-b81c-0fd3f5b54cea
+      spec:
+        authSecret:
+          name: proxy-server-auth
+        autoOps: { }
+        backend:
+          name: mysql-server
+        healthChecker:
+          failureThreshold: 1
+          periodSeconds: 10
+          timeoutSeconds: 10
+        podTemplate:
+          controller: { }
+          metadata: { }
+          spec:
+            resources:
+              limits:
+                cpu: 500m
+                memory: 1Gi
+              requests:
+                cpu: 500m
+                memory: 1Gi
+        replicas: 3
+        syncUsers: true
+        terminationPolicy: WipeOut
+        version: 2.3.2-debian
+  verticalScaling:
+    proxysql:
+      requests:
+        memory: "1.2Gi"
+        cpu: "0.6"
+      limits:
+        memory: "1.3Gi"
+        cpu: "0.7"

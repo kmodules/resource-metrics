@@ -25,7 +25,11 @@ import (
 )
 
 func GetScaledObject(opsObj map[string]interface{}) (ScaledObject, error) {
-	dbObj, err := extractReferencedObject(opsObj)
+	opsPathMapper, err := LoadOpsPathMapper(opsObj)
+	if err != nil {
+		return nil, err
+	}
+	dbObj, err := extractReferencedObject(opsObj, opsPathMapper.GetReferencedDbObjectPath()...)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +43,7 @@ func GetScaledObject(opsObj map[string]interface{}) (ScaledObject, error) {
 }
 
 func merge(opsObj, dbObj map[string]interface{}) (ScaledObject, error) {
-	mapping, err := getMapping(opsObj, dbObj)
+	mapping, err := getMapping(opsObj)
 	if err != nil {
 		return nil, err
 	}
@@ -66,12 +70,15 @@ func splitPathToSlice(path string) []string {
 	return strings.Split(path, ".")
 }
 
-func extractReferencedObject(opsObj map[string]interface{}) (map[string]interface{}, error) {
-	dbObj, found, _ := unstructured.NestedMap(opsObj, "spec", "databaseRef", "referencedDB")
+func extractReferencedObject(opsObj map[string]interface{}, refDbPath ...string) (map[string]interface{}, error) {
+	if len(refDbPath) == 0 {
+		refDbPath = []string{"spec", "databaseRef", "referencedDB"}
+	}
+	dbObj, found, _ := unstructured.NestedMap(opsObj, refDbPath...)
 	if !found {
 		return nil, errors.New("referenced db object not found")
 	}
-	_ = unstructured.SetNestedField(opsObj, nil, "spec", "databaseRef", "referencedDB")
+	_ = unstructured.SetNestedField(opsObj, nil, refDbPath...)
 
 	return dbObj, nil
 }
@@ -92,7 +99,7 @@ func getScalingType(opsObj map[string]interface{}) (string, error) {
 	return tp, nil
 }
 
-func getMapping(opsObj, dbObj map[string]interface{}) (map[OpsReqPath]ReferencedObjPath, error) {
+func getMapping(opsObj OpsReqObject) (map[OpsReqPath]ReferencedObjPath, error) {
 	scalingType, err := getScalingType(opsObj)
 	if err != nil {
 		return nil, err
@@ -104,11 +111,11 @@ func getMapping(opsObj, dbObj map[string]interface{}) (map[OpsReqPath]Referenced
 
 	switch scalingType {
 	case ScalingTypeHorizontal:
-		return opsMapper.HorizontalPathMapping(dbObj)
+		return opsMapper.HorizontalPathMapping(), nil
 	case ScalingTypeVertical:
-		return opsMapper.VerticalPathMapping(dbObj)
+		return opsMapper.VerticalPathMapping(), nil
 	case ScalingTypeVolumeExpansion:
-		return opsMapper.VolumeExpansionPathMapping(dbObj)
+		return opsMapper.VolumeExpansionPathMapping(), nil
 	}
 
 	return nil, fmt.Errorf("scaling type `%s` not supported", scalingType)

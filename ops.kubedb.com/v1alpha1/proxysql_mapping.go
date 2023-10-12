@@ -26,20 +26,24 @@ type ProxySQLOpsRequest struct{}
 
 var _ OpsPathMapper = (*ProxySQLOpsRequest)(nil)
 
-func (m *ProxySQLOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ProxySQLOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.horizontalScaling.member": "",
-	}, nil
+		"spec.horizontalScaling.member": "spec.replicas",
+	}
 }
 
-func (m *ProxySQLOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
+func (m *ProxySQLOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.verticalScaling.proxysql": "",
-	}, nil
+		"spec.verticalScaling.proxysql": "spec.podTemplate.spec.resources",
+	}
 }
 
-func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *ProxySQLOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
+}
+
+func (m *ProxySQLOpsRequest) GetReferencedDbObjectPath() []string {
+	return []string{"spec", "proxyRef", "referencedDB"}
 }
 
 func (m *ProxySQLOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

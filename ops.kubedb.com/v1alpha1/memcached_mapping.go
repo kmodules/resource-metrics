@@ -26,16 +26,20 @@ type MemcachedOpsRequest struct{}
 
 var _ OpsPathMapper = (*MemcachedOpsRequest)(nil)
 
-func (m *MemcachedOpsRequest) HorizontalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MemcachedOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MemcachedOpsRequest) VerticalPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MemcachedOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
 }
 
-func (m *MemcachedOpsRequest) VolumeExpansionPathMapping(_ DbObject) (map[OpsReqPath]ReferencedObjPath, error) {
-	return map[OpsReqPath]ReferencedObjPath{}, nil
+func (m *MemcachedOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+	return map[OpsReqPath]ReferencedObjPath{}
+}
+
+func (m *MemcachedOpsRequest) GetReferencedDbObjectPath() []string {
+	return []string{"spec", "databaseRef", "referencedDB"}
 }
 
 func (m *MemcachedOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {

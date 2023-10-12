@@ -19,43 +19,42 @@ package v1alpha1
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
 func init() {
-	RegisterToPathMapperPlugin(&PostgresOpsRequest{})
+	RegisterToPathMapperPlugin(&RedisOpsRequest{})
 }
 
-type PostgresOpsRequest struct{}
+type RedisOpsRequest struct{}
 
-var _ OpsPathMapper = (*PostgresOpsRequest)(nil)
+var _ OpsPathMapper = (*RedisOpsRequest)(nil)
 
-func (m *PostgresOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *RedisOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.horizontalScaling.replicas":      "spec.replicas",
-		"spec.horizontalScaling.standbyMode":   "spec.standbyMode",
-		"spec.horizontalScaling.streamingMode": "spec.streamingMode",
+		"spec.horizontalScaling.master":   "spec.cluster.master",
+		"spec.horizontalScaling.replicas": "spec.cluster.replicas",
 	}
 }
 
-func (m *PostgresOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *RedisOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.verticalScaling.postgres":    "spec.podTemplate.spec.resources",
+		"spec.verticalScaling.redis":       "spec.podTemplate.spec.resources",
 		"spec.verticalScaling.exporter":    "spec.monitor.prometheus.exporter.resources",
 		"spec.verticalScaling.coordinator": "spec.coordinator.resources",
 	}
 }
 
-func (m *PostgresOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
+func (m *RedisOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.volumeExpansion.postgres": "spec.storage.resources.requests.storage",
+		"spec.volumeExpansion.redis": "spec.storage.resources.requests.storage",
 	}
 }
 
-func (m *PostgresOpsRequest) GetReferencedDbObjectPath() []string {
+func (m *RedisOpsRequest) GetReferencedDbObjectPath() []string {
 	return []string{"spec", "databaseRef", "referencedDB"}
 }
 
-func (m *PostgresOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {
+func (m *RedisOpsRequest) GetGroupVersionKind() schema.GroupVersionKind {
 	return schema.GroupVersionKind{
 		Group:   "ops.kubedb.com",
 		Version: "v1alpha1",
-		Kind:    "PostgresOpsRequest",
+		Kind:    "RedisOpsRequest",
 	}
 }
