@@ -78,7 +78,6 @@ func extractReferencedObject(opsObj map[string]interface{}, refDbPath ...string)
 	if !found {
 		return nil, errors.New("referenced db object not found")
 	}
-	_ = unstructured.SetNestedField(opsObj, nil, refDbPath...)
 
 	return dbObj, nil
 }
