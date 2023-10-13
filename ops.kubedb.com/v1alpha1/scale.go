@@ -19,9 +19,10 @@ package v1alpha1
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"strings"
 )
 
 func GetScaledObject(opsObj map[string]interface{}) (ScaledObject, error) {

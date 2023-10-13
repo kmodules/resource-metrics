@@ -17,12 +17,13 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"testing"
+
 	"gomodules.xyz/encoding/json"
 	tl "gomodules.xyz/testing"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"testing"
 )
 
 type testSet struct {

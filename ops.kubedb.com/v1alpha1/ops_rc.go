@@ -17,10 +17,12 @@ limitations under the License.
 package v1alpha1
 
 import (
-	core "k8s.io/api/core/v1"
+	"reflect"
+
 	resourcemetrics "kmodules.xyz/resource-metrics"
 	"kmodules.xyz/resource-metrics/api"
-	"reflect"
+
+	core "k8s.io/api/core/v1"
 )
 
 func init() {
