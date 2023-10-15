@@ -1,0 +1,117 @@
+apiVersion: ops.kubedb.com/v1alpha1
+kind: PostgresOpsRequest
+metadata:
+  name: pg-scale-vertical
+  namespace: demo
+spec:
+  type: VerticalScaling
+  databaseRef:
+    name: pg
+    referencedDB:
+      apiVersion: kubedb.com/v1alpha2
+      kind: Postgres
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/last-applied-configuration: |
+            {"apiVersion":"kubedb.com/v1alpha2","kind":"Postgres","metadata":{"annotations":{},"name":"pg","namespace":"demo"},"spec":{"replicas":3,"standbyMode":"Hot","storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","terminationPolicy":"WipeOut","version":"13.2"}}
+        creationTimestamp: "2023-10-12T10:14:31Z"
+        finalizers:
+          - kubedb.com
+        generation: 2
+        name: pg
+        namespace: demo
+        resourceVersion: "226468"
+        uid: 87565f74-ce86-492d-8cf3-7ac6b354f965
+      spec:
+        allowedSchemas:
+          namespaces:
+            from: Same
+        authSecret:
+          name: pg-auth
+        autoOps: { }
+        clientAuthMode: md5
+        coordinator:
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+        healthChecker:
+          failureThreshold: 1
+          periodSeconds: 10
+          timeoutSeconds: 10
+        leaderElection:
+          electionTick: 10
+          heartbeatTick: 1
+          maximumLagBeforeFailover: 67108864
+          period: 300ms
+          transferLeadershipInterval: 1s
+          transferLeadershipTimeout: 1m0s
+        podTemplate:
+          controller: { }
+          metadata: { }
+          spec:
+            affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - podAffinityTerm:
+                      labelSelector:
+                        matchLabels:
+                          app.kubernetes.io/instance: pg
+                          app.kubernetes.io/managed-by: kubedb.com
+                          app.kubernetes.io/name: postgreses.kubedb.com
+                      namespaces:
+                        - demo
+                      topologyKey: kubernetes.io/hostname
+                    weight: 100
+                  - podAffinityTerm:
+                      labelSelector:
+                        matchLabels:
+                          app.kubernetes.io/instance: pg
+                          app.kubernetes.io/managed-by: kubedb.com
+                          app.kubernetes.io/name: postgreses.kubedb.com
+                      namespaces:
+                        - demo
+                      topologyKey: failure-domain.beta.kubernetes.io/zone
+                    weight: 50
+            containerSecurityContext:
+              capabilities:
+                add:
+                  - IPC_LOCK
+                  - SYS_RESOURCE
+              privileged: false
+              runAsGroup: 70
+              runAsUser: 70
+            resources:
+              limits:
+                memory: 1Gi
+              requests:
+                cpu: 500m
+                memory: 1Gi
+            securityContext:
+              fsGroup: 70
+              runAsGroup: 70
+              runAsUser: 70
+            serviceAccountName: pg
+        replicas: 3
+        sslMode: disable
+        standbyMode: Hot
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: standard
+        storageType: Durable
+        terminationPolicy: WipeOut
+        version: "13.2"
+  verticalScaling:
+    postgres:
+      requests:
+        memory: "1200Mi"
+        cpu: "0.7"
+      limits:
+        memory: "1200Mi"
+        cpu: "0.7"
