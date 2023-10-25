@@ -40,7 +40,7 @@ func TestPostgres(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/postgres/hot-standby.yaml",
 			want: want{
 				replicas: 3,
-				mode:     "Hot",
+				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("3"),
