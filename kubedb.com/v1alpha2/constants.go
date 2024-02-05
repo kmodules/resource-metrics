@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha2
 
 const (
+	DBModeEnsemble   = "Ensemble"
 	DBModeCluster    = "Cluster"
 	DBModeSharded    = "Sharded"
 	DBModeStandalone = "Standalone"
@@ -28,4 +29,5 @@ const (
 const (
 	RabbitMQContainerName    = "rabbitmq"
 	SinglestoreContainerName = "singlestore"
+	ZooKeeperContainerName   = "zookeeper"
 )
