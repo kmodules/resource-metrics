@@ -20,7 +20,9 @@ import (
 	"fmt"
 	"strings"
 
+	coreutil "kmodules.xyz/client-go/core/v1"
 	ofst "kmodules.xyz/offshoot-api/api/v1"
+	ofstv2 "kmodules.xyz/offshoot-api/api/v2"
 
 	"gomodules.xyz/pointer"
 	core "k8s.io/api/core/v1"
@@ -322,6 +324,41 @@ func AppNodeResources(
 		node.Replicas = pointer.Int64P(1)
 	}
 	rr := fn(node.PodTemplate.Spec.Resources)
+	sr := fn(ToResourceRequirements(node.Storage.Resources))
+	rr[core.ResourceStorage] = *sr.Storage()
+
+	return rr, *node.Replicas, nil
+}
+
+type AppNodeV2 struct {
+	Replicas    *int64                         `json:"replicas,omitempty"`
+	PodTemplate ofstv2.PodTemplateSpec         `json:"podTemplate,omitempty"`
+	Storage     core.PersistentVolumeClaimSpec `json:"storage,omitempty"`
+}
+
+func AppNodeResourcesV2(
+	obj map[string]interface{},
+	fn func(rr core.ResourceRequirements) core.ResourceList,
+	containerName string,
+	fields ...string,
+) (core.ResourceList, int64, error) {
+	val, found, err := unstructured.NestedFieldNoCopy(obj, fields...)
+	if !found || err != nil {
+		return nil, 0, err
+	}
+
+	var node AppNodeV2
+	err = runtime.DefaultUnstructuredConverter.FromUnstructured(val.(map[string]interface{}), &node)
+	if err != nil {
+		return nil, 0, fmt.Errorf("failed to parse node %#v: %w", node, err)
+	}
+
+	if node.Replicas == nil {
+		node.Replicas = pointer.Int64P(1)
+	}
+
+	dbContainer := coreutil.GetContainerByName(node.PodTemplate.Spec.Containers, containerName)
+	rr := fn(dbContainer.Resources)
 	sr := fn(ToResourceRequirements(node.Storage.Resources))
 	rr[core.ResourceStorage] = *sr.Storage()
 

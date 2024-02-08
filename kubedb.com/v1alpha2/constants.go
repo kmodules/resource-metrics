@@ -21,4 +21,6 @@ const (
 	DBModeSharded    = "Sharded"
 	DBStandalone     = "Standalone"
 	DBModeReplicaSet = "ReplicaSet"
+
+	RabbitMQContainerName = "rabbitmq"
 )
