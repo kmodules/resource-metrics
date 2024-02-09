@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"strings"
 
-	coreutil "kmodules.xyz/client-go/core/v1"
 	ofst "kmodules.xyz/offshoot-api/api/v1"
 	ofstv2 "kmodules.xyz/offshoot-api/api/v2"
 
@@ -357,7 +356,7 @@ func AppNodeResourcesV2(
 		node.Replicas = pointer.Int64P(1)
 	}
 
-	dbContainer := coreutil.GetContainerByName(node.PodTemplate.Spec.Containers, containerName)
+	dbContainer := GetContainerByName(node.PodTemplate.Spec.Containers, containerName)
 	rr := fn(dbContainer.Resources)
 	sr := fn(ToResourceRequirements(node.Storage.Resources))
 	rr[core.ResourceStorage] = *sr.Storage()
@@ -370,4 +369,13 @@ func ToResourceRequirements(vrr core.VolumeResourceRequirements) core.ResourceRe
 		Limits:   vrr.Limits,
 		Requests: vrr.Requests,
 	}
+}
+
+func GetContainerByName(containers []core.Container, name string) *core.Container {
+	for i := range containers {
+		if containers[i].Name == name {
+			return &containers[i]
+		}
+	}
+	return nil
 }
