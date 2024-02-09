@@ -14,13 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1alpha2
-
-const (
-	DBModeCluster    = "Cluster"
-	DBModeSharded    = "Sharded"
-	DBStandalone     = "Standalone"
-	DBModeReplicaSet = "ReplicaSet"
-
-	RabbitMQContainerName = "rabbitmq"
-)
+// +k8s:deepcopy-gen=package
+// +k8s:openapi-gen=true
+// +gencrdrefdocs:force=true
+package v2 // import "kmodules.xyz/offshoot-api/api/v2"
