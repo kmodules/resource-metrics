@@ -1,0 +1,44 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Singlestore
+metadata:
+  name: sdb-combined
+  namespace: demo
+spec:
+  version: "8.1.32"
+  licenseSecret:
+    name: license-secret
+  storageType: Durable
+  podTemplate:
+    spec:
+      containers:
+      - name: singlestore
+        resources:
+          requests:
+            cpu: "1"
+            memory: 1Gi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+  storage:
+    storageClassName: "standard"
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          requests:
+            cpu: "250m"
+            memory: 250Mi
+          limits:
+            cpu: "500m"
+            memory: 500Mi
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
+  terminationPolicy: WipeOut

@@ -40,7 +40,7 @@ func TestKafka(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/kafka/combined.yaml",
 			want: want{
 				replicas: 3,
-				mode:     "Combined",
+				mode:     DBModeCombined,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("1500m"),

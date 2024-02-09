@@ -19,8 +19,13 @@ package v1alpha2
 const (
 	DBModeCluster    = "Cluster"
 	DBModeSharded    = "Sharded"
-	DBStandalone     = "Standalone"
+	DBModeStandalone = "Standalone"
 	DBModeReplicaSet = "ReplicaSet"
+	DBModeDedicated  = "Dedicated"
+	DBModeCombined   = "Combined"
+)
 
-	RabbitMQContainerName = "rabbitmq"
+const (
+	RabbitMQContainerName    = "rabbitmq"
+	SinglestoreContainerName = "singlestore"
 )
