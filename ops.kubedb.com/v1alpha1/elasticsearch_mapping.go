@@ -79,7 +79,7 @@ func (m *ElasticsearchOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]Re
 }
 
 func (m *ElasticsearchOpsRequest) GetReferencedDbObjectPath() []string {
-	return []string{"spec", "databaseRef", "referencedDB"}
+	return []string{"spec", "databaseRef"}
 }
 
 func (m *ElasticsearchOpsRequest) GroupVersionKind() schema.GroupVersionKind {

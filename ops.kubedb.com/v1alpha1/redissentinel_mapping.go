@@ -47,7 +47,7 @@ func (m *RedisSentinelOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]Re
 }
 
 func (m *RedisSentinelOpsRequest) GetReferencedDbObjectPath() []string {
-	return []string{"spec", "databaseRef", "referencedDB"}
+	return []string{"spec", "databaseRef"}
 }
 
 func (m *RedisSentinelOpsRequest) GroupVersionKind() schema.GroupVersionKind {

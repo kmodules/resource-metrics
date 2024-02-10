@@ -39,7 +39,7 @@ func (m *MariaDBOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]Referenc
 }
 
 func (m *MariaDBOpsRequest) GetReferencedDbObjectPath() []string {
-	return []string{"spec", "databaseRef", "referencedDB"}
+	return []string{"spec", "databaseRef"}
 }
 
 func (m *MariaDBOpsRequest) GroupVersionKind() schema.GroupVersionKind {

@@ -47,7 +47,7 @@ func (m *MySqlOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]Referenced
 }
 
 func (m *MySqlOpsRequest) GetReferencedDbObjectPath() []string {
-	return []string{"spec", "databaseRef", "referencedDB"}
+	return []string{"spec", "databaseRef"}
 }
 
 func (m *MySqlOpsRequest) GroupVersionKind() schema.GroupVersionKind {

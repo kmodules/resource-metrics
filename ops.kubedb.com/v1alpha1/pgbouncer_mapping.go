@@ -39,7 +39,7 @@ func (m *PgBouncerOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]Refere
 }
 
 func (m *PgBouncerOpsRequest) GetReferencedDbObjectPath() []string {
-	return []string{"spec", "databaseRef", "referencedDB"}
+	return []string{"spec", "databaseRef"}
 }
 
 func (m *PgBouncerOpsRequest) GroupVersionKind() schema.GroupVersionKind {
