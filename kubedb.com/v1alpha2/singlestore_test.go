@@ -25,7 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-func TestPerconaXtraDB(t *testing.T) {
+func TestSinglestore(t *testing.T) {
 	type want struct {
 		replicas       int64
 		mode           string
@@ -37,63 +37,32 @@ func TestPerconaXtraDB(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/percona-xtradb/standalone.yaml",
+			name: "testdata/kubedb.com/v1alpha2/singlestore/combined.yaml",
 			want: want{
 				replicas: 1,
-				mode:     DBModeStandalone,
+				mode:     DBModeCombined,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("2500m"),
+						core.ResourceMemory:  resource.MustParse("2548Mi"),
+						core.ResourceStorage: resource.MustParse("10Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1250m"),
+						core.ResourceMemory:  resource.MustParse("1274Mi"),
+						core.ResourceStorage: resource.MustParse("10Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("2"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("10Gi"),
+					},
+					Requests: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("1"),
-						core.ResourceMemory:  resource.MustParse("1152Mi"),
-						core.ResourceStorage: resource.MustParse("1Gi"),
-					},
-					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("564Mi"),
-						core.ResourceStorage: resource.MustParse("1Gi"),
-					},
-				},
-				appResources: core.ResourceRequirements{
-					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
 						core.ResourceMemory:  resource.MustParse("1Gi"),
-						core.ResourceStorage: resource.MustParse("1Gi"),
-					},
-					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("250m"),
-						core.ResourceMemory:  resource.MustParse("500Mi"),
-						core.ResourceStorage: resource.MustParse("1Gi"),
-					},
-				},
-			},
-		},
-		{
-			name: "testdata/kubedb.com/v1alpha2/percona-xtradb/cluster.yaml",
-			want: want{
-				replicas: 3,
-				mode:     "Cluster",
-				totalResources: core.ResourceRequirements{
-					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3"),
-						core.ResourceMemory:  resource.MustParse("3456Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
-					},
-					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1.5"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
-					},
-				},
-				appResources: core.ResourceRequirements{
-					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1.5"),
-						core.ResourceMemory:  resource.MustParse("3Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
-					},
-					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("750m"),
-						core.ResourceMemory:  resource.MustParse("1500Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("10Gi"),
 					},
 				},
 			},
@@ -106,7 +75,7 @@ func TestPerconaXtraDB(t *testing.T) {
 				t.Error(err)
 				return
 			}
-			c := PerconaXtraDB{}.ResourceCalculator()
+			c := Singlestore{}.ResourceCalculator()
 
 			if got, err := c.Replicas(obj); err != nil {
 				t.Errorf("Replicas() error = %v", err)

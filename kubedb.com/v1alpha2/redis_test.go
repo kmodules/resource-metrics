@@ -40,7 +40,7 @@ func TestRedis(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/redis/standalone.yaml",
 			want: want{
 				replicas: 1,
-				mode:     DBStandalone,
+				mode:     DBModeStandalone,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("1"),
