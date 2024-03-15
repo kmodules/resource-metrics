@@ -18,6 +18,7 @@ package v1alpha2
 
 import (
 	"fmt"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"reflect"
 
 	"kmodules.xyz/resource-metrics/api"
@@ -27,6 +28,14 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 )
+
+func init() {
+	api.Register(schema.GroupVersionKind{
+		Group:   "kubedb.com",
+		Version: "v1alpha2",
+		Kind:    "Solr",
+	}, Solr{}.ResourceCalculator())
+}
 
 type Solr struct{}
 
