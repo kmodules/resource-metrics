@@ -2,12 +2,14 @@ package v1alpha2
 
 import (
 	"fmt"
+	"reflect"
+
+	"kmodules.xyz/resource-metrics/api"
+
 	"gomodules.xyz/pointer"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"kmodules.xyz/resource-metrics/api"
-	"reflect"
 )
 
 type Solr struct{}

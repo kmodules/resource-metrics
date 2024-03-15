@@ -1,11 +1,12 @@
 package v1alpha2
 
 import (
+	"testing"
+
 	"github.com/google/go-cmp/cmp"
 	tl "gomodules.xyz/testing"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
-	"testing"
 )
 
 func TestSolr(t *testing.T) {
