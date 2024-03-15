@@ -11,11 +11,11 @@ spec:
     spec:
       resources:
         requests:
-          cpu: 500m
-          memory: 1536Gi
+          cpu: 250m
+          memory: 500Mi
         limits:
           cpu: 700m
-          memory: 1536Gi
+          memory: 1536Mi
   monitor:
     agent: prometheus.io/operator
     prometheus:
