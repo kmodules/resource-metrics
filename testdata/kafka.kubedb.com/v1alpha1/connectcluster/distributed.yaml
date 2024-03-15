@@ -1,0 +1,40 @@
+apiVersion: kafka.kubedb.com/v1alpha1
+kind: ConnectCluster
+metadata:
+  name: connect-cluster
+  namespace: demo
+spec:
+  version: 3.6.0
+  replicas: 3
+  connectorPlugins:
+    - gcs-0.13.0
+    - mongodb-1.11.0
+    - mysql-2.4.2.final
+    - postgres-2.4.2.final
+    - s3-2.15.0
+  kafkaRef:
+    name: kafka-prod
+    namespace: demo
+  podTemplate:
+    spec:
+      containers:
+        - name: connect-cluster
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 1.2Gi
+              cpu: 800m
+          securityContext:
+            runAsUser: 1001
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9091
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
+  terminationPolicy: WipeOut
