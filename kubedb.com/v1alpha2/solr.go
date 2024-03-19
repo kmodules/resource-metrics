@@ -67,6 +67,9 @@ func (r Solr) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, error
 			if found {
 				result[api.PodRole(role)] = roleReplicas
 				replicas += roleReplicas
+			} else {
+				result[api.PodRole(role)] = 1
+				replicas += 1
 			}
 		}
 		result[api.PodRoleDefault] = replicas
@@ -119,7 +122,7 @@ func (r Solr) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resource
 			result := map[api.PodRole]core.ResourceList{}
 
 			for role, roleSpec := range topology {
-				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, SolrContainerName, role)
+				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, SolrContainerName)
 				if err != nil {
 					return nil, err
 				}
