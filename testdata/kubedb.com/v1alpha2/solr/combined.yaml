@@ -9,24 +9,18 @@ spec:
   replicas: 3
   podTemplate:
     spec:
-      resources:
-        requests:
-          cpu: 250m
-          memory: 500Mi
-        limits:
-          cpu: 700m
-          memory: 1536Mi
+      containers:
+        - name: solr
+          resources:
+            requests:
+              cpu: 250m
+              memory: 500Mi
+            limits:
+              cpu: 700m
+              memory: 1536Mi
   monitor:
     agent: prometheus.io/operator
     prometheus:
-      exporter:
-        resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi
       serviceMonitor:
         labels:
           release: prometheus

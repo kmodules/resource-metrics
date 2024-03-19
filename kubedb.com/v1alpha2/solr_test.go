@@ -44,13 +44,13 @@ func TestSolr(t *testing.T) {
 				mode:     DBModeCombined,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3.6"),
-						core.ResourceMemory:  resource.MustParse("4992Mi"),
+						core.ResourceCPU:     resource.MustParse("2.1"),
+						core.ResourceMemory:  resource.MustParse("4.5Gi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
+						core.ResourceCPU:     resource.MustParse("750m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 				},
