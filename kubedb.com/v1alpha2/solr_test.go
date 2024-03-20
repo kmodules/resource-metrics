@@ -40,30 +40,30 @@ func TestSolr(t *testing.T) {
 		{
 			name: "testdata/kubedb.com/v1alpha2/solr/combined.yaml",
 			want: want{
-				replicas: 3,
-				mode:     DBModeCombined,
+				replicas: 4,
+				mode:     DBModeDedicated,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3.6"),
-						core.ResourceMemory:  resource.MustParse("4992Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("4"),
+						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceStorage: resource.MustParse("12Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1024m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("12Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2.1"),
-						core.ResourceMemory:  resource.MustParse("4.5Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("4"),
+						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceStorage: resource.MustParse("12Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("750m"),
-						core.ResourceMemory:  resource.MustParse("1500Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1024m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("12Gi"),
 					},
 				},
 			},

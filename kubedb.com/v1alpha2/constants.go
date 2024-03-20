@@ -30,5 +30,6 @@ const (
 	PgpoolContainerName      = "pgpool"
 	RabbitMQContainerName    = "rabbitmq"
 	SinglestoreContainerName = "singlestore"
+	SolrContainerName        = "solr"
 	ZooKeeperContainerName   = "zookeeper"
 )
