@@ -1,0 +1,108 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Druid
+metadata:
+  name: druid-sample
+  namespace: druid
+spec:
+  version: "28.0.1"
+  storageType: Durable
+  deepStorage:
+    type: s3
+    configSecret:
+      name: deep-storage-config
+  metadataStorage:
+    name: mysql-cluster
+    namespace: druid
+    createTables: true
+  zookeeperRef:
+    name: zk-cluster
+    namespace: druid
+  topology:
+    coordinators:
+      replicas: 1
+      podTemplate:
+        spec:
+          containers:
+            - name: druid
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
+    brokers:
+      replicas: 1
+      podTemplate:
+        spec:
+          containers:
+            - name: druid
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
+    historicals:
+      replicas: 1
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+      podTemplate:
+        spec:
+          containers:
+            - name: druid
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
+    middleManagers:
+      replicas: 1
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+      podTemplate:
+        spec:
+          containers:
+            - name: druid
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
+    routers:
+      replicas: 1
+      podTemplate:
+        spec:
+          containers:
+            - name: druid
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9104
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
