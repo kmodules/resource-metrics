@@ -29,6 +29,7 @@ const (
 const (
 	DruidContainerName       = "druid"
 	FerretDBContainerName    = "ferretdb"
+	MSSQLServerContainerName = "mssql"
 	PgpoolContainerName      = "pgpool"
 	RabbitMQContainerName    = "rabbitmq"
 	SinglestoreContainerName = "singlestore"
