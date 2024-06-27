@@ -16,6 +16,8 @@ limitations under the License.
 
 package api
 
+import core "k8s.io/api/core/v1"
+
 type PodRole string
 
 const (
@@ -33,3 +35,8 @@ const (
 )
 
 type ReplicaList map[PodRole]int64
+
+type PodInfo struct {
+	Resource core.ResourceList
+	Replicas int64
+}
