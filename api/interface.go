@@ -23,6 +23,9 @@ import (
 )
 
 type ResourceCalculator interface {
+	GetRoleResourceLimitsFn() func(obj map[string]interface{}) (map[PodRole]PodInfo, error)
+	GetRoleResourceRequestsFn() func(obj map[string]interface{}) (map[PodRole]PodInfo, error)
+
 	Replicas(obj map[string]interface{}) (int64, error)
 	RoleReplicas(obj map[string]interface{}) (ReplicaList, error)
 
@@ -58,6 +61,14 @@ type ResourceCalculatorFuncs struct {
 }
 
 var _ ResourceCalculator = &ResourceCalculatorFuncs{}
+
+func (c ResourceCalculatorFuncs) GetRoleResourceLimitsFn() func(obj map[string]interface{}) (map[PodRole]PodInfo, error) {
+	return c.RoleResourceLimitsFn
+}
+
+func (c ResourceCalculatorFuncs) GetRoleResourceRequestsFn() func(obj map[string]interface{}) (map[PodRole]PodInfo, error) {
+	return c.RoleResourceRequestsFn
+}
 
 func (c ResourceCalculatorFuncs) Replicas(obj map[string]interface{}) (int64, error) {
 	replicas, err := c.RoleReplicas(obj)
