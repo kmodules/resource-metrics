@@ -109,3 +109,19 @@ func RoleResourceRequests(obj map[string]interface{}) (map[api.PodRole]core.Reso
 	}
 	return c.RoleResourceRequests(obj)
 }
+
+func PodResourceLimits(obj map[string]interface{}) (core.ResourceList, error) {
+	c, err := api.Load(obj)
+	if err != nil {
+		return nil, err
+	}
+	return c.PodResourceLimits(obj)
+}
+
+func PodResourceRequests(obj map[string]interface{}) (core.ResourceList, error) {
+	c, err := api.Load(obj)
+	if err != nil {
+		return nil, err
+	}
+	return c.PodResourceRequests(obj)
+}

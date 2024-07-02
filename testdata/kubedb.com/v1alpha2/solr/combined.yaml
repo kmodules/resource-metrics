@@ -18,6 +18,7 @@ spec:
         interval: 10s
   topology:
     overseer:
+      replicas: 1
       podTemplate:
         spec:
           containers:
@@ -57,6 +58,7 @@ spec:
             storage: 3Gi
         storageClassName: linode-block-storage
     coordinator:
+      replicas: 1
       podTemplate:
         spec:
           containers:

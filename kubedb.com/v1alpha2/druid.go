@@ -39,8 +39,9 @@ type Druid struct{}
 
 func (r Druid) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.PodRoleDefault},
-		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter},
+		// TODO : Make constants for the node types & Refer them here
+		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinators, api.PodRoleBrokers, api.PodRoleOverlords, api.PodRoleMiddleManagers, api.PodRoleHistoricals, api.PodRoleRouters},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinators, api.PodRoleBrokers, api.PodRoleOverlords, api.PodRoleMiddleManagers, api.PodRoleHistoricals, api.PodRoleRouters, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		UsesTLSFn:              r.usesTLSFn,
@@ -58,7 +59,6 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 	}
 
 	if found && topology != nil {
-		var replicas int64 = 0
 		for role, roleSpec := range topology {
 			roleReplicas, found, err := unstructured.NestedInt64(roleSpec.(map[string]interface{}), "replicas")
 			if err != nil {
@@ -66,10 +66,8 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			}
 			if found {
 				result[api.PodRole(role)] = roleReplicas
-				replicas += roleReplicas
 			}
 		}
-		result[api.PodRoleDefault] = replicas
 	} else {
 		// Combined mode
 		replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
@@ -82,7 +80,6 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			result[api.PodRoleDefault] = replicas
 		}
 	}
-
 	return result, nil
 }
 
@@ -102,8 +99,8 @@ func (r Druid) usesTLSFn(obj map[string]interface{}) (bool, error) {
 	return found, err
 }
 
-func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
-	return func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
+func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
+	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
@@ -113,10 +110,9 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		if err != nil {
 			return nil, err
 		}
+		result := map[api.PodRole]api.PodInfo{}
 		if found && topology != nil {
 			var replicas int64 = 0
-			var totalResources core.ResourceList
-			result := map[api.PodRole]core.ResourceList{}
 
 			for role, roleSpec := range topology {
 				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, DruidContainerName)
@@ -124,16 +120,25 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 					return nil, err
 				}
 
-				roleResources := api.MulResourceList(rolePerReplicaResources, roleReplicas)
-				result[api.PodRole(role)] = roleResources
-				totalResources = api.AddResourceList(totalResources, roleResources)
+				result[api.PodRole(role)] = api.PodInfo{
+					Resource: rolePerReplicaResources,
+					Replicas: roleReplicas,
+				}
+
+				replicas += roleReplicas
 			}
 
-			result[api.PodRoleDefault] = totalResources
-			result[api.PodRoleExporter] = api.MulResourceList(exporter, replicas)
-			return result, nil
+			result[api.PodRoleExporter] = api.PodInfo{
+				Resource: exporter,
+				Replicas: replicas,
+			}
+		} else {
+			result[api.PodRoleExporter] = api.PodInfo{
+				Resource: exporter,
+				Replicas: 1,
+			}
 		}
 
-		return nil, nil
+		return result, nil
 	}
 }
