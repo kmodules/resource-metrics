@@ -114,10 +114,9 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		if err != nil {
 			return nil, err
 		}
+		result := map[api.PodRole]api.PodInfo{}
 		if found && topology != nil {
-			var totalResources core.ResourceList
 			var replicas int64
-			result := map[api.PodRole]api.PodInfo{}
 
 			for role, roleSpec := range topology {
 				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, DruidContainerName)
@@ -131,7 +130,6 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 					Replicas: roleReplicas,
 				}
 
-				totalResources = api.AddResourceList(totalResources, roleResources)
 				replicas += roleReplicas
 			}
 
@@ -139,9 +137,13 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 				Resource: exporter,
 				Replicas: replicas,
 			}
-			return result, nil
+		} else {
+			result[api.PodRoleExporter] = api.PodInfo{
+				Resource: exporter,
+				Replicas: 1,
+			}
 		}
 
-		return nil, nil
+		return result, nil
 	}
 }
