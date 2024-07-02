@@ -59,7 +59,6 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 	}
 
 	if found && topology != nil {
-		var replicas int64 = 0
 		for role, roleSpec := range topology {
 			roleReplicas, found, err := unstructured.NestedInt64(roleSpec.(map[string]interface{}), "replicas")
 			if err != nil {
@@ -67,10 +66,8 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			}
 			if found {
 				result[api.PodRole(role)] = roleReplicas
-				replicas += roleReplicas
 			}
 		}
-		result[api.PodRoleDefault] = replicas
 	} else {
 		// Combined mode
 		replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
@@ -83,7 +80,6 @@ func (r Druid) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 			result[api.PodRoleDefault] = replicas
 		}
 	}
-
 	return result, nil
 }
 
@@ -116,7 +112,7 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		}
 		result := map[api.PodRole]api.PodInfo{}
 		if found && topology != nil {
-			var replicas int64
+			var replicas int64 = 0
 
 			for role, roleSpec := range topology {
 				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, DruidContainerName)

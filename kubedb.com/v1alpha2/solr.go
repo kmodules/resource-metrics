@@ -58,7 +58,6 @@ func (r Solr) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, error
 	}
 
 	if found && topology != nil {
-		var replicas int64 = 0
 		for role, roleSpec := range topology {
 			roleReplicas, found, err := unstructured.NestedInt64(roleSpec.(map[string]interface{}), "replicas")
 			if err != nil {
@@ -66,13 +65,8 @@ func (r Solr) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, error
 			}
 			if found {
 				result[api.PodRole(role)] = roleReplicas
-				replicas += roleReplicas
-			} else {
-				result[api.PodRole(role)] = 1
-				replicas += 1
 			}
 		}
-		result[api.PodRoleDefault] = replicas
 	} else {
 		// Combined mode
 		replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
