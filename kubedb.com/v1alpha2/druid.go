@@ -39,6 +39,7 @@ type Druid struct{}
 
 func (r Druid) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
+		// TODO : Make constants for the node types & Refer them here
 		AppRoles:               []api.PodRole{api.PodRoleDefault},
 		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
@@ -102,8 +103,8 @@ func (r Druid) usesTLSFn(obj map[string]interface{}) (bool, error) {
 	return found, err
 }
 
-func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
-	return func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
+func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
+	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
@@ -114,9 +115,9 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 		if found && topology != nil {
-			var replicas int64 = 0
 			var totalResources core.ResourceList
-			result := map[api.PodRole]core.ResourceList{}
+			var replicas int64
+			result := map[api.PodRole]api.PodInfo{}
 
 			for role, roleSpec := range topology {
 				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(roleSpec.(map[string]interface{}), fn, DruidContainerName)
@@ -125,12 +126,19 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 				}
 
 				roleResources := api.MulResourceList(rolePerReplicaResources, roleReplicas)
-				result[api.PodRole(role)] = roleResources
+				result[api.PodRole(role)] = api.PodInfo{
+					Resource: roleResources,
+					Replicas: roleReplicas,
+				}
+
 				totalResources = api.AddResourceList(totalResources, roleResources)
+				replicas += roleReplicas
 			}
 
-			result[api.PodRoleDefault] = totalResources
-			result[api.PodRoleExporter] = api.MulResourceList(exporter, replicas)
+			result[api.PodRoleExporter] = api.PodInfo{
+				Resource: exporter,
+				Replicas: replicas,
+			}
 			return result, nil
 		}
 
