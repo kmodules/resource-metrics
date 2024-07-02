@@ -45,6 +45,15 @@ const (
 	PodRoleCoordinating     PodRole = "coordinating"
 	PodRoleOverseer         PodRole = "overseer"
 	PodRoleCoordinator      PodRole = "coordinator"
+	PodRoleCoordinators     PodRole = "coordinators"
+	PodRoleBroker           PodRole = "broker"
+	PodRoleBrokers          PodRole = "brokers"
+	PodRoleController       PodRole = "controller"
+	PodRoleCombined         PodRole = "combined"
+	PodRoleOverlords        PodRole = "overlords"
+	PodRoleMiddleManagers   PodRole = "middleManagers"
+	PodRoleHistoricals      PodRole = "historicals"
+	PodRoleRouters          PodRole = "routers"
 )
 
 type ReplicaList map[PodRole]int64
