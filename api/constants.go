@@ -32,6 +32,19 @@ const (
 	PodRoleMongos           PodRole = "mongos"
 	PodRoleAggregator       PodRole = "aggregator"
 	PodRoleLeaf             PodRole = "leaf"
+	PodRoleMaster           PodRole = "master"
+	PodRoleData             PodRole = "data"
+	PodRoleIngest           PodRole = "ingest"
+	PodRoleDataContent      PodRole = "dataContent"
+	PodRoleDataHot          PodRole = "dataHot"
+	PodRoleDataWarm         PodRole = "dataWarm"
+	PodRoleDataCold         PodRole = "dataCold"
+	PodRoleDataFrozen       PodRole = "dataFrozen"
+	PodRoleML               PodRole = "ml"
+	PodRoleTransform        PodRole = "transform"
+	PodRoleCoordinating     PodRole = "coordinating"
+	PodRoleOverseer         PodRole = "overseer"
+	PodRoleCoordinator      PodRole = "coordinator"
 )
 
 type ReplicaList map[PodRole]int64

@@ -41,8 +41,8 @@ type Elasticsearch struct{}
 
 func (r Elasticsearch) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.PodRoleDefault},
-		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleExporter},
+		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleMaster, api.PodRoleIngest, api.PodRoleData, api.PodRoleDataContent, api.PodRoleDataCold, api.PodRoleDataHot, api.PodRoleDataWarm, api.PodRoleDataFrozen, api.PodRoleML, api.PodRoleTransform, api.PodRoleCoordinating},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleMaster, api.PodRoleIngest, api.PodRoleData, api.PodRoleDataContent, api.PodRoleDataCold, api.PodRoleDataHot, api.PodRoleDataWarm, api.PodRoleDataFrozen, api.PodRoleML, api.PodRoleTransform, api.PodRoleCoordinating, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		UsesTLSFn:              r.usesTLSFn,
@@ -102,8 +102,8 @@ func (r Elasticsearch) usesTLSFn(obj map[string]interface{}) (bool, error) {
 	return found, err
 }
 
-func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
-	return func(obj map[string]interface{}) (map[api.PodRole]core.ResourceList, error) {
+func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
+	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
@@ -115,22 +115,18 @@ func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core
 		}
 		if found && topology != nil {
 			var replicas int64 = 0
-			var totalResources core.ResourceList
-			result := map[api.PodRole]core.ResourceList{}
+			result := map[api.PodRole]api.PodInfo{}
 
 			for role, roleSpec := range topology {
 				rolePerReplicaResources, roleReplicas, err := ElasticsearchNodeResources(roleSpec.(map[string]interface{}), fn)
 				if err != nil {
 					return nil, err
 				}
-
-				roleResources := api.MulResourceList(rolePerReplicaResources, roleReplicas)
-				result[api.PodRole(role)] = roleResources
-				totalResources = api.AddResourceList(totalResources, roleResources)
+				replicas += roleReplicas
+				result[api.PodRole(role)] = api.PodInfo{Resource: rolePerReplicaResources, Replicas: roleReplicas}
 			}
 
-			result[api.PodRoleDefault] = totalResources
-			result[api.PodRoleExporter] = api.MulResourceList(exporter, replicas)
+			result[api.PodRoleExporter] = api.PodInfo{Resource: exporter, Replicas: replicas}
 			return result, nil
 		}
 
@@ -140,9 +136,9 @@ func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core
 			return nil, err
 		}
 
-		return map[api.PodRole]core.ResourceList{
-			api.PodRoleDefault:  api.MulResourceList(container, replicas),
-			api.PodRoleExporter: api.MulResourceList(exporter, replicas),
+		return map[api.PodRole]api.PodInfo{
+			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
+			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
 		}, nil
 	}
 }
