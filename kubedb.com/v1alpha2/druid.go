@@ -39,7 +39,6 @@ type Druid struct{}
 
 func (r Druid) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		// TODO : Make constants for the node types & Refer them here
 		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinators, api.PodRoleBrokers, api.PodRoleOverlords, api.PodRoleMiddleManagers, api.PodRoleHistoricals, api.PodRoleRouters},
 		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinators, api.PodRoleBrokers, api.PodRoleOverlords, api.PodRoleMiddleManagers, api.PodRoleHistoricals, api.PodRoleRouters, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
@@ -132,13 +131,16 @@ func (r Druid) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 				Resource: exporter,
 				Replicas: replicas,
 			}
-		} else {
-			result[api.PodRoleExporter] = api.PodInfo{
-				Resource: exporter,
-				Replicas: 1,
-			}
+			return result, nil
+		}
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, DruidContainerName, "spec")
+		if err != nil {
+			return nil, err
 		}
 
-		return result, nil
+		return map[api.PodRole]api.PodInfo{
+			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
+			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
+		}, nil
 	}
 }

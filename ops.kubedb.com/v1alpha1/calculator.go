@@ -99,6 +99,6 @@ func (r OpsResourceCalculator) roleResourceRequestsFn(opsObj map[string]interfac
 		return nil, err
 	}
 
-	dbRequestFunc := c.GetRoleResourceLimitsFn()
+	dbRequestFunc := c.GetRoleResourceRequestsFn()
 	return dbRequestFunc(scaledObject)
 }

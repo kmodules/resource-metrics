@@ -150,10 +150,10 @@ func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 			}
 
 			return map[api.PodRole]api.PodInfo{
-				api.PodRoleTotalShard:   {Resource: shard, Replicas: shards * shardReplicas},                                          // api.MulResourceList(shard, shards*shardReplicas),
-				api.PodRoleConfigServer: {Resource: configServer, Replicas: configServerReplicas},                                     // api.MulResourceList(configServer, configServerReplicas),
-				api.PodRoleMongos:       {Resource: mongos, Replicas: mongosReplicas},                                                 // api.MulResourceList(mongos, mongosReplicas),
-				api.PodRoleExporter:     {Resource: exporter, Replicas: shards*shardReplicas + configServerReplicas + mongosReplicas}, // api.MulResourceList(exporter, shards*shardReplicas+configServerReplicas+mongosReplicas),
+				api.PodRoleTotalShard:   {Resource: shard, Replicas: shards * shardReplicas},
+				api.PodRoleConfigServer: {Resource: configServer, Replicas: configServerReplicas},
+				api.PodRoleMongos:       {Resource: mongos, Replicas: mongosReplicas},
+				api.PodRoleExporter:     {Resource: exporter, Replicas: shards*shardReplicas + configServerReplicas + mongosReplicas},
 			}, nil
 		}
 
@@ -164,8 +164,8 @@ func (r MongoDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resou
 		}
 
 		return map[api.PodRole]api.PodInfo{
-			api.PodRoleDefault:  {Resource: container, Replicas: replicas}, // api.MulResourceList(container, replicas),
-			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},  // api.MulResourceList(exporter, replicas),
+			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
+			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
 		}, nil
 	}
 }
