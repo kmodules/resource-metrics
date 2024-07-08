@@ -39,4 +39,5 @@ const (
 	KafkaContainerName         = "kafka"
 	MemcachedContainerName     = "memcached"
 	RedisSentinelContainerName = "redissentinel"
+	MySQLRouterContainerName   = "mysql-router"
 )

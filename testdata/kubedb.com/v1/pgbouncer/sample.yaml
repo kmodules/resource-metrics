@@ -1,0 +1,72 @@
+apiVersion: kubedb.com/v1
+kind: PgBouncer
+metadata:
+  name: pgbouncer-server
+  namespace: demo
+spec:
+  version: "1.11.0"
+  replicas: 1
+  podTemplate:
+    spec:
+      containers:
+        - name: pgbouncer
+          resources:
+            requests:
+              cpu: 250m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+  databases:
+    - alias: "testdb"
+      databaseName: "test"
+      databaseRef:
+        name: "db-pg"
+        namespace: db
+    - alias: "postgres"
+      databaseName: "postgres"
+      databaseRef:
+        name: "db-pg"
+        namespace: db
+  connectionPool:
+    port: 5432
+    defaultPoolSize: 20
+    poolMode: session
+    minPoolSize: 0
+    maxClientConnections: 20
+    reservePoolSize: 5
+    maxDBConnections: 0
+    maxUserConnections: 0
+    statsPeriodSeconds: 60
+    authType: md5
+    adminUsers:
+      - rakib
+    authUser: rakib
+  userListSecretRef:
+    name: db-user-pass
+  monitor:
+    agent: prometheus.io
+    prometheus:
+      exporter:
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
+  sslMode: verify-full
+  tls:
+    issuerRef:
+      apiGroup: cert-manager.io
+      kind: ClusterIssuer
+      name: pgbouncer-issuer
+    certificates:
+      - alias: server
+        subject:
+          organizations:
+            - kubedb:server
+        dnsNames:
+          - localhost
+        ipAddresses:
+          - "127.0.0.1"

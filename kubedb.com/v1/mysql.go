@@ -121,7 +121,7 @@ func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 		if found && mode == "InnoDBCluster" {
-			router, replicas, err := api.AppNodeResourcesV2(obj, fn, MySQLContainerName, "spec", "topology", "innoDBCluster", "router")
+			router, replicas, err := api.AppNodeResourcesV2(obj, fn, MySQLRouterContainerName, "spec", "topology", "innoDBCluster", "router")
 			if err != nil {
 				return nil, err
 			}
