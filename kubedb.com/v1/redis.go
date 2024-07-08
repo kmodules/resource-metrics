@@ -105,7 +105,7 @@ func (r Redis) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		}
 
 		// Redis Sentinel or Standalone
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, RedisContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}

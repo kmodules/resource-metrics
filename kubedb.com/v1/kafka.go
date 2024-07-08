@@ -129,7 +129,7 @@ func (r Kafka) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		}
 
 		// Kafka Combined
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, KafkaContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}

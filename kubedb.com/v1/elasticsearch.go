@@ -128,7 +128,7 @@ func (r Elasticsearch) roleResourceFn(fn func(rr core.ResourceRequirements) core
 		}
 
 		// Elasticsearch Combined
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, ElasticsearchContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}

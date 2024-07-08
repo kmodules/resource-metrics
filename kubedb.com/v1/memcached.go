@@ -77,7 +77,7 @@ func (r Memcached) usesTLSFn(obj map[string]interface{}) (bool, error) {
 
 func (r Memcached) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, MemcachedContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}

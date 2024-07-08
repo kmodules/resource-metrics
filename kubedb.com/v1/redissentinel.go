@@ -69,7 +69,7 @@ func (r RedisSentinel) roleResourceFn(fn func(rr core.ResourceRequirements) core
 			return nil, err
 		}
 
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, RedisSentinelContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}

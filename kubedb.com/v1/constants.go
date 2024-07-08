@@ -25,3 +25,18 @@ const (
 	DBModeDedicated  = "Dedicated"
 	DBModeCombined   = "Combined"
 )
+
+const (
+	ElasticsearchContainerName = "elasticsearch"
+	MongoDBContainerName       = "mongodb"
+	MySQLContainerName         = "mysql"
+	PerconaXtraDBContainerName = "perconaxtradb"
+	MariaDBContainerName       = "mariadb"
+	PostgresContainerName      = "postgres"
+	ProxySQLContainerName      = "proxysql"
+	RedisContainerName         = "redis"
+	PgBouncerContainerName     = "pgbouncer"
+	KafkaContainerName         = "kafka"
+	MemcachedContainerName     = "memcached"
+	RedisSentinelContainerName = "redissentinel"
+)

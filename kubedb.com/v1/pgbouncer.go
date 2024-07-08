@@ -77,7 +77,7 @@ func (r PgBouncer) usesTLSFn(obj map[string]interface{}) (bool, error) {
 
 func (r PgBouncer) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
+		container, replicas, err := api.AppNodeResourcesV2(obj, fn, PgBouncerContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}
