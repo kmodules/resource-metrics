@@ -115,7 +115,7 @@ func (r Redis) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 		if found && mode == DBModeCluster {
-			shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "master")
+			shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "shards")
 			if err != nil {
 				return nil, err
 			}
