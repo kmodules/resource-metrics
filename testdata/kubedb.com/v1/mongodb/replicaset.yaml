@@ -1,0 +1,47 @@
+apiVersion: kubedb.com/v1
+kind: MongoDB
+metadata:
+  name: mg-rs
+  namespace: demo
+spec:
+  authSecret:
+    name: mg-rs-auth
+  clusterAuthMode: keyFile
+  keyFileSecret:
+    name: mg-rs-key
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        args:
+        - --compatible-mode
+        port: 56790
+        resources: {}
+      serviceMonitor:
+        interval: 10s
+        labels:
+          release: prometheus
+  podTemplate:
+    spec:
+      containers:
+        - name: mongodb
+          resources:
+            limits:
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+      serviceAccountName: mg-rs
+  replicaSet:
+    name: replicaset
+  replicas: 3
+  sslMode: disabled
+  storage:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  storageEngine: wiredTiger
+  storageType: Durable
+  version: 4.2.3
