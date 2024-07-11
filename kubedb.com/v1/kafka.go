@@ -115,8 +115,12 @@ func (r Kafka) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			var replicas int64 = 0
 			result := map[api.PodRole]api.PodInfo{}
 
-			for role, roleSpec := range topology {
-				rolePerReplicaResources, roleReplicas, err := KafkaNodeResources(roleSpec.(map[string]interface{}), fn)
+			for role := range topology {
+				//rolePerReplicaResources, roleReplicas, err := KafkaNodeResources(roleSpec.(map[string]interface{}), fn)
+				//if err != nil {
+				//	return nil, err
+				//}
+				rolePerReplicaResources, roleReplicas, err := api.AppNodeResourcesV2(topology, fn, KafkaContainerName, role)
 				if err != nil {
 					return nil, err
 				}
