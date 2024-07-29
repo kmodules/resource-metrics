@@ -1,0 +1,30 @@
+apiVersion: kubedb.com/v1
+kind: Memcached
+metadata:
+  name: memcd-quickstart
+  namespace: demo
+spec:
+  replicas: 1
+  version: 1.5.4
+  podTemplate:
+    spec:
+      containers:
+        - name: memcached
+          resources:
+            requests:
+              cpu: 250m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+  monitor:
+    agent: prometheus.io
+    prometheus:
+      exporter:
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
