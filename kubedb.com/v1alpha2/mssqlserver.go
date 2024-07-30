@@ -59,8 +59,15 @@ func (r MSSQLServer) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList
 }
 
 func (r MSSQLServer) usesTLSFn(obj map[string]interface{}) (bool, error) {
-	_, found, err := unstructured.NestedFieldNoCopy(obj, "spec", "tls", "clientTLS")
-	return found, err
+	enabled, found, err := unstructured.NestedBool(obj, "spec", "tls", "clientTLS")
+	if err != nil {
+		return false, err
+	}
+
+	if found && enabled {
+		return true, nil
+	}
+	return false, nil
 }
 
 func (r MSSQLServer) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
