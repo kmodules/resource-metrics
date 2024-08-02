@@ -32,7 +32,7 @@ func init() {
 		Group:   "kubedb.com",
 		Version: "v1alpha2",
 		Kind:    "ClickHouse",
-	}, Pgpool{}.ResourceCalculator())
+	}, ClickHouse{}.ResourceCalculator())
 }
 
 type ClickHouse struct{}

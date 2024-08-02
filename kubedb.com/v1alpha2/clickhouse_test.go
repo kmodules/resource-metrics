@@ -42,12 +42,33 @@ func TestClickHouse(t *testing.T) {
 				mode:     DBModeStandalone,
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("3"),
-						core.ResourceMemory: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("768m"),
-						core.ResourceMemory: resource.MustParse("1.5Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("1Gi"),
+					},
+				},
+			},
+		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/clickhouse/cluster.yaml",
+			want: want{
+				replicas: 1,
+				mode:     DBModeCluster,
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("2"),
+						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceStorage: resource.MustParse("4Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("2"),
+						core.ResourceMemory:  resource.MustParse("8Gi"),
+						core.ResourceStorage: resource.MustParse("4Gi"),
 					},
 				},
 			},
@@ -78,11 +99,13 @@ func TestClickHouse(t *testing.T) {
 				t.Errorf("AppResourceLimits() error = %v", err)
 			} else if !cmp.Equal(tt.want.appResources.Limits, got) {
 				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(tt.want.appResources.Limits, got))
+				//t.Errorf("AppResourceLimits() = %v ========= %v \n", tt.want.appResources.Limits, got)
 			}
 			if got, err := c.AppResourceRequests(obj); err != nil {
 				t.Errorf("AppResourceRequests() error = %v", err)
 			} else if !cmp.Equal(tt.want.appResources.Requests, got) {
 				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(tt.want.appResources.Requests, got))
+				//t.Errorf("AppResourceRequests() = %v ========= %v \n", tt.want.appResources.Requests, got)
 			}
 		})
 	}
