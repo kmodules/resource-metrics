@@ -57,18 +57,18 @@ func TestClickHouse(t *testing.T) {
 		{
 			name: "testdata/kubedb.com/v1alpha2/clickhouse/cluster.yaml",
 			want: want{
-				replicas: 1,
+				replicas: 18,
 				mode:     DBModeCluster,
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2"),
-						core.ResourceMemory:  resource.MustParse("12Gi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:     resource.MustParse("9"),
+						core.ResourceMemory:  resource.MustParse("54Gi"),
+						core.ResourceStorage: resource.MustParse("18Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2"),
-						core.ResourceMemory:  resource.MustParse("8Gi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:     resource.MustParse("9"),
+						core.ResourceMemory:  resource.MustParse("36Gi"),
+						core.ResourceStorage: resource.MustParse("18Gi"),
 					},
 				},
 			},
@@ -99,13 +99,13 @@ func TestClickHouse(t *testing.T) {
 				t.Errorf("AppResourceLimits() error = %v", err)
 			} else if !cmp.Equal(tt.want.appResources.Limits, got) {
 				t.Errorf("AppResourceLimits() difference = %v", cmp.Diff(tt.want.appResources.Limits, got))
-				//t.Errorf("AppResourceLimits() = %v ========= %v \n", tt.want.appResources.Limits, got)
+				// t.Errorf("AppResourceLimits() = %v ========= %v \n", tt.want.appResources.Limits, got)
 			}
 			if got, err := c.AppResourceRequests(obj); err != nil {
 				t.Errorf("AppResourceRequests() error = %v", err)
 			} else if !cmp.Equal(tt.want.appResources.Requests, got) {
 				t.Errorf("AppResourceRequests() difference = %v", cmp.Diff(tt.want.appResources.Requests, got))
-				//t.Errorf("AppResourceRequests() = %v ========= %v \n", tt.want.appResources.Requests, got)
+				// t.Errorf("AppResourceRequests() = %v ========= %v \n", tt.want.appResources.Requests, got)
 			}
 		})
 	}

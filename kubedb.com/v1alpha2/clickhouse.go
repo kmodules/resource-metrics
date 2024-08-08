@@ -39,8 +39,8 @@ type ClickHouse struct{}
 
 func (r ClickHouse) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
-		AppRoles:               []api.PodRole{api.PodRoleDefault},
-		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
+		AppRoles:               []api.PodRole{api.PodRoleDefault, api.PodRoleTotalShard},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleTotalShard},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -58,7 +58,6 @@ func (r ClickHouse) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList,
 	if found && clusterTopology != nil {
 		// dedicated topology mode
 		var replicas int64 = 0
-		var shards int64 = 0
 
 		clusters, _, err := unstructured.NestedSlice(clusterTopology, "cluster")
 		if err != nil {
@@ -70,15 +69,14 @@ func (r ClickHouse) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList,
 			if err != nil {
 				return nil, err
 			}
-			shards += shardCount
+
 			shardReplicas, _, err := unstructured.NestedInt64(cluster.(map[string]interface{}), "replicas")
 			if err != nil {
 				return nil, err
 			}
-			replicas += shardReplicas * shards
+			replicas += shardReplicas * shardCount
 		}
 		result[api.PodRoleTotalShard] = replicas
-		result[api.PodRoleShard] = shards
 
 	} else {
 		// standalone
@@ -108,13 +106,51 @@ func (r ClickHouse) modeFn(obj map[string]interface{}) (string, error) {
 
 func (r ClickHouse) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
-		container, replicas, err := api.AppNodeResourcesV2(obj, fn, ClickHouseContainerName, "spec")
+		clusterTopology, found, err := unstructured.NestedMap(obj, "spec", "clusterTopology")
 		if err != nil {
 			return nil, err
 		}
+		if found && clusterTopology != nil {
+			clusters, _, err := unstructured.NestedSlice(clusterTopology, "cluster")
+			if err != nil {
+				return nil, err
+			}
+			var totalReplicas int64 = 0
+			var totalRes core.ResourceList
+			for i, c := range clusters {
+				cluster := c.(map[string]interface{})
+				cRes, cReplicas, err := api.AppNodeResourcesV2(cluster, fn, ClickHouseContainerName)
+				if err != nil {
+					return nil, err
+				}
+				shards, _, err := unstructured.NestedInt64(cluster, "shards")
+				if err != nil {
+					return nil, err
+				}
 
-		return map[api.PodRole]api.PodInfo{
-			api.PodRoleDefault: {Resource: container, Replicas: replicas},
-		}, nil
+				totalReplicas += cReplicas * shards
+				/*
+					TODO: Need to change. As this style will not work if different cluster have different resources. Possible Algorithm =>
+						For each shards :
+							summedUpRes = api.AddResourceList(summedUpRes, api.MulResourceList(cRes, cReplicas*shards))
+						totalRes = summedUpRes / totalReplicas
+				*/
+				if i == 0 {
+					totalRes = cRes
+				}
+			}
+			return map[api.PodRole]api.PodInfo{
+				api.PodRoleTotalShard: {Resource: totalRes, Replicas: totalReplicas},
+			}, nil
+		} else {
+			container, replicas, err := api.AppNodeResourcesV2(obj, fn, ClickHouseContainerName, "spec")
+			if err != nil {
+				return nil, err
+			}
+
+			return map[api.PodRole]api.PodInfo{
+				api.PodRoleDefault: {Resource: container, Replicas: replicas},
+			}, nil
+		}
 	}
 }

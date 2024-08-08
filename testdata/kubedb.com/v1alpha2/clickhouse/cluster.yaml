@@ -11,9 +11,36 @@ spec:
         host: clickhouse-keeper.click-keeper
         port: 2181
     cluster:
-      - name: ch-cluster
+      - name: ch1
         shards: 2
-        replicas: 2
+        replicas: 3
+        podTemplate:
+          spec:
+            containers:
+              - name: clickhouse
+                resources:
+                  limits:
+                    memory: 3Gi
+                  requests:
+                    cpu: 500m
+                    memory: 2Gi
+            initContainers:
+              - name: clickhouse-init
+                resources:
+                  limits:
+                    memory: 2Gi
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+      - name: ch2
+        shards: 3
+        replicas: 4
         podTemplate:
           spec:
             containers:
