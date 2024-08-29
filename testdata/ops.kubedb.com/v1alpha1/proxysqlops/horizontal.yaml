@@ -7,44 +7,43 @@ spec:
   type: HorizontalScaling
   proxyRef:
     name: proxy-server
-    referencedDB:
-      apiVersion: kubedb.com/v1alpha2
-      kind: ProxySQL
-      metadata:
-        annotations:
-          kubectl.kubernetes.io/last-applied-configuration: |
-            {"apiVersion":"kubedb.com/v1alpha2","kind":"ProxySQL","metadata":{"annotations":{},"name":"proxy-server","namespace":"demo"},"spec":{"backend":{"name":"mysql-server"},"replicas":3,"syncUsers":true,"terminationPolicy":"WipeOut","version":"2.3.2-debian"}}
-        creationTimestamp: "2023-10-12T05:40:53Z"
-        finalizers:
-          - kubedb.com
-        generation: 2
-        name: proxy-server
-        namespace: demo
-        resourceVersion: "204500"
-        uid: a2108ee3-9795-4030-8f9f-f53794a4e518
-      spec:
-        authSecret:
-          name: proxy-server-auth
-        autoOps: { }
-        backend:
-          name: mysql-server
-        healthChecker:
-          failureThreshold: 1
-          periodSeconds: 10
-          timeoutSeconds: 10
-        podTemplate:
-          controller: { }
-          metadata: { }
-          spec:
-            resources:
-              limits:
-                memory: 1Gi
-              requests:
-                cpu: 500m
-                memory: 1Gi
-        replicas: 3
-        syncUsers: true
-        terminationPolicy: WipeOut
-        version: 2.3.2-debian
+    apiVersion: kubedb.com/v1alpha2
+    kind: ProxySQL
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"kubedb.com/v1alpha2","kind":"ProxySQL","metadata":{"annotations":{},"name":"proxy-server","namespace":"demo"},"spec":{"backend":{"name":"mysql-server"},"replicas":3,"syncUsers":true,"terminationPolicy":"WipeOut","version":"2.3.2-debian"}}
+      creationTimestamp: "2023-10-12T05:40:53Z"
+      finalizers:
+        - kubedb.com
+      generation: 2
+      name: proxy-server
+      namespace: demo
+      resourceVersion: "204500"
+      uid: a2108ee3-9795-4030-8f9f-f53794a4e518
+    spec:
+      authSecret:
+        name: proxy-server-auth
+      autoOps: { }
+      backend:
+        name: mysql-server
+      healthChecker:
+        failureThreshold: 1
+        periodSeconds: 10
+        timeoutSeconds: 10
+      podTemplate:
+        controller: { }
+        metadata: { }
+        spec:
+          resources:
+            limits:
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+      replicas: 3
+      syncUsers: true
+      terminationPolicy: WipeOut
+      version: 2.3.2-debian
   horizontalScaling:
     member: 5

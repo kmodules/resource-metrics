@@ -7,106 +7,105 @@ spec:
   type: VolumeExpansion
   databaseRef:
     name: mg-standalone
-    referencedDB:
-      apiVersion: kubedb.com/v1alpha2
-      kind: MongoDB
-      metadata:
-        annotations:
-          kubectl.kubernetes.io/last-applied-configuration: |
-            {"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"annotations":{},"name":"mg-standalone","namespace":"demo"},"spec":{"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","version":"4.2.3"}}
-        creationTimestamp: "2023-10-12T04:25:15Z"
-        finalizers:
-          - kubedb.com
-        generation: 2
-        name: mg-standalone
-        namespace: demo
-        resourceVersion: "196081"
-        uid: 98cbaa19-91f3-4ade-9c53-5285c4dd8a06
-      spec:
-        allowedSchemas:
-          namespaces:
-            from: Same
-        authSecret:
-          name: mg-standalone-auth
-        autoOps: { }
-        coordinator:
-          resources: { }
-        healthChecker:
-          failureThreshold: 1
-          periodSeconds: 10
-          timeoutSeconds: 10
-        podTemplate:
-          controller: { }
-          metadata: { }
-          spec:
-            affinity:
-              podAntiAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: mg-standalone
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: mongodbs.kubedb.com
-                      namespaces:
-                        - demo
-                      topologyKey: kubernetes.io/hostname
-                    weight: 100
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: mg-standalone
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: mongodbs.kubedb.com
-                      namespaces:
-                        - demo
-                      topologyKey: failure-domain.beta.kubernetes.io/zone
-                    weight: 50
-            livenessProbe:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
-                  --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
-                  --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
-                  \         exit 0\n        fi\n        exit 1"
-              failureThreshold: 3
-              periodSeconds: 10
-              successThreshold: 1
-              timeoutSeconds: 5
-            readinessProbe:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
-                  --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
-                  --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
-                  \         exit 0\n        fi\n        exit 1"
-              failureThreshold: 3
-              periodSeconds: 10
-              successThreshold: 1
-              timeoutSeconds: 5
-            resources:
-              limits:
-                memory: 1Gi
-              requests:
-                cpu: 500m
-                memory: 1Gi
-            serviceAccountName: mg-standalone
-        replicas: 1
-        sslMode: disabled
-        storage:
-          accessModes:
-            - ReadWriteOnce
+    apiVersion: kubedb.com/v1alpha2
+    kind: MongoDB
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"annotations":{},"name":"mg-standalone","namespace":"demo"},"spec":{"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","version":"4.2.3"}}
+      creationTimestamp: "2023-10-12T04:25:15Z"
+      finalizers:
+        - kubedb.com
+      generation: 2
+      name: mg-standalone
+      namespace: demo
+      resourceVersion: "196081"
+      uid: 98cbaa19-91f3-4ade-9c53-5285c4dd8a06
+    spec:
+      allowedSchemas:
+        namespaces:
+          from: Same
+      authSecret:
+        name: mg-standalone-auth
+      autoOps: { }
+      coordinator:
+        resources: { }
+      healthChecker:
+        failureThreshold: 1
+        periodSeconds: 10
+        timeoutSeconds: 10
+      podTemplate:
+        controller: { }
+        metadata: { }
+        spec:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: mg-standalone
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: mongodbs.kubedb.com
+                    namespaces:
+                      - demo
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: mg-standalone
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: mongodbs.kubedb.com
+                    namespaces:
+                      - demo
+                    topologyKey: failure-domain.beta.kubernetes.io/zone
+                  weight: 50
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
+                \         exit 0\n        fi\n        exit 1"
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
+                \         exit 0\n        fi\n        exit 1"
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
           resources:
+            limits:
+              memory: 1Gi
             requests:
-              storage: 1Gi
-          storageClassName: standard
-        storageEngine: wiredTiger
-        storageType: Durable
-        terminationPolicy: Delete
-        version: 4.2.3
+              cpu: 500m
+              memory: 1Gi
+          serviceAccountName: mg-standalone
+      replicas: 1
+      sslMode: disabled
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+      storageEngine: wiredTiger
+      storageType: Durable
+      terminationPolicy: Delete
+      version: 4.2.3
   volumeExpansion:
     standalone: 2Gi

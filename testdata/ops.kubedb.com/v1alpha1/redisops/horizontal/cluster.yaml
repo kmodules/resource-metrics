@@ -7,85 +7,84 @@ spec:
   type: HorizontalScaling
   databaseRef:
     name: redis-cluster
-    referencedDB:
-      apiVersion: kubedb.com/v1alpha2
-      kind: Redis
-      metadata:
-        annotations:
-          kubectl.kubernetes.io/last-applied-configuration: |
-            {"apiVersion":"kubedb.com/v1alpha2","kind":"Redis","metadata":{"annotations":{},"name":"redis-cluster","namespace":"demo"},"spec":{"cluster":{"master":3,"replicas":2},"mode":"Cluster","storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","terminationPolicy":"Halt","version":"6.2.7"}}
-        creationTimestamp: "2023-10-12T09:09:58Z"
-        finalizers:
-          - kubedb.com
-        generation: 2
-        name: redis-cluster
-        namespace: demo
-        resourceVersion: "217282"
-        uid: cd9a2594-f6b6-44be-addd-e117e3d813d4
-      spec:
-        allowedSchemas:
-          namespaces:
-            from: Same
-        authSecret:
-          name: redis-cluster-auth
-        autoOps: { }
-        cluster:
-          master: 3
-          replicas: 2
-        coordinator:
-          resources: { }
-        healthChecker:
-          failureThreshold: 1
-          periodSeconds: 10
-          timeoutSeconds: 10
-        mode: Cluster
-        podTemplate:
-          controller: { }
-          metadata: { }
-          spec:
-            affinity:
-              podAntiAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: redis-cluster
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: redises.kubedb.com
-                          redis.kubedb.com/shard: ${SHARD_INDEX}
-                      namespaces:
-                        - demo
-                      topologyKey: kubernetes.io/hostname
-                    weight: 100
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: redis-cluster
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: redises.kubedb.com
-                          redis.kubedb.com/shard: ${SHARD_INDEX}
-                      namespaces:
-                        - demo
-                      topologyKey: failure-domain.beta.kubernetes.io/zone
-                    weight: 50
-            resources:
-              limits:
-                memory: 1Gi
-              requests:
-                cpu: 500m
-                memory: 1Gi
-            serviceAccountName: redis-cluster
-        replicas: 1
-        storage:
-          accessModes:
-            - ReadWriteOnce
+    apiVersion: kubedb.com/v1alpha2
+    kind: Redis
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"kubedb.com/v1alpha2","kind":"Redis","metadata":{"annotations":{},"name":"redis-cluster","namespace":"demo"},"spec":{"cluster":{"master":3,"replicas":2},"mode":"Cluster","storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","terminationPolicy":"Halt","version":"6.2.7"}}
+      creationTimestamp: "2023-10-12T09:09:58Z"
+      finalizers:
+        - kubedb.com
+      generation: 2
+      name: redis-cluster
+      namespace: demo
+      resourceVersion: "217282"
+      uid: cd9a2594-f6b6-44be-addd-e117e3d813d4
+    spec:
+      allowedSchemas:
+        namespaces:
+          from: Same
+      authSecret:
+        name: redis-cluster-auth
+      autoOps: { }
+      cluster:
+        master: 3
+        replicas: 2
+      coordinator:
+        resources: { }
+      healthChecker:
+        failureThreshold: 1
+        periodSeconds: 10
+        timeoutSeconds: 10
+      mode: Cluster
+      podTemplate:
+        controller: { }
+        metadata: { }
+        spec:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: redis-cluster
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: redises.kubedb.com
+                        redis.kubedb.com/shard: ${SHARD_INDEX}
+                    namespaces:
+                      - demo
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: redis-cluster
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: redises.kubedb.com
+                        redis.kubedb.com/shard: ${SHARD_INDEX}
+                    namespaces:
+                      - demo
+                    topologyKey: failure-domain.beta.kubernetes.io/zone
+                  weight: 50
           resources:
+            limits:
+              memory: 1Gi
             requests:
-              storage: 1Gi
-          storageClassName: standard
-        storageType: Durable
-        terminationPolicy: Halt
-        version: 6.2.7
+              cpu: 500m
+              memory: 1Gi
+          serviceAccountName: redis-cluster
+      replicas: 1
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+      storageType: Durable
+      terminationPolicy: Halt
+      version: 6.2.7
   horizontalScaling:
     master: 4
     replicas: 1

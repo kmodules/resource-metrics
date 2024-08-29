@@ -7,111 +7,110 @@ spec:
   type: HorizontalScaling
   databaseRef:
     name: mg-replicaset
-    referencedDB:
-      apiVersion: kubedb.com/v1alpha2
-      kind: MongoDB
-      metadata:
-        annotations:
-          kubectl.kubernetes.io/last-applied-configuration: |
-            {"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"annotations":{},"name":"mg-replicaset","namespace":"demo"},"spec":{"replicaSet":{"name":"replicaset"},"replicas":3,"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","version":"4.2.3"}}
-        creationTimestamp: "2023-10-11T10:55:44Z"
-        finalizers:
-          - kubedb.com
-        generation: 3
-        name: mg-replicaset
-        namespace: demo
-        resourceVersion: "179396"
-        uid: 6459a72b-7381-4ceb-9527-17bcab2fd83d
-      spec:
-        allowedSchemas:
-          namespaces:
-            from: Same
-        authSecret:
-          name: mg-replicaset-auth
-        autoOps: { }
-        clusterAuthMode: keyFile
-        coordinator:
-          resources: { }
-        healthChecker:
-          failureThreshold: 1
-          periodSeconds: 10
-          timeoutSeconds: 10
-        keyFileSecret:
-          name: mg-replicaset-key
-        podTemplate:
-          controller: { }
-          metadata: { }
-          spec:
-            affinity:
-              podAntiAffinity:
-                preferredDuringSchedulingIgnoredDuringExecution:
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: mg-replicaset
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: mongodbs.kubedb.com
-                      namespaces:
-                        - demo
-                      topologyKey: kubernetes.io/hostname
-                    weight: 100
-                  - podAffinityTerm:
-                      labelSelector:
-                        matchLabels:
-                          app.kubernetes.io/instance: mg-replicaset
-                          app.kubernetes.io/managed-by: kubedb.com
-                          app.kubernetes.io/name: mongodbs.kubedb.com
-                      namespaces:
-                        - demo
-                      topologyKey: failure-domain.beta.kubernetes.io/zone
-                    weight: 50
-            livenessProbe:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
-                  --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
-                  --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
-                  \         exit 0\n        fi\n        exit 1"
-              failureThreshold: 3
-              periodSeconds: 10
-              successThreshold: 1
-              timeoutSeconds: 5
-            readinessProbe:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
-                  --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
-                  --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
-                  \         exit 0\n        fi\n        exit 1"
-              failureThreshold: 3
-              periodSeconds: 10
-              successThreshold: 1
-              timeoutSeconds: 5
-            resources:
-              limits:
-                memory: 1Gi
-              requests:
-                cpu: 500m
-                memory: 1Gi
-            serviceAccountName: mg-replicaset
-        replicaSet:
-          name: replicaset
-        replicas: 3
-        sslMode: disabled
-        storage:
-          accessModes:
-            - ReadWriteOnce
+    apiVersion: kubedb.com/v1alpha2
+    kind: MongoDB
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"kubedb.com/v1alpha2","kind":"MongoDB","metadata":{"annotations":{},"name":"mg-replicaset","namespace":"demo"},"spec":{"replicaSet":{"name":"replicaset"},"replicas":3,"storage":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}},"storageClassName":"standard"},"storageType":"Durable","version":"4.2.3"}}
+      creationTimestamp: "2023-10-11T10:55:44Z"
+      finalizers:
+        - kubedb.com
+      generation: 3
+      name: mg-replicaset
+      namespace: demo
+      resourceVersion: "179396"
+      uid: 6459a72b-7381-4ceb-9527-17bcab2fd83d
+    spec:
+      allowedSchemas:
+        namespaces:
+          from: Same
+      authSecret:
+        name: mg-replicaset-auth
+      autoOps: { }
+      clusterAuthMode: keyFile
+      coordinator:
+        resources: { }
+      healthChecker:
+        failureThreshold: 1
+        periodSeconds: 10
+        timeoutSeconds: 10
+      keyFileSecret:
+        name: mg-replicaset-key
+      podTemplate:
+        controller: { }
+        metadata: { }
+        spec:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: mg-replicaset
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: mongodbs.kubedb.com
+                    namespaces:
+                      - demo
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
+                - podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/instance: mg-replicaset
+                        app.kubernetes.io/managed-by: kubedb.com
+                        app.kubernetes.io/name: mongodbs.kubedb.com
+                    namespaces:
+                      - demo
+                    topologyKey: failure-domain.beta.kubernetes.io/zone
+                  weight: 50
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
+                \         exit 0\n        fi\n        exit 1"
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - "set -x; if [[ $(mongo admin --host=localhost  --username=$MONGO_INITDB_ROOT_USERNAME
+                --password=$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase=admin
+                --quiet --eval \"db.adminCommand('ping').ok\" ) -eq \"1\" ]]; then \n
+                \         exit 0\n        fi\n        exit 1"
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
           resources:
+            limits:
+              memory: 1Gi
             requests:
-              storage: 1Gi
-          storageClassName: standard
-        storageEngine: wiredTiger
-        storageType: Durable
-        terminationPolicy: Delete
-        version: 4.2.3
+              cpu: 500m
+              memory: 1Gi
+          serviceAccountName: mg-replicaset
+      replicaSet:
+        name: replicaset
+      replicas: 3
+      sslMode: disabled
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: standard
+      storageEngine: wiredTiger
+      storageType: Durable
+      terminationPolicy: Delete
+      version: 4.2.3
   horizontalScaling:
     replicas: 4
