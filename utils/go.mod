@@ -7,7 +7,7 @@ toolchain go1.22.4
 require (
 	k8s.io/apimachinery v0.30.1
 	kmodules.xyz/client-go v0.30.2
-	kmodules.xyz/resource-metrics v0.30.2
+	kmodules.xyz/resource-metrics v0.30.3
 	sigs.k8s.io/controller-runtime v0.18.4
 )
 
