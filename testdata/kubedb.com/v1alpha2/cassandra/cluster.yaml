@@ -1,0 +1,39 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Cassandra
+metadata:
+  name: cassandra-sample
+spec:
+  version: 5.0.0
+  topology:
+    rack:
+      - name: myrack
+        replicas: 2
+        storageType: Ephemeral
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+        podTemplate:
+          spec:
+            containers:
+              - name: cassandra
+                resources:
+                  limits:
+                    memory: 4Gi
+                    cpu: 4
+                  requests:
+                    cpu: 1
+                    memory: 1Gi
+            securityContext:
+              runAsUser: 999
+              fsGroup: 999
+  deletionPolicy: WipeOut
+  monitor:
+    agent: "prometheus.io/operator"
+    prometheus:
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
