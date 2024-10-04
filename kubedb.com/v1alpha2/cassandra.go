@@ -120,14 +120,12 @@ func (r Cassandra) roleResourceFn(fn func(rr core.ResourceRequirements) core.Res
 			if err != nil {
 				return nil, err
 			}
-
 			var totalReplicas int64 = 0
 			var totalRes core.ResourceList
 			for i, c := range racks {
 				rack := c.(map[string]interface{})
 
 				cRes, cReplicas, err := api.AppNodeResourcesV2(rack, fn, CassandraContainerName)
-
 				if err != nil {
 					return nil, err
 				}
