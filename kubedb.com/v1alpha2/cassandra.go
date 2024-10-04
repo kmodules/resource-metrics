@@ -56,7 +56,6 @@ func (r Cassandra) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, 
 		return nil, err
 	}
 	if found && topology != nil {
-		// dedicated topology mode
 		var replicas int64 = 0
 
 		racks, _, err := unstructured.NestedSlice(topology, "rack")
@@ -65,6 +64,7 @@ func (r Cassandra) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, 
 		}
 
 		for _, rack := range racks {
+
 			replica, _, err := unstructured.NestedInt64(rack.(map[string]interface{}), "replicas")
 			if err != nil {
 				return nil, err
@@ -120,11 +120,14 @@ func (r Cassandra) roleResourceFn(fn func(rr core.ResourceRequirements) core.Res
 			if err != nil {
 				return nil, err
 			}
+
 			var totalReplicas int64 = 0
 			var totalRes core.ResourceList
 			for i, c := range racks {
 				rack := c.(map[string]interface{})
+
 				cRes, cReplicas, err := api.AppNodeResourcesV2(rack, fn, CassandraContainerName)
+
 				if err != nil {
 					return nil, err
 				}
@@ -133,6 +136,7 @@ func (r Cassandra) roleResourceFn(fn func(rr core.ResourceRequirements) core.Res
 					totalRes = cRes
 				}
 			}
+
 			return map[api.PodRole]api.PodInfo{
 				api.PodRoleDefault:  {Resource: totalRes, Replicas: totalReplicas},
 				api.PodRoleExporter: {Resource: exporter, Replicas: totalReplicas},

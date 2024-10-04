@@ -3,7 +3,7 @@ kind: Cassandra
 metadata:
   name: cassandra-sample
 spec:
-  version: 5.0.0
+  version: 4.1.6
   topology:
     rack:
       - name: myrack
@@ -22,9 +22,9 @@ spec:
                 resources:
                   limits:
                     memory: 4Gi
-                    cpu: 4
+                    cpu: 4000m
                   requests:
-                    cpu: 1
+                    cpu: 500m
                     memory: 1Gi
             securityContext:
               runAsUser: 999
