@@ -18,6 +18,7 @@ package v1alpha2
 
 import (
 	"fmt"
+	"reflect"
 
 	"kmodules.xyz/resource-metrics/api"
 
@@ -49,22 +50,50 @@ func (r Cassandra) ResourceCalculator() api.ResourceCalculator {
 }
 
 func (r Cassandra) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, error) {
-	replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
+	result := api.ReplicaList{}
+	topology, found, err := unstructured.NestedMap(obj, "spec", "topology")
 	if err != nil {
-		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
+		return nil, err
 	}
-	if !found {
-		return api.ReplicaList{api.PodRoleDefault: 1}, nil
+	if found && topology != nil {
+		// dedicated topology mode
+		var replicas int64 = 0
+
+		racks, _, err := unstructured.NestedSlice(topology, "rack")
+		if err != nil {
+			return nil, err
+		}
+
+		for _, rack := range racks {
+			replica, _, err := unstructured.NestedInt64(rack.(map[string]interface{}), "replicas")
+			if err != nil {
+				return nil, err
+			}
+			replicas += replica
+		}
+		result[api.PodRoleDefault] = replicas
+
+	} else {
+		// standalone
+		replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
+		if err != nil {
+			return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
+		}
+		if !found {
+			result[api.PodRoleDefault] = 1
+		} else {
+			result[api.PodRoleDefault] = replicas
+		}
 	}
-	return api.ReplicaList{api.PodRoleDefault: replicas}, nil
+	return result, nil
 }
 
 func (r Cassandra) modeFn(obj map[string]interface{}) (string, error) {
-	replicas, _, err := unstructured.NestedInt64(obj, "spec", "replicas")
+	topology, found, err := unstructured.NestedFieldNoCopy(obj, "spec", "topology")
 	if err != nil {
 		return "", err
 	}
-	if replicas > 1 {
+	if found && !reflect.ValueOf(topology).IsNil() {
 		return DBModeCluster, nil
 	}
 	return DBModeStandalone, nil
@@ -77,18 +106,46 @@ func (r Cassandra) usesTLSFn(obj map[string]interface{}) (bool, error) {
 
 func (r Cassandra) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
-		container, replicas, err := api.AppNodeResources(obj, fn, "spec")
-		if err != nil {
-			return nil, err
-		}
-
 		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}
-		return map[api.PodRole]api.PodInfo{
-			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
-			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
-		}, nil
+
+		topology, found, err := unstructured.NestedMap(obj, "spec", "topology")
+		if err != nil {
+			return nil, err
+		}
+		if found && topology != nil {
+			racks, _, err := unstructured.NestedSlice(topology, "rack")
+			if err != nil {
+				return nil, err
+			}
+			var totalReplicas int64 = 0
+			var totalRes core.ResourceList
+			for i, c := range racks {
+				rack := c.(map[string]interface{})
+				cRes, cReplicas, err := api.AppNodeResourcesV2(rack, fn, CassandraContainerName)
+				if err != nil {
+					return nil, err
+				}
+				totalReplicas += cReplicas
+				if i == 0 {
+					totalRes = cRes
+				}
+			}
+			return map[api.PodRole]api.PodInfo{
+				api.PodRoleDefault:  {Resource: totalRes, Replicas: totalReplicas},
+				api.PodRoleExporter: {Resource: exporter, Replicas: totalReplicas},
+			}, nil
+		} else {
+			container, replicas, err := api.AppNodeResourcesV2(obj, fn, CassandraContainerName, "spec")
+			if err != nil {
+				return nil, err
+			}
+			return map[api.PodRole]api.PodInfo{
+				api.PodRoleDefault:  {Resource: container, Replicas: replicas},
+				api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
+			}, nil
+		}
 	}
 }
