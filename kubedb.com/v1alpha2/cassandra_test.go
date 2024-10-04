@@ -39,30 +39,30 @@ func TestCassandra(t *testing.T) {
 		{
 			name: "testdata/kubedb.com/v1alpha2/cassandra/cluster.yaml",
 			want: want{
-				replicas: 1,
-				mode:     DBModeStandalone,
+				replicas: 2,
+				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("1"),
-						core.ResourceMemory: resource.MustParse("1152Mi"),
-						// core.ResourceStorage: resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("8000m"),
+						core.ResourceMemory:  resource.MustParse("8Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("500m"),
-						core.ResourceMemory: resource.MustParse("564Mi"),
-						// core.ResourceStorage: resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("500m"),
-						core.ResourceMemory: resource.MustParse("1Gi"),
-						// core.ResourceStorage: resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("8000m"),
+						core.ResourceMemory:  resource.MustParse("8Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("250m"),
-						core.ResourceMemory: resource.MustParse("500Mi"),
-						// core.ResourceStorage: resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
 			},
