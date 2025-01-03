@@ -54,7 +54,7 @@ func (r Redis) roleReplicasFn(obj map[string]interface{}) (api.ReplicaList, erro
 		return nil, err
 	}
 	if found && mode == DBModeCluster {
-		shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "shards")
+		shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "master")
 		if err != nil {
 			return nil, err
 		}
@@ -115,7 +115,7 @@ func (r Redis) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 		if found && mode == DBModeCluster {
-			shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "shards")
+			shards, _, err := unstructured.NestedInt64(obj, "spec", "cluster", "master")
 			if err != nil {
 				return nil, err
 			}
