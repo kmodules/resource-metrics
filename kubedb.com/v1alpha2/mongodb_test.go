@@ -68,7 +68,7 @@ func TestMongoDB(t *testing.T) {
 			},
 		},
 		{
-			name: "testdata/kubedb.com/v1alpha2/mongodb/cluster.yaml",
+			name: "testdata/kubedb.com/v1alpha2/mongodb/replicaset.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeReplicaSet,

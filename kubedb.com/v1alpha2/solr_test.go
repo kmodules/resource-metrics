@@ -38,7 +38,7 @@ func TestSolr(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/solr/cluster.yaml",
+			name: "testdata/kubedb.com/v1alpha2/solr/combined.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCombined,

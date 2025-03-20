@@ -37,7 +37,7 @@ func TestReplicaSet(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/apps/v1/cluster.yaml",
+			name: "testdata/apps/v1/replicaset.yaml",
 			want: want{
 				replicas: 3,
 				mode:     "",

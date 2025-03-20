@@ -37,7 +37,7 @@ func TestElasticsearch(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1/elasticsearch/cluster.yaml",
+			name: "testdata/kubedb.com/v1/elasticsearch/combined.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCombined,

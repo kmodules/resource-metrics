@@ -36,7 +36,7 @@ func TestRabbitMQ(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/rabbitmq/topology.yaml",
+			name: "testdata/kubedb.com/v1alpha2/rabbitmq/combined.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCluster,

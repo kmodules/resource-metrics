@@ -33,7 +33,7 @@ func Test_totalResourceLimits(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/mongodb/cluster.yaml",
+			name: "testdata/kubedb.com/v1alpha2/mongodb/replicaset.yaml",
 			args: []interface{}{
 				core.ResourceMemory,
 			},
