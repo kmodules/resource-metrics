@@ -37,7 +37,7 @@ func TestKafka(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/kafka/combined.yaml",
+			name: "testdata/kubedb.com/v1alpha2/kafka/topology.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCombined,

@@ -37,7 +37,7 @@ func TestSinglestore(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/singlestore/combined.yaml",
+			name: "testdata/kubedb.com/v1alpha2/singlestore/topology.yaml",
 			want: want{
 				replicas: 1,
 				mode:     DBModeCombined,

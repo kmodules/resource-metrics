@@ -37,7 +37,7 @@ func TestFerretDB(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/ferretdb/ferretdb.yaml",
+			name: "testdata/kubedb.com/v1alpha2/ferretdb/standalone.yaml",
 			want: want{
 				replicas: 1,
 				mode:     DBModeStandalone,
@@ -63,6 +63,37 @@ func TestFerretDB(t *testing.T) {
 						core.ResourceCPU:     resource.MustParse("400m"),
 						core.ResourceMemory:  resource.MustParse("400Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+			},
+		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/ferretdb/cluster.yaml",
+			want: want{
+				replicas: 3,
+				mode:     DBModeCluster,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1800m"),
+						core.ResourceMemory:  resource.MustParse("1800Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1350m"),
+						core.ResourceMemory:  resource.MustParse("1350Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1200m"),
+						core.ResourceMemory:  resource.MustParse("1200Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 			},

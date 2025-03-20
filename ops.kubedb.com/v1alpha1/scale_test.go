@@ -35,7 +35,7 @@ type want map[ReferencedObjPath]interface{}
 func TestMongoDBScaling(t *testing.T) {
 	tests := []testSet{
 		{
-			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/horizontal/replicaset.yaml",
+			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/horizontal/cluster.yaml",
 			want: want{
 				"spec.replicas": 4,
 			},
@@ -51,7 +51,7 @@ func TestMongoDBScaling(t *testing.T) {
 			},
 		},
 		{
-			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/vertical/replicaset.yaml",
+			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/vertical/cluster.yaml",
 			want: want{
 				"spec.podTemplate.spec.resources": core.ResourceRequirements{
 					Requests: core.ResourceList{
@@ -129,7 +129,7 @@ func TestMongoDBScaling(t *testing.T) {
 			},
 		},
 		{
-			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/volumeexpansion/replicaset.yaml",
+			name: "testdata/ops.kubedb.com/v1alpha1/mongodbops/volumeexpansion/cluster.yaml",
 			want: want{
 				"spec.storage.resources.requests.storage": resource.MustParse("5Gi"),
 			},
