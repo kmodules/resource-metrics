@@ -34,12 +34,41 @@ spec:
   podTemplate:
     spec:
       containers:
-        - name: pgpool
-          resources:
-            limits:
-              cpu: 1
-              memory: 1Gi
-            requests:
-              cpu: 256m
-              memory: 512Mi
+      - name: pgpool
+        resources:
+          limits:
+            cpu: 450m
+            memory: 450Mi
+          requests:
+            cpu: 400m
+            memory: 400Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+  prometheus:
+    exporter:
+      resources:
+        limits:
+          cpu: 150m
+          memory: 150Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
 

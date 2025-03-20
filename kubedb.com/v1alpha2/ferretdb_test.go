@@ -27,9 +27,10 @@ import (
 
 func TestFerretDB(t *testing.T) {
 	type want struct {
-		replicas     int64
-		mode         string
-		appResources core.ResourceRequirements
+		replicas       int64
+		mode           string
+		appResources   core.ResourceRequirements
+		totalResources core.ResourceRequirements
 	}
 	tests := []struct {
 		name string
@@ -40,16 +41,28 @@ func TestFerretDB(t *testing.T) {
 			want: want{
 				replicas: 1,
 				mode:     DBModeStandalone,
-				appResources: core.ResourceRequirements{
+				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1"),
-						core.ResourceMemory:  resource.MustParse("1Gi"),
-						core.ResourceStorage: resource.MustParse("500Mi"),
+						core.ResourceCPU:     resource.MustParse("600m"),
+						core.ResourceMemory:  resource.MustParse("600Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("256m"),
-						core.ResourceMemory:  resource.MustParse("512Mi"),
-						core.ResourceStorage: resource.MustParse("500Mi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("500Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("450m"),
+						core.ResourceMemory:  resource.MustParse("450Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("400m"),
+						core.ResourceMemory:  resource.MustParse("400Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
 			},

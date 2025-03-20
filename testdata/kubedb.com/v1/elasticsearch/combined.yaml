@@ -10,28 +10,47 @@ spec:
   podTemplate:
     spec:
       containers:
-        - name: elasticsearch
-          resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
-            limits:
-              cpu: 500m
-              memory: 1Gi
+      - name: elasticsearch
+        resources:
+          limits:
+            cpu: 450m
+            memory: 450Mi
+          requests:
+            cpu: 400m
+            memory: 400Mi
+      initContainers:
+      - name: elasticsearch-init
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
   monitor:
     agent: prometheus.io
     prometheus:
       exporter:
         resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
   storage:
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 1Gi
+        storage: 2Gi

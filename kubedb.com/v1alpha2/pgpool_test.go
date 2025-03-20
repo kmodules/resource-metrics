@@ -27,9 +27,10 @@ import (
 
 func TestPgpool(t *testing.T) {
 	type want struct {
-		replicas     int64
-		mode         string
-		appResources core.ResourceRequirements
+		replicas       int64
+		mode           string
+		appResources   core.ResourceRequirements
+		totalResources core.ResourceRequirements
 	}
 	tests := []struct {
 		name string
@@ -40,14 +41,24 @@ func TestPgpool(t *testing.T) {
 			want: want{
 				replicas: 3,
 				mode:     DBModeCluster,
-				appResources: core.ResourceRequirements{
+				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("3"),
-						core.ResourceMemory: resource.MustParse("3Gi"),
+						core.ResourceCPU:    resource.MustParse("1800m"),
+						core.ResourceMemory: resource.MustParse("1800Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("768m"),
-						core.ResourceMemory: resource.MustParse("1.5Gi"),
+						core.ResourceCPU:    resource.MustParse("1500m"),
+						core.ResourceMemory: resource.MustParse("1500Mi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1350m"),
+						core.ResourceMemory: resource.MustParse("1350Mi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1200m"),
+						core.ResourceMemory: resource.MustParse("1200Mi"),
 					},
 				},
 			},

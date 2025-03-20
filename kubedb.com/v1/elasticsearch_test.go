@@ -43,26 +43,26 @@ func TestElasticsearch(t *testing.T) {
 				mode:     DBModeCombined,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3"),
-						core.ResourceMemory:  resource.MustParse("3456Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1800m"),
+						core.ResourceMemory:  resource.MustParse("1800Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("3Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1350m"),
+						core.ResourceMemory:  resource.MustParse("1350Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("750m"),
-						core.ResourceMemory:  resource.MustParse("1500Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1200m"),
+						core.ResourceMemory:  resource.MustParse("1200Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 			},

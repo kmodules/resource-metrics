@@ -10,19 +10,51 @@ spec:
   podTemplate:
     spec:
       containers:
-        - name: ferretdb
-          resources:
-            limits:
-              cpu: 1
-              memory: 1Gi
-            requests:
-              cpu: 256m
-              memory: 512Mi
+      - name: ferretdb
+        resources:
+          limits:
+            cpu: 450m
+            memory: 450Mi
+          requests:
+            cpu: 400m
+            memory: 400Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+
+  monitor:
+    agent: prometheus.io
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
   storage:
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 500Mi
+        storage: 2Gi
   backend:
     externallyManaged: false
