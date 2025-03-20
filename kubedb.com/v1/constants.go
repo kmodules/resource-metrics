@@ -40,4 +40,19 @@ const (
 	MemcachedContainerName     = "memcached"
 	RedisSentinelContainerName = "redissentinel"
 	MySQLRouterContainerName   = "mysql-router"
+
+	// TODO: Update values
+	ElasticsearchSidecarContainerName = "elasticsearch"
+	MongoDBSidecarContainerName       = "replication-mode-detector"
+	MySQLSidecarContainerName         = "mysql"
+	PerconaXtraDBSidecarContainerName = "perconaxtradb"
+	MariaDBSidecarContainerName       = "mariadb"
+	PostgresSidecarContainerName      = "pg-coordinator"
+	ProxySQLSidecarContainerName      = "proxysql"
+	RedisSidecarContainerName         = "redis"
+	PgBouncerSidecarContainerName     = "pgbouncer"
+	KafkaSidecarContainerName         = "kafka"
+	MemcachedSidecarContainerName     = "memcached"
+	RedisSentinelSidecarContainerName = "redissentinel"
+	MySQLRouterSidecarContainerName   = "mysql-router"
 )

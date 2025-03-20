@@ -1,38 +1,104 @@
 apiVersion: kubedb.com/v1
 kind: Postgres
 metadata:
-  name: postgres
+  name: pgc
   namespace: demo
 spec:
-  version: "13.2"
-  replicas: 3
+  deletionPolicy: WipeOut
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 70
+          runAsNonRoot: true
+          runAsUser: 70
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        interval: 30s
+        labels:
+          release: kube-prometheus-stack
   podTemplate:
     spec:
       containers:
         - name: postgres
           resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
             limits:
-              cpu: 500m
-              memory: 1Gi
-  standbyMode: Hot
-  storageType: Durable
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 70
+            runAsNonRoot: true
+            runAsUser: 70
+            seccompProfile:
+              type: RuntimeDefault
+        - name: pg-coordinator
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 70
+            runAsNonRoot: true
+            runAsUser: 70
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 350m
+              memory: 350Mi
+            requests:
+              cpu: 300m
+              memory: 300Mi
+      initContainers:
+        - name: postgres-init-container
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 70
+            runAsNonRoot: true
+            runAsUser: 70
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+      nodeSelector:
+        kubernetes.io/os: linux
+      securityContext:
+        fsGroup: 999
+  replicas: 3
   storage:
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 1Gi
-  monitor:
-    agent: prometheus.io
-    prometheus:
-      exporter:
-        resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi
+        storage: 2Gi
+    storageClassName: local-path
+  storageType: Durable
+  version: "16.4"
