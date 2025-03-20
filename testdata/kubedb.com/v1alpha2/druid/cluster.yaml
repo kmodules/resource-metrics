@@ -20,13 +20,6 @@ spec:
     agent: prometheus.io/operator
     prometheus:
       exporter:
-        resources:
-          limits:
-            cpu: 150m
-            memory: 150Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
         port: 9104
         securityContext:
           allowPrivilegeEscalation: false
@@ -41,13 +34,6 @@ spec:
         labels:
           release: prometheus
   topology:
-    resources:
-      limits:
-        cpu: 150m
-        memory: 150Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
     brokers:
       podTemplate:
         spec:
