@@ -10,6 +10,36 @@ spec:
     mode: GroupReplication
     group:
       name: "dc002fc3-c412-4d18-b1d4-66c1fbfbbc9b"
+  podTemplate:
+    spec:
+      containers:
+        - name: mysql
+          resources:
+            limits:
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+        - name: mysql-coordinator
+          resources:
+            limits:
+              cpu: 350m
+              memory: 350Mi
+            requests:
+              cpu: 300m
+              memory: 300Mi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
   storageType: Durable
   storage:
     storageClassName: "standard"
@@ -18,25 +48,3 @@ spec:
     resources:
       requests:
         storage: 1Gi
-  podTemplate:
-    spec:
-      containers:
-        - name: mysql
-          resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
-            limits:
-              cpu: 500m
-              memory: 1Gi
-  monitor:
-    agent: prometheus.io
-    prometheus:
-      exporter:
-        resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi

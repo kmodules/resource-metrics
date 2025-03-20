@@ -44,7 +44,7 @@ const (
 	// TODO: Update values
 	ElasticsearchSidecarContainerName = "elasticsearch"
 	MongoDBSidecarContainerName       = "replication-mode-detector"
-	MySQLSidecarContainerName         = "mysql"
+	MySQLSidecarContainerName         = "mysql-coordinator"
 	PerconaXtraDBSidecarContainerName = "perconaxtradb"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"

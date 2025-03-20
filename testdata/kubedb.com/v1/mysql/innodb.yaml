@@ -9,23 +9,31 @@ spec:
       containers:
         - name: mysql
           resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
             limits:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+        - name: mysql-coordinator
+          resources:
+            limits:
+              cpu: 350m
+              memory: 350Mi
+            requests:
+              cpu: 300m
+              memory: 300Mi
   monitor:
     agent: prometheus.io
     prometheus:
       exporter:
         resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
   version: "8.0.24"
   replicas: 3
   topology:
@@ -40,10 +48,10 @@ spec:
                 resources:
                   requests:
                     cpu: 250m
-                    memory: 500Mi
+                    memory: 250Mi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 200m
+                    memory: 200Mi
   storageType: Durable
   storage:
     storageClassName: "standard"
@@ -51,7 +59,7 @@ spec:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 1Gi
+        storage: 2Gi
   requireSSL: true
   tls:
     issuerRef:
