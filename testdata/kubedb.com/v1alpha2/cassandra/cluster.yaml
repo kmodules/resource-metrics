@@ -2,15 +2,11 @@ apiVersion: kubedb.com/v1alpha2
 kind: Cassandra
 metadata:
   name: cass
-  namespace: demo
+  namespace: default
 spec:
   authSecret:
     name: cass-auth
   deletionPolicy: WipeOut
-  healthChecker:
-    failureThreshold: 3
-    periodSeconds: 20
-    timeoutSeconds: 10
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -34,17 +30,15 @@ spec:
     rack:
       - name: r0
         podTemplate:
-          controller: {}
-          metadata: {}
           spec:
             containers:
               - name: cassandra
                 resources:
                   limits:
-                    cpu: "2"
+                    cpu: 2000m
                     memory: 2Gi
                   requests:
-                    cpu: "1"
+                    cpu: 1000m
                     memory: 1Gi
                 securityContext:
                   allowPrivilegeEscalation: false
@@ -57,7 +51,13 @@ spec:
                     type: RuntimeDefault
             initContainers:
               - name: cassandra-init
-                resources: {}
+                resources:
+                  resources:
+                    limits:
+                      memory: 512Mi
+                    requests:
+                      cpu: 200m
+                      memory: 256Mi
                 securityContext:
                   allowPrivilegeEscalation: false
                   capabilities:
