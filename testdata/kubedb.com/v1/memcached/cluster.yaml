@@ -1,7 +1,7 @@
 apiVersion: kubedb.com/v1
-kind: Kafka
+kind: Memcached
 metadata:
-  name: kafka-combined
+  name: memcached
   namespace: demo
 spec:
   deletionPolicy: WipeOut
@@ -16,16 +16,16 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          runAsGroup: 0
-          runAsNonRoot: true
-          runAsUser: 1001
-          seccompProfile:
-            type: RuntimeDefault
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        runAsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault
       serviceMonitor:
         interval: 30s
         labels:
@@ -33,7 +33,7 @@ spec:
   podTemplate:
     spec:
       containers:
-        - name: kafka
+        - name: memcached
           resources:
             limits:
               cpu: 450m
@@ -46,22 +46,12 @@ spec:
             capabilities:
               drop:
                 - ALL
-            runAsGroup: 0
+            runAsGroup: 999
             runAsNonRoot: true
-            runAsUser: 1001
+            runAsUser: 999
             seccompProfile:
               type: RuntimeDefault
-      nodeSelector:
-        kubernetes.io/os: linux
       securityContext:
-        fsGroup: 1001
+        fsGroup: 999
   replicas: 3
-  storage:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 2Gi
-    storageClassName: local-path
-  storageType: Durable
-  version: 3.9.0
+  version: 1.6.22

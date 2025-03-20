@@ -1,7 +1,7 @@
 apiVersion: kubedb.com/v1
 kind: MariaDB
 metadata:
-  name: mariadb
+  name: mariadb-galera
   namespace: demo
 spec:
   deletionPolicy: WipeOut
@@ -11,8 +11,8 @@ spec:
       exporter:
         resources:
           limits:
-              cpu: 150m
-              memory: 150Mi
+            cpu: 150m
+            memory: 150Mi
           requests:
             cpu: 100m
             memory: 100Mi
@@ -51,6 +51,24 @@ spec:
             runAsUser: 999
             seccompProfile:
               type: RuntimeDefault
+        - name: md-coordinator
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 0
+            runAsNonRoot: true
+            runAsUser: 999
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 350m
+              memory: 350Mi
+            requests:
+              cpu: 300m
+              memory: 300Mi
       initContainers:
         - name: mariadb-init
           securityContext:
@@ -63,16 +81,18 @@ spec:
             runAsUser: 999
             seccompProfile:
               type: RuntimeDefault
-            resources:
-              limits:
-                cpu: 250m
-                memory: 250Mi
-              requests:
-                cpu: 200m
-                memory: 200Mi
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+      podPlacementPolicy:
+        name: default
       securityContext:
         fsGroup: 999
-  replicas: 1
+  replicas: 3
   storage:
     accessModes:
       - ReadWriteOnce
