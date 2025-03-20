@@ -1,0 +1,56 @@
+apiVersion: kubedb.com/v1
+kind: Solr
+metadata:
+  name: solr
+  namespace: demo
+spec:
+  version: 9.4.1
+  storageType: Durable
+  replicas: 3
+  podTemplate:
+    spec:
+      containers:
+      - name: solr
+        resources:
+          limits:
+            cpu: 450m
+            memory: 450Mi
+          requests:
+            cpu: 400m
+            memory: 400Mi
+      initContainers:
+      - name: solr-init
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+  monitor:
+    agent: prometheus.io
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
