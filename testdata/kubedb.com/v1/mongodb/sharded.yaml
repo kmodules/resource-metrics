@@ -1,0 +1,221 @@
+apiVersion: kubedb.com/v1
+kind: MongoDB
+metadata:
+  name: sh
+  namespace: demo
+spec:
+  deletionPolicy: WipeOut
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        args:
+          - "--compatible-mode"
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        interval: 30s
+        labels:
+          release: kube-prometheus-stack
+  shardTopology:
+    configServer:
+      podTemplate:
+        spec:
+          containers:
+            - name: mongodb
+              resources:
+                limits:
+                  cpu: 550m
+                  memory: 550Mi
+                requests:
+                  cpu: 500m
+                  memory: 500Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+            - name: replication-mode-detector
+              resources:
+                limits:
+                  cpu: 350m
+                  memory: 350Mi
+                requests:
+                  cpu: 300m
+                  memory: 300Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          initContainers:
+            - name: copy-config
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 250Mi
+                requests:
+                  cpu: 200m
+                  memory: 200Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          nodeSelector:
+            kubernetes.io/os: linux
+          securityContext:
+            fsGroup: 999
+      replicas: 3
+      storage:
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: local-path
+    mongos:
+      podTemplate:
+        spec:
+          containers:
+            - name: mongodb
+              resources:
+                limits:
+                  cpu: 450m
+                  memory: 450Mi
+                requests:
+                  cpu: 400m
+                  memory: 400Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          initContainers:
+            - name: copy-config
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 250Mi
+                requests:
+                  cpu: 200m
+                  memory: 200Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          nodeSelector:
+            kubernetes.io/os: linux
+          securityContext:
+            fsGroup: 999
+      replicas: 2
+    shard:
+      podTemplate:
+        spec:
+          containers:
+            - name: mongodb
+              resources:
+                limits:
+                  cpu: 650m
+                  memory: 650Mi
+                requests:
+                  cpu: 600m
+                  memory: 600Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+            - name: replication-mode-detector
+              resources:
+                limits:
+                  cpu: 350m
+                  memory: 350Mi
+                requests:
+                  cpu: 300m
+                  memory: 300Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          initContainers:
+            - name: copy-config
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 250Mi
+                requests:
+                  cpu: 200m
+                  memory: 200Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsGroup: 0
+                runAsNonRoot: true
+                runAsUser: 999
+                seccompProfile:
+                  type: RuntimeDefault
+          nodeSelector:
+            kubernetes.io/os: linux
+          securityContext:
+            fsGroup: 999
+      replicas: 3
+      shards: 2
+      storage:
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: local-path
+  version: 7.0.8

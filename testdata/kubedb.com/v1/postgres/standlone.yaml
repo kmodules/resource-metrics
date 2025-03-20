@@ -1,7 +1,7 @@
 apiVersion: kubedb.com/v1
-kind: MongoDB
+kind: Postgres
 metadata:
-  name: rs
+  name: pgs
   namespace: demo
 spec:
   deletionPolicy: WipeOut
@@ -9,8 +9,6 @@ spec:
     agent: prometheus.io/operator
     prometheus:
       exporter:
-        args:
-          - "--compatible-mode"
         resources:
           limits:
             cpu: 150m
@@ -23,9 +21,9 @@ spec:
           capabilities:
             drop:
               - ALL
-          runAsGroup: 0
+          runAsGroup: 70
           runAsNonRoot: true
-          runAsUser: 999
+          runAsUser: 70
           seccompProfile:
             type: RuntimeDefault
       serviceMonitor:
@@ -35,7 +33,7 @@ spec:
   podTemplate:
     spec:
       containers:
-        - name: mongodb
+        - name: postgres
           resources:
             limits:
               cpu: 450m
@@ -48,13 +46,23 @@ spec:
             capabilities:
               drop:
                 - ALL
-            runAsGroup: 0
+            runAsGroup: 70
             runAsNonRoot: true
-            runAsUser: 999
+            runAsUser: 70
             seccompProfile:
               type: RuntimeDefault
       initContainers:
-        - name: copy-config
+        - name: postgres-init-container
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 70
+            runAsNonRoot: true
+            runAsUser: 70
+            seccompProfile:
+              type: RuntimeDefault
           resources:
             limits:
               cpu: 250m
@@ -62,24 +70,17 @@ spec:
             requests:
               cpu: 200m
               memory: 200Mi
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            runAsGroup: 0
-            runAsNonRoot: true
-            runAsUser: 999
-            seccompProfile:
-              type: RuntimeDefault
       nodeSelector:
         kubernetes.io/os: linux
       securityContext:
         fsGroup: 999
   replicas: 1
   storage:
+    accessModes:
+      - ReadWriteOnce
     resources:
       requests:
         storage: 2Gi
     storageClassName: local-path
-  version: 7.0.8
+  storageType: Durable
+  version: "16.4"
