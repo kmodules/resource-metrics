@@ -43,25 +43,56 @@ func TestMemcached(t *testing.T) {
 				mode:     DBModeStandalone,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("1"),
-						core.ResourceMemory: resource.MustParse("1152Mi"),
+						core.ResourceCPU:    resource.MustParse("600m"),
+						core.ResourceMemory: resource.MustParse("600Mi"),
 						// core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
 						core.ResourceCPU:    resource.MustParse("500m"),
-						core.ResourceMemory: resource.MustParse("564Mi"),
+						core.ResourceMemory: resource.MustParse("500Mi"),
 						// core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("500m"),
-						core.ResourceMemory: resource.MustParse("1Gi"),
+						core.ResourceCPU:    resource.MustParse("450m"),
+						core.ResourceMemory: resource.MustParse("450Mi"),
 						// core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("250m"),
-						core.ResourceMemory: resource.MustParse("500Mi"),
+						core.ResourceCPU:    resource.MustParse("400m"),
+						core.ResourceMemory: resource.MustParse("400Mi"),
+						// core.ResourceStorage: resource.MustParse("1Gi"),
+					},
+				},
+			},
+		},
+		{
+			name: "testdata/kubedb.com/v1/memcached/cluster.yaml",
+			want: want{
+				replicas: 3,
+				mode:     DBModeCluster,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1800m"),
+						core.ResourceMemory: resource.MustParse("1800Mi"),
+						// core.ResourceStorage: resource.MustParse("1Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1500m"),
+						core.ResourceMemory: resource.MustParse("1500Mi"),
+						// core.ResourceStorage: resource.MustParse("1Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1350m"),
+						core.ResourceMemory: resource.MustParse("1350Mi"),
+						// core.ResourceStorage: resource.MustParse("1Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1200m"),
+						core.ResourceMemory: resource.MustParse("1200Mi"),
 						// core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 				},
