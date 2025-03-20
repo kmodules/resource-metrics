@@ -1,39 +1,81 @@
 apiVersion: kubedb.com/v1alpha2
 kind: Cassandra
 metadata:
-  name: cassandra-sample
+  name: cass
+  namespace: demo
 spec:
-  version: 4.1.6
+  authSecret:
+    name: cass-auth
+  deletionPolicy: WipeOut
+  healthChecker:
+    failureThreshold: 3
+    periodSeconds: 20
+    timeoutSeconds: 10
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 56790
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        interval: 10s
+        labels:
+          release: prometheus
   topology:
     rack:
-      - name: myrack
+      - name: r0
+        podTemplate:
+          controller: {}
+          metadata: {}
+          spec:
+            containers:
+              - name: cassandra
+                resources:
+                  limits:
+                    cpu: "2"
+                    memory: 2Gi
+                  requests:
+                    cpu: "1"
+                    memory: 1Gi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
+                  runAsNonRoot: true
+                  runAsUser: 999
+                  seccompProfile:
+                    type: RuntimeDefault
+            initContainers:
+              - name: cassandra-init
+                resources: {}
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
+                  runAsNonRoot: true
+                  runAsUser: 999
+                  seccompProfile:
+                    type: RuntimeDefault
+            securityContext:
+              fsGroup: 999
+              runAsUser: 999
         replicas: 2
-        storageType: Ephemeral
         storage:
           accessModes:
             - ReadWriteOnce
           resources:
             requests:
               storage: 1Gi
-        podTemplate:
-          spec:
-            containers:
-              - name: cassandra
-                resources:
-                  limits:
-                    memory: 4Gi
-                    cpu: 4000m
-                  requests:
-                    cpu: 500m
-                    memory: 1Gi
-            securityContext:
-              runAsUser: 999
-              fsGroup: 999
-  deletionPolicy: WipeOut
-  monitor:
-    agent: "prometheus.io/operator"
-    prometheus:
-      serviceMonitor:
-        labels:
-          release: prometheus
-        interval: 10s
+        storageType: Durable
+  version: 4.1.6

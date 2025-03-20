@@ -44,25 +44,25 @@ func TestDruid(t *testing.T) {
 				mode:     DBModeDedicated,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5"),
-						core.ResourceMemory:  resource.MustParse("5Gi"),
+						core.ResourceCPU:     resource.MustParse("2500m"),
+						core.ResourceMemory:  resource.MustParse("6656Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2.5"),
-						core.ResourceMemory:  resource.MustParse("2.5Gi"),
+						core.ResourceCPU:     resource.MustParse("2500m"),
+						core.ResourceMemory:  resource.MustParse("6656Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5"),
-						core.ResourceMemory:  resource.MustParse("5Gi"),
+						core.ResourceCPU:     resource.MustParse("2500m"),
+						core.ResourceMemory:  resource.MustParse("6656Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2.5"),
-						core.ResourceMemory:  resource.MustParse("2.5Gi"),
+						core.ResourceCPU:     resource.MustParse("2500m"),
+						core.ResourceMemory:  resource.MustParse("6656Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
