@@ -101,29 +101,29 @@ func TestMySQL(t *testing.T) {
 		{
 			name: "testdata/kubedb.com/v1/mysql/innodb.yaml",
 			want: want{
-				replicas: 3,
+				replicas: 4,
 				mode:     "InnoDBCluster",
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3600m"),
-						core.ResourceMemory:  resource.MustParse("3600Mi"),
+						core.ResourceCPU:     resource.MustParse("3400m"),
+						core.ResourceMemory:  resource.MustParse("3400Mi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3000m"),
-						core.ResourceMemory:  resource.MustParse("3000Mi"),
+						core.ResourceCPU:     resource.MustParse("2900m"),
+						core.ResourceMemory:  resource.MustParse("2900Mi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1350m"),
-						core.ResourceMemory:  resource.MustParse("1350Mi"),
+						core.ResourceCPU:     resource.MustParse("1900m"),
+						core.ResourceMemory:  resource.MustParse("1900Mi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1200m"),
-						core.ResourceMemory:  resource.MustParse("1200Mi"),
+						core.ResourceCPU:     resource.MustParse("1700m"),
+						core.ResourceMemory:  resource.MustParse("1700Mi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
