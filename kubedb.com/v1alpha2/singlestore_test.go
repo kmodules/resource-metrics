@@ -67,6 +67,37 @@ func TestSinglestore(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/singlestore/dedicated.yaml",
+			want: want{
+				replicas: 3,
+				mode:     "Cluster",
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("3000m"),
+						core.ResourceMemory:  resource.MustParse("4500Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1950m"),
+						core.ResourceMemory:  resource.MustParse("2700Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3000Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("750m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

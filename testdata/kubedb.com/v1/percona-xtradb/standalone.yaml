@@ -15,7 +15,7 @@ spec:
               memory: 500Mi
             limits:
               cpu: 500m
-              memory: 1Gi
+              memory: 1000Mi
   storageType: Durable
   storage:
     storageClassName: "standard"

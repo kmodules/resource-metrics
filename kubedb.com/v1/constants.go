@@ -45,7 +45,7 @@ const (
 	ElasticsearchSidecarContainerName = "elasticsearch"
 	MongoDBSidecarContainerName       = "replication-mode-detector"
 	MySQLSidecarContainerName         = "mysql"
-	PerconaXtraDBSidecarContainerName = "perconaxtradb"
+	PerconaXtraDBSidecarContainerName = "px-coordinator"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"
 	ProxySQLSidecarContainerName      = "proxysql"
