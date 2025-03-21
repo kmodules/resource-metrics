@@ -1,39 +1,81 @@
 apiVersion: kubedb.com/v1alpha2
 kind: Cassandra
 metadata:
-  name: cassandra-sample
+  name: cass
+  namespace: default
 spec:
-  version: 4.1.6
+  authSecret:
+    name: cass-auth
+  deletionPolicy: WipeOut
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 56790
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        interval: 10s
+        labels:
+          release: prometheus
   topology:
     rack:
-      - name: myrack
-        replicas: 2
-        storageType: Ephemeral
-        storage:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
+      - name: r0
         podTemplate:
           spec:
             containers:
               - name: cassandra
                 resources:
                   limits:
-                    memory: 4Gi
-                    cpu: 4000m
+                    cpu: 2000m
+                    memory: 2Gi
                   requests:
-                    cpu: 500m
+                    cpu: 1000m
                     memory: 1Gi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
+                  runAsNonRoot: true
+                  runAsUser: 999
+                  seccompProfile:
+                    type: RuntimeDefault
+            initContainers:
+              - name: cassandra-init
+                resources:
+                  resources:
+                    limits:
+                      memory: 512Mi
+                    requests:
+                      cpu: 200m
+                      memory: 256Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
+                  runAsNonRoot: true
+                  runAsUser: 999
+                  seccompProfile:
+                    type: RuntimeDefault
             securityContext:
-              runAsUser: 999
               fsGroup: 999
-  deletionPolicy: WipeOut
-  monitor:
-    agent: "prometheus.io/operator"
-    prometheus:
-      serviceMonitor:
-        labels:
-          release: prometheus
-        interval: 10s
+              runAsUser: 999
+        replicas: 2
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+        storageType: Durable
+  version: 4.1.6

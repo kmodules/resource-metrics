@@ -43,25 +43,25 @@ func TestCassandra(t *testing.T) {
 				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("8000m"),
-						core.ResourceMemory:  resource.MustParse("8Gi"),
+						core.ResourceCPU:     resource.MustParse("4000m"),
+						core.ResourceMemory:  resource.MustParse("4096Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1000m"),
-						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceCPU:     resource.MustParse("2000m"),
+						core.ResourceMemory:  resource.MustParse("2048Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("8000m"),
-						core.ResourceMemory:  resource.MustParse("8Gi"),
+						core.ResourceCPU:     resource.MustParse("4000m"),
+						core.ResourceMemory:  resource.MustParse("4096Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1000m"),
-						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceCPU:     resource.MustParse("2000m"),
+						core.ResourceMemory:  resource.MustParse("2048Mi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
