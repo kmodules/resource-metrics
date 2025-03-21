@@ -1,36 +1,49 @@
 apiVersion: kubedb.com/v1
 kind: Redis
 metadata:
-  name: redis-quickstart
+  name: redis-standalone
   namespace: demo
 spec:
-  version: 6.0.6
+  version: 7.4.1
   podTemplate:
     spec:
       containers:
         - name: redis
           resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
             limits:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+      initContainers:
+        - name: redis-init
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+    serviceMonitor:
+      interval: 30s
+      labels:
+        release: prometheus
   storageType: Durable
   storage:
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
-        storage: 1Gi
-  monitor:
-    agent: prometheus.io
-    prometheus:
-      exporter:
-        resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi
+        storage: 2Gi

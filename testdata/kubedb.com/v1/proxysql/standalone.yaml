@@ -1,0 +1,38 @@
+apiVersion: kubedb.com/v1
+kind: ProxySQL
+metadata:
+  name: proxy-standalone
+  namespace: demo
+spec:
+  version: "2.6.3-debian"
+  replicas: 1
+  syncUsers: true
+  backend:
+    name: mysql-server
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      serviceMonitor:
+        interval: 30s
+        labels:
+          release: prometheus
+  podTemplate:
+    spec:
+      containers:
+        - name: proxysql
+          resources:
+            limits:
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+  deletionPolicy: WipeOut

@@ -53,6 +53,7 @@ func TestPostgres(t *testing.T) {
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
+
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("450m"),
