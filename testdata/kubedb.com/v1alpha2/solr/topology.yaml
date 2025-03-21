@@ -1,0 +1,127 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Solr
+metadata:
+  name: solr-cluster
+  namespace: demo
+spec:
+  version: 9.4.1
+  terminationPolicy: Halt
+  zookeeperRef:
+    name: zoo
+    namespace: demo
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 0
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
+  topology:
+    overseer:
+      replicas: 1
+      podTemplate:
+        spec:
+          containers:
+          - name: solr
+            resources:
+              limits:
+                cpu: 450m
+                memory: 450Mi
+              requests:
+                cpu: 400m
+                memory: 400Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              runAsGroup: 0
+              runAsNonRoot: true
+              runAsUser: 999
+              seccompProfile:
+                type: RuntimeDefault
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: linode-block-storage
+    data:
+      podTemplate:
+        spec:
+          containers:
+          - name: solr
+            resources:
+              limits:
+                cpu: 450m
+                memory: 450Mi
+              requests:
+                cpu: 400m
+                memory: 400Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              runAsGroup: 0
+              runAsNonRoot: true
+              runAsUser: 999
+              seccompProfile:
+                type: RuntimeDefault
+      replicas: 1
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: linode-block-storage
+    coordinator:
+      replicas: 1
+      podTemplate:
+        spec:
+          containers:
+          - name: solr
+            resources:
+              limits:
+                cpu: 450m
+                memory: 450Mi
+              requests:
+                cpu: 400m
+                memory: 400Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              runAsGroup: 0
+              runAsNonRoot: true
+              runAsUser: 999
+              seccompProfile:
+                type: RuntimeDefault
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: linode-block-storage

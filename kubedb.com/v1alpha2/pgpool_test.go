@@ -27,27 +27,65 @@ import (
 
 func TestPgpool(t *testing.T) {
 	type want struct {
-		replicas     int64
-		mode         string
-		appResources core.ResourceRequirements
+		replicas       int64
+		mode           string
+		appResources   core.ResourceRequirements
+		totalResources core.ResourceRequirements
 	}
 	tests := []struct {
 		name string
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/pgpool/combined.yaml",
+			name: "testdata/kubedb.com/v1alpha2/pgpool/standalone.yaml",
+			want: want{
+				replicas: 1,
+				mode:     DBModeStandalone,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("600m"),
+						core.ResourceMemory: resource.MustParse("600Mi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("500m"),
+						core.ResourceMemory: resource.MustParse("500Mi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("450m"),
+						core.ResourceMemory: resource.MustParse("450Mi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("400m"),
+						core.ResourceMemory: resource.MustParse("400Mi"),
+					},
+				},
+			},
+		},
+		{
+			name: "testdata/kubedb.com/v1alpha2/pgpool/cluster.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCluster,
-				appResources: core.ResourceRequirements{
+				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("3"),
-						core.ResourceMemory: resource.MustParse("3Gi"),
+						core.ResourceCPU:    resource.MustParse("1800m"),
+						core.ResourceMemory: resource.MustParse("1800Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:    resource.MustParse("768m"),
-						core.ResourceMemory: resource.MustParse("1.5Gi"),
+						core.ResourceCPU:    resource.MustParse("1500m"),
+						core.ResourceMemory: resource.MustParse("1500Mi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1350m"),
+						core.ResourceMemory: resource.MustParse("1350Mi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:    resource.MustParse("1200m"),
+						core.ResourceMemory: resource.MustParse("1200Mi"),
 					},
 				},
 			},

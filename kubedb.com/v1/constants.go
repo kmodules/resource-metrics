@@ -43,7 +43,6 @@ const (
 	MySQLRouterContainerName   = "mysql-router"
 
 	// TODO: Update values
-	ElasticsearchSidecarContainerName = "elasticsearch"
 	MongoDBSidecarContainerName       = "replication-mode-detector"
 	MySQLSidecarContainerName         = "mysql-coordinator"
 	PerconaXtraDBSidecarContainerName = "perconaxtradb"
