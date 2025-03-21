@@ -116,7 +116,7 @@ func (r MySQL) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 		}
 
 		if replicas > 1 {
-			sidecar, err := api.SidecarNodeResourcesV2(obj, fn, PostgresSidecarContainerName, "spec")
+			sidecar, err := api.SidecarNodeResourcesV2(obj, fn, MySQLSidecarContainerName, "spec")
 			if err != nil {
 				return nil, err
 			}

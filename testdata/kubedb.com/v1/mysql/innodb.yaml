@@ -65,20 +65,5 @@ spec:
       requests:
         storage: 2Gi
   requireSSL: true
-  tls:
-    issuerRef:
-      apiGroup: cert-manager.io
-      kind: Issuer
-      name: mysql-issuer
-    certificates:
-    - alias: server
-      subject:
-        organizations:
-        - kubedb:server
-      dnsNames:
-      - localhost
-      ipAddresses:
-      - "127.0.0.1"
-  # useAddressType: IPv6
 
 

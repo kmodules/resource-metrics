@@ -19,6 +19,7 @@ package v1
 const (
 	DBModeEnsemble   = "Ensemble"
 	DBModeCluster    = "Cluster"
+	DBModeSentinel   = "Sentinel"
 	DBModeSharded    = "Sharded"
 	DBModeStandalone = "Standalone"
 	DBModeReplicaSet = "ReplicaSet"
@@ -48,8 +49,7 @@ const (
 	PerconaXtraDBSidecarContainerName = "perconaxtradb"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"
-	RedisSidecarContainerName         = "redis"
+	RedisSidecarContainerName         = "rd-coordinator"
 	PgBouncerSidecarContainerName     = "pgbouncer"
-	RedisSentinelSidecarContainerName = "redissentinel"
 	MySQLRouterSidecarContainerName   = "mysql-router"
 )

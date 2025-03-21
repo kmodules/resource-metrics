@@ -1,19 +1,26 @@
 apiVersion: kubedb.com/v1
-kind: MySQL
+kind: Redis
 metadata:
-  name: my-group
+  name: rd-sentinel
   namespace: demo
 spec:
-  version: "8.0.23-v1"
+  version: 7.4.1
   replicas: 3
-  topology:
-    mode: GroupReplication
-    group:
-      name: "dc002fc3-c412-4d18-b1d4-66c1fbfbbc9b"
+  sentinelRef:
+    name: sentinel
+    namespace: demo
+  mode: Sentinel
+  storageType: Durable
+  storage:
+    resources:
+      requests:
+        storage: 2Gi
+    accessModes:
+      - ReadWriteOnce
   podTemplate:
     spec:
       containers:
-        - name: mysql
+        - name: redis
           resources:
             limits:
               cpu: 450m
@@ -21,7 +28,7 @@ spec:
             requests:
               cpu: 400m
               memory: 400Mi
-        - name: mysql-coordinator
+        - name: rd-coordinator
           resources:
             limits:
               cpu: 350m
@@ -29,6 +36,15 @@ spec:
             requests:
               cpu: 300m
               memory: 300Mi
+      initContainers:
+        - name: redis-init
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -40,15 +56,8 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-      serviceMonitor:
-        interval: 30s
-        labels:
-          release: prometheus
-  storageType: Durable
-  storage:
-    storageClassName: "standard"
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 2Gi
+    serviceMonitor:
+      interval: 30s
+      labels:
+        release: prometheus
+  deletionPolicy: WipeOut
