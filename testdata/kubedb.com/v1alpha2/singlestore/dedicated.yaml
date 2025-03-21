@@ -11,41 +11,41 @@ spec:
       podTemplate:
         spec:
           containers:
-          - name: singlestore
-            resources:
-              requests:
-                cpu: "1"
-                memory: 1Gi
-              limits:
-                cpu: "2"
-                memory: 2Gi
+            - name: singlestore
+              resources:
+                requests:
+                  cpu: "1000m"
+                  memory: 1000Mi
+                limits:
+                  cpu: "2000m"
+                  memory: 2000Mi
       storage:
         storageClassName: "standard"
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: 1000Mi
     leaf:
       replicas: 2
       podTemplate:
         spec:
           containers:
-          - name: singlestore
-            resources:
-              requests:
-                cpu: "1"
-                memory: 1Gi
-              limits:
-                cpu: "2"
-                memory: 2Gi
+            - name: singlestore
+              resources:
+                requests:
+                  cpu: "1000m"
+                  memory: 1000Mi
+                limits:
+                  cpu: "2000m"
+                  memory: 2000Mi
       storage:
         storageClassName: "standard"
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 10Gi
+            storage: 10000Mi
   licenseSecret:
     name: license-secret
   storageType: Durable

@@ -37,32 +37,32 @@ func TestSinglestore(t *testing.T) {
 		want want
 	}{
 		{
-			name: "testdata/kubedb.com/v1alpha2/singlestore/combined.yaml",
+			name: "testdata/kubedb.com/v1alpha2/singlestore/dedicated.yaml",
 			want: want{
-				replicas: 1,
-				mode:     DBModeCombined,
+				replicas: 5,
+				mode:     DBModeDedicated,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2500m"),
-						core.ResourceMemory:  resource.MustParse("2548Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:     resource.MustParse("10000m"),
+						core.ResourceMemory:  resource.MustParse("11280Mi"),
+						core.ResourceStorage: resource.MustParse("10240Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1250m"),
-						core.ResourceMemory:  resource.MustParse("1274Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:     resource.MustParse("6000m"),
+						core.ResourceMemory:  resource.MustParse("6280Mi"),
+						core.ResourceStorage: resource.MustParse("23000Mi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2"),
-						core.ResourceMemory:  resource.MustParse("2Gi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:     resource.MustParse("2000m"),
+						core.ResourceMemory:  resource.MustParse("2048Mi"),
+						core.ResourceStorage: resource.MustParse("10240Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1"),
-						core.ResourceMemory:  resource.MustParse("1Gi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("1024Mi"),
+						core.ResourceStorage: resource.MustParse("10240Mi"),
 					},
 				},
 			},
