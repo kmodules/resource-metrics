@@ -38,5 +38,6 @@ const (
 	SolrContainerName        = "solr"
 	ZooKeeperContainerName   = "zookeeper"
 
+	SinglestoreSidecarContainerName = "singlestore-coordinator"
 	MSSQLServerSidecarContainerName = "mssql-coordinator"
 )

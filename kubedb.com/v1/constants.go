@@ -45,7 +45,7 @@ const (
 	// TODO: Update values
 	MongoDBSidecarContainerName       = "replication-mode-detector"
 	MySQLSidecarContainerName         = "mysql-coordinator"
-	PerconaXtraDBSidecarContainerName = "perconaxtradb"
+	PerconaXtraDBSidecarContainerName = "px-coordinator"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"
 	RedisSidecarContainerName         = "rd-coordinator"

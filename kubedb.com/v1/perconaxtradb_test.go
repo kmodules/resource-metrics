@@ -43,8 +43,8 @@ func TestPerconaXtraDB(t *testing.T) {
 				mode:     DBModeStandalone,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1"),
-						core.ResourceMemory:  resource.MustParse("1152Mi"),
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("1128Mi"),
 						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
@@ -56,7 +56,7 @@ func TestPerconaXtraDB(t *testing.T) {
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("1Gi"),
+						core.ResourceMemory:  resource.MustParse("1000Mi"),
 						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
@@ -74,20 +74,20 @@ func TestPerconaXtraDB(t *testing.T) {
 				mode:     "Cluster",
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3"),
-						core.ResourceMemory:  resource.MustParse("3456Mi"),
+						core.ResourceCPU:     resource.MustParse("3000m"),
+						core.ResourceMemory:  resource.MustParse("4500Mi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1.5"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
+						core.ResourceCPU:     resource.MustParse("1950m"),
+						core.ResourceMemory:  resource.MustParse("2700Mi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1.5"),
-						core.ResourceMemory:  resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("3000Mi"),
 						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 					Requests: core.ResourceList{
