@@ -123,9 +123,6 @@ func (r Redis) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			if err != nil {
 				return nil, err
 			}
-			// If spec.cluster.replicas = x
-			// That means in each shard there are (x+1) redis replicas
-			shardReplicas += 1
 			replicas = shards * shardReplicas
 		}
 
@@ -134,7 +131,7 @@ func (r Redis) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
 		}
 
-		if replicas > 1 { // mode: Sentinel
+		if mode == DBModeSentinel {
 			sidecar, err := api.SidecarNodeResourcesV2(obj, fn, RedisSidecarContainerName, "spec")
 			if err != nil {
 				return nil, err
