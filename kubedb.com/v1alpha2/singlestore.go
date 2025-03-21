@@ -121,11 +121,11 @@ func (r Singlestore) roleResourceFn(fn func(rr core.ResourceRequirements) core.R
 			if err != nil {
 				return nil, err
 			}
-			aggregatorSidecar, err := api.SidecarNodeResourcesV2(obj, fn, SinglestoreSidecarContainerName, "aggregator")
+			aggregatorSidecar, err := api.SidecarNodeResourcesV2(topology, fn, SinglestoreSidecarContainerName, "aggregator")
 			if err != nil {
 				return nil, err
 			}
-			leafSidecar, err := api.SidecarNodeResourcesV2(obj, fn, SinglestoreSidecarContainerName, "leaf")
+			leafSidecar, err := api.SidecarNodeResourcesV2(topology, fn, SinglestoreSidecarContainerName, "leaf")
 			if err != nil {
 				return nil, err
 			}

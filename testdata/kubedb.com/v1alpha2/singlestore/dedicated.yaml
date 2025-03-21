@@ -14,12 +14,12 @@ spec:
           - name: singlestore
             resources:
               requests:
-                cpu: "1"
-                memory: 1Gi
+                cpu: "1000m"
+                memory: "1000Mi"
               limits:
-                cpu: "2"
-                memory: 2Gi
-          - name: px-coordinator
+                cpu: "2000m"
+                memory: "2000Mi"
+          - name: singlestore-coordinator
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -52,12 +52,12 @@ spec:
           - name: singlestore
             resources:
               requests:
-                cpu: "1"
-                memory: 1Gi
+                cpu: "1000m"
+                memory: "1000Mi"
               limits:
-                cpu: "2"
-                memory: 2Gi
-          - name: px-coordinator
+                cpu: "2000m"
+                memory: "2000Mi"
+          - name: singlestore-coordinator
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -88,8 +88,26 @@ spec:
   monitor:
     agent: prometheus.io/operator
     prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 999
+          seccompProfile:
+            type: RuntimeDefault
       serviceMonitor:
+        interval: 30s
         labels:
-          release: prometheus
-        interval: 10s
+          release: kube-prometheus-stac
   terminationPolicy: Halt
