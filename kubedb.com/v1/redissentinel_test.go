@@ -37,32 +37,64 @@ func TestRedisSentinel(t *testing.T) {
 		want want
 	}{
 		{
+			name: "testdata/kubedb.com/v1/redissentinel/standalone.yaml",
+			want: want{
+				replicas: 1,
+				mode:     DBModeStandalone,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("600m"),
+						core.ResourceMemory:  resource.MustParse("600Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("500Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("450m"),
+						core.ResourceMemory:  resource.MustParse("450Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("400m"),
+						core.ResourceMemory:  resource.MustParse("400Mi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+			},
+		},
+		{
 			name: "testdata/kubedb.com/v1/redissentinel/cluster.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3"),
-						core.ResourceMemory:  resource.MustParse("3456Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1800m"),
+						core.ResourceMemory:  resource.MustParse("1800Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1.5"),
-						core.ResourceMemory:  resource.MustParse("1692Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("1500Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1500m"),
-						core.ResourceMemory:  resource.MustParse("3Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1350m"),
+						core.ResourceMemory:  resource.MustParse("1350Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("750m"),
-						core.ResourceMemory:  resource.MustParse("1500Mi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("1200m"),
+						core.ResourceMemory:  resource.MustParse("1200Mi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 			},

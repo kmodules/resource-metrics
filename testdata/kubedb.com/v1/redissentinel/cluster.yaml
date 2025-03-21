@@ -1,42 +1,50 @@
 apiVersion: kubedb.com/v1
 kind: RedisSentinel
 metadata:
-  name: sen
+  name: sentinel
   namespace: demo
 spec:
-  version: 6.2.5
+  version: 7.4.1
   replicas: 3
-  storageType: Durable
-  tls:
-    issuerRef:
-      apiGroup: cert-manager.io
-      name: ca-issuer
-      kind: Issuer
-  storage:
-    resources:
-      requests:
-        storage: 1Gi
-    accessModes:
-    - ReadWriteOnce
   podTemplate:
     spec:
       containers:
         - name: redissentinel
           resources:
-            requests:
-              cpu: 250m
-              memory: 500Mi
             limits:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+      initContainers:
+        - name: sentinel-init
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
   monitor:
-    agent: prometheus.io
+    agent: prometheus.io/operator
     prometheus:
       exporter:
         resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+    serviceMonitor:
+      interval: 30s
+      labels:
+        release: prometheus
+  storageType: Durable
+  storage:
+    resources:
+      requests:
+        storage: 2Gi
+    accessModes:
+      - ReadWriteOnce

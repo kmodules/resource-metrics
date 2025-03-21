@@ -19,6 +19,7 @@ package v1
 const (
 	DBModeEnsemble   = "Ensemble"
 	DBModeCluster    = "Cluster"
+	DBModeSentinel   = "Sentinel"
 	DBModeSharded    = "Sharded"
 	DBModeStandalone = "Standalone"
 	DBModeReplicaSet = "ReplicaSet"
@@ -44,13 +45,11 @@ const (
 	// TODO: Update values
 	ElasticsearchSidecarContainerName = "elasticsearch"
 	MongoDBSidecarContainerName       = "replication-mode-detector"
-	MySQLSidecarContainerName         = "mysql"
+	MySQLSidecarContainerName         = "mysql-coordinator"
 	PerconaXtraDBSidecarContainerName = "perconaxtradb"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"
-	ProxySQLSidecarContainerName      = "proxysql"
-	RedisSidecarContainerName         = "redis"
+	RedisSidecarContainerName         = "rd-coordinator"
 	PgBouncerSidecarContainerName     = "pgbouncer"
-	RedisSentinelSidecarContainerName = "redissentinel"
 	MySQLRouterSidecarContainerName   = "mysql-router"
 )
