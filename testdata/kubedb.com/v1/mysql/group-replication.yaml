@@ -40,6 +40,10 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
+      serviceMonitor:
+        interval: 30s
+        labels:
+          release: prometheus
   storageType: Durable
   storage:
     storageClassName: "standard"

@@ -48,7 +48,6 @@ const (
 	PerconaXtraDBSidecarContainerName = "perconaxtradb"
 	MariaDBSidecarContainerName       = "md-coordinator"
 	PostgresSidecarContainerName      = "pg-coordinator"
-	ProxySQLSidecarContainerName      = "proxysql"
 	RedisSidecarContainerName         = "redis"
 	PgBouncerSidecarContainerName     = "pgbouncer"
 	RedisSentinelSidecarContainerName = "redissentinel"
