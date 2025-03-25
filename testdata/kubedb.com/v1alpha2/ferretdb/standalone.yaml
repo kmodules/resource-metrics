@@ -7,28 +7,30 @@ spec:
   version: "1.18.0"
   authSecret:
     externallyManaged: false
-  podTemplate:
-    spec:
-      containers:
-      - name: ferretdb
-        resources:
-          limits:
-            cpu: 450m
-            memory: 450Mi
-          requests:
-            cpu: 400m
-            memory: 400Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          runAsGroup: 0
-          runAsNonRoot: true
-          runAsUser: 999
-          seccompProfile:
-            type: RuntimeDefault
-
+  server:
+    primary:
+      podTemplate:
+        spec:
+          containers:
+          - name: ferretdb
+            resources:
+              limits:
+                cpu: 450m
+                memory: 450Mi
+              requests:
+                cpu: 400m
+                memory: 400Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              runAsGroup: 0
+              runAsNonRoot: true
+              runAsUser: 999
+              seccompProfile:
+                type: RuntimeDefault
+      replicas: 2
   monitor:
     agent: prometheus.io
     prometheus:
@@ -56,5 +58,3 @@ spec:
     resources:
       requests:
         storage: 2Gi
-  backend:
-    externallyManaged: false
