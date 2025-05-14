@@ -33,6 +33,7 @@ const (
 	ClickHouseContainerName  = "clickhouse"
 	DruidContainerName       = "druid"
 	FerretDBContainerName    = "ferretdb"
+	IgniteContainerName      = "ignite"
 	MSSQLServerContainerName = "mssql"
 	PgpoolContainerName      = "pgpool"
 	RabbitMQContainerName    = "rabbitmq"
