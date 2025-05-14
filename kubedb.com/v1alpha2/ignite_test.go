@@ -27,10 +27,9 @@ import (
 
 func TestIgnite(t *testing.T) {
 	type want struct {
-		replicas       int64
-		mode           string
-		appResources   core.ResourceRequirements
-		totalResources core.ResourceRequirements
+		replicas     int64
+		mode         string
+		appResources core.ResourceRequirements
 	}
 	tests := []struct {
 		name string
