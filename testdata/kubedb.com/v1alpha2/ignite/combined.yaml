@@ -1,0 +1,38 @@
+apiVersion: kubedb.com/v1
+kind: Ignite
+metadata:
+  name: ignite
+  namespace: demo
+spec:
+  version: 2.17.0
+  storageType: Durable
+  replicas: 3
+  podTemplate:
+    spec:
+      containers:
+        - name: ignite
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+      initContainers:
+        - name: ignite-init
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+  monitor:
+    agent: prometheus.io
+    prometheus:
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
