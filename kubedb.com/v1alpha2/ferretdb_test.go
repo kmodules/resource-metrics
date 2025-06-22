@@ -43,26 +43,22 @@ func TestFerretDB(t *testing.T) {
 				mode:     DBModePrimaryOnly,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1050m"),
-						core.ResourceMemory:  resource.MustParse("1050Mi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:    resource.MustParse("1050m"),
+						core.ResourceMemory: resource.MustParse("1050Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("900m"),
-						core.ResourceMemory:  resource.MustParse("900Mi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:    resource.MustParse("900m"),
+						core.ResourceMemory: resource.MustParse("900Mi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("900m"),
-						core.ResourceMemory:  resource.MustParse("900Mi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:    resource.MustParse("900m"),
+						core.ResourceMemory: resource.MustParse("900Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("800m"),
-						core.ResourceMemory:  resource.MustParse("800Mi"),
-						core.ResourceStorage: resource.MustParse("4Gi"),
+						core.ResourceCPU:    resource.MustParse("800m"),
+						core.ResourceMemory: resource.MustParse("800Mi"),
 					},
 				},
 			},
@@ -74,26 +70,22 @@ func TestFerretDB(t *testing.T) {
 				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2800m"),
-						core.ResourceMemory:  resource.MustParse("2800Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:    resource.MustParse("2800m"),
+						core.ResourceMemory: resource.MustParse("2800Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2300m"),
-						core.ResourceMemory:  resource.MustParse("2300Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:    resource.MustParse("2300m"),
+						core.ResourceMemory: resource.MustParse("2300Mi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("2050m"),
-						core.ResourceMemory:  resource.MustParse("2050Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:    resource.MustParse("2050m"),
+						core.ResourceMemory: resource.MustParse("2050Mi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1800m"),
-						core.ResourceMemory:  resource.MustParse("1800Mi"),
-						core.ResourceStorage: resource.MustParse("10Gi"),
+						core.ResourceCPU:    resource.MustParse("1800m"),
+						core.ResourceMemory: resource.MustParse("1800Mi"),
 					},
 				},
 			},
