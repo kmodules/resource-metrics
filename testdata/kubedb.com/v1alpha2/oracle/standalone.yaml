@@ -1,0 +1,59 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Oracle
+metadata:
+  name: oracle
+  namespace: demo
+spec:
+  deletionPolicy: WipeOut
+  podTemplate:
+    spec:
+      containers:
+        - name: oracle
+          resources:
+            limits:
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 0
+            runAsNonRoot: true
+            runAsUser: 999
+            seccompProfile:
+              type: RuntimeDefault
+      initContainers:
+        - name: oracle-init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 0
+            runAsNonRoot: true
+            runAsUser: 999
+            seccompProfile:
+              type: RuntimeDefault
+            resources:
+              limits:
+                cpu: 250m
+                memory: 250Mi
+              requests:
+                cpu: 200m
+                memory: 200Mi
+      securityContext:
+        fsGroup: 999
+  replicas: 1
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: local-path
+  storageType: Durable
+  version: 21.3.0
