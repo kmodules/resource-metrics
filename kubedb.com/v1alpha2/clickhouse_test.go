@@ -57,18 +57,18 @@ func TestClickHouse(t *testing.T) {
 		{
 			name: "testdata/kubedb.com/v1alpha2/clickhouse/cluster.yaml",
 			want: want{
-				replicas: 18,
+				replicas: 6,
 				mode:     DBModeCluster,
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("9"),
-						core.ResourceMemory:  resource.MustParse("54Gi"),
-						core.ResourceStorage: resource.MustParse("18Gi"),
+						core.ResourceCPU:     resource.MustParse("3"),
+						core.ResourceMemory:  resource.MustParse("18Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("9"),
-						core.ResourceMemory:  resource.MustParse("36Gi"),
-						core.ResourceStorage: resource.MustParse("18Gi"),
+						core.ResourceCPU:     resource.MustParse("3"),
+						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 			},
