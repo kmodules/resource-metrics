@@ -2,10 +2,12 @@ package v1alpha2
 
 import (
 	"fmt"
+
+	"kmodules.xyz/resource-metrics/api"
+
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"kmodules.xyz/resource-metrics/api"
 )
 
 func init() {
