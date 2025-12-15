@@ -27,19 +27,65 @@ import (
 
 func TestNeo4j(t *testing.T) {
 	type want struct {
-		replicas     int64
-		mode         string
-		appResources core.ResourceRequirements
+		replicas       int64
+		mode           string
+		appResources   core.ResourceRequirements
+		totalResources core.ResourceRequirements
 	}
 	tests := []struct {
 		name string
 		want want
 	}{
 		{
+			name: "testdata/kubedb.com/v1alpha2/neo4j/standalone.yaml",
+			want: want{
+				replicas: 1,
+				mode:     DBModeStandalone,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("1000m"),
+						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+				appResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
+						core.ResourceStorage: resource.MustParse("2Gi"),
+					},
+				},
+			},
+		},
+
+		{
 			name: "testdata/kubedb.com/v1alpha2/neo4j/cluster.yaml",
 			want: want{
 				replicas: 3,
 				mode:     DBModeCluster,
+				totalResources: core.ResourceRequirements{
+					Limits: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("3000m"),
+						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
+					},
+					Requests: core.ResourceList{
+						core.ResourceCPU:     resource.MustParse("3000m"),
+						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
+					},
+				},
+
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("500m"),
@@ -74,6 +120,17 @@ func TestNeo4j(t *testing.T) {
 				t.Errorf("Mode() error = %v", err)
 			} else if got != tt.want.mode {
 				t.Errorf("Mode found = %v, expected = %v", got, tt.want.mode)
+			}
+
+			if got, err := c.TotalResourceLimits(obj); err != nil {
+				t.Errorf("TotalResourceLimits() error = %v", err)
+			} else if !cmp.Equal(tt.want.totalResources.Limits, got) {
+				t.Errorf("TotalResourceLimits() difference = %v", cmp.Diff(tt.want.totalResources.Limits, got))
+			}
+			if got, err := c.TotalResourceRequests(obj); err != nil {
+				t.Errorf("TotalResourceRequests() error = %v", err)
+			} else if !cmp.Equal(tt.want.totalResources.Requests, got) {
+				t.Errorf("TotalResourceRequests() difference = %v", cmp.Diff(tt.want.totalResources.Requests, got))
 			}
 
 			if got, err := c.AppResourceLimits(obj); err != nil {

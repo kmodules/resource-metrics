@@ -1,10 +1,10 @@
 apiVersion: kubedb.com/v1alpha2
 kind: Neo4j
 metadata:
-  name: neo4j
+  name: neo4j-standalone
   namespace: demo
 spec:
-  replicas: 3
+  replicas: 1
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -46,3 +46,4 @@ spec:
     resources:
       requests:
         storage: 2Gi
+
