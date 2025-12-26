@@ -22,7 +22,7 @@ import (
 
 func TestPersistentVolume(t *testing.T) {
 	type args struct {
-		in0 map[string]interface{}
+		in0 map[string]any
 	}
 	tests := []struct {
 		name string

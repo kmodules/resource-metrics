@@ -30,7 +30,7 @@ type testSet struct {
 	name string
 	want want
 }
-type want map[ReferencedObjPath]interface{}
+type want map[ReferencedObjPath]any
 
 func TestMongoDBScaling(t *testing.T) {
 	tests := []testSet{
@@ -374,7 +374,7 @@ func evaluateTestSet(t *testing.T, tests []testSet) {
 	}
 }
 
-func isEqual(x, y interface{}) bool {
+func isEqual(x, y any) bool {
 	if checkIntType(x, y) {
 		return compareIntType(x, y)
 	} else if checkResourceRequirementsType(x, y) {
@@ -386,7 +386,7 @@ func isEqual(x, y interface{}) bool {
 	return false
 }
 
-func checkIntType(x, y interface{}) bool {
+func checkIntType(x, y any) bool {
 	_, okx := x.(int64)
 	_, okx1 := x.(int)
 	_, oky := y.(int64)
@@ -399,29 +399,29 @@ func checkIntType(x, y interface{}) bool {
 	return false
 }
 
-func checkResourceRequirementsType(x, y interface{}) bool {
+func checkResourceRequirementsType(x, y any) bool {
 	_, okx := isResourceRequirementsType(x)
 	_, oky := isResourceRequirementsType(y)
 	return okx || oky
 }
 
-func checkResourceQuantityType(x, y interface{}) bool {
+func checkResourceQuantityType(x, y any) bool {
 	_, okx := isResourceQuantityType(x)
 	_, oky := isResourceQuantityType(y)
 	return okx || oky
 }
 
-func isResourceQuantityType(x interface{}) (resource.Quantity, bool) {
+func isResourceQuantityType(x any) (resource.Quantity, bool) {
 	v, ok := x.(resource.Quantity)
 	return v, ok
 }
 
-func isResourceRequirementsType(x interface{}) (core.ResourceRequirements, bool) {
+func isResourceRequirementsType(x any) (core.ResourceRequirements, bool) {
 	v, okx := x.(core.ResourceRequirements)
 	return v, okx
 }
 
-func compareIntType(x, y interface{}) bool {
+func compareIntType(x, y any) bool {
 	xx, ok := x.(int64)
 	if !ok {
 		xx = int64(x.(int))
@@ -434,7 +434,7 @@ func compareIntType(x, y interface{}) bool {
 	return xx == yy
 }
 
-func compareResourceRequirementsType(x, y interface{}) bool {
+func compareResourceRequirementsType(x, y any) bool {
 	xx := core.ResourceRequirements{
 		Requests: make(core.ResourceList),
 		Limits:   make(core.ResourceList),
@@ -476,7 +476,7 @@ func compareResourceList(x, y core.ResourceList) (ok bool) {
 	return
 }
 
-func compareResourceQuantityType(x, y interface{}) bool {
+func compareResourceQuantityType(x, y any) bool {
 	xx := resource.Quantity{}
 	yy := resource.Quantity{}
 
@@ -495,12 +495,12 @@ func compareResourceQuantityType(x, y interface{}) bool {
 	return xx.Equal(yy)
 }
 
-func isMapStringInterfaceType(x interface{}) (map[string]interface{}, bool) {
-	v, ok := x.(map[string]interface{})
+func isMapStringInterfaceType(x any) (map[string]any, bool) {
+	v, ok := x.(map[string]any)
 	return v, ok
 }
 
-func convertMapStringInterfaceToResourceRequirements(x map[string]interface{}) core.ResourceRequirements {
+func convertMapStringInterfaceToResourceRequirements(x map[string]any) core.ResourceRequirements {
 	k := core.ResourceRequirements{
 		Requests: make(core.ResourceList),
 		Limits:   make(core.ResourceList),

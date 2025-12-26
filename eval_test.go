@@ -28,13 +28,13 @@ import (
 func Test_totalResourceLimits(t *testing.T) {
 	tests := []struct {
 		name    string
-		args    []interface{}
-		want    interface{}
+		args    []any
+		want    any
 		wantErr bool
 	}{
 		{
 			name: "testdata/kubedb.com/v1alpha2/mongodb/replicaset.yaml",
-			args: []interface{}{
+			args: []any{
 				core.ResourceMemory,
 			},
 			want:    resourceQuantityAsFloat64(core.ResourceMemory, resource.MustParse("3Gi")),
@@ -48,7 +48,7 @@ func Test_totalResourceLimits(t *testing.T) {
 				t.Error(err)
 				return
 			}
-			got, err := totalResourceLimits(append([]interface{}{obj}, tt.args...)...)
+			got, err := totalResourceLimits(append([]any{obj}, tt.args...)...)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("totalResourceLimits() error = %v, wantErr %v", err, tt.wantErr)
 				return
