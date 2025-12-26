@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	k8s.io/apimachinery v0.34.3
 	kmodules.xyz/client-go v0.34.2
-	kmodules.xyz/resource-metrics v0.30.12
+	kmodules.xyz/resource-metrics v0.34.0
 	sigs.k8s.io/controller-runtime v0.22.4
 )
 
