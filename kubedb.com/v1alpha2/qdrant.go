@@ -71,6 +71,11 @@ func (r Qdrant) modeFn(obj map[string]interface{}) (string, error) {
 	return mode, nil
 }
 
+func (r Qdrant) usesTLSFn(obj map[string]interface{}) (bool, error) {
+	_, found, err := unstructured.NestedFieldNoCopy(obj, "spec", "tls")
+	return found, err
+}
+
 func (r Qdrant) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]interface{}) (map[api.PodRole]api.PodInfo, error) {
 		container, replicas, err := api.AppNodeResourcesV2(obj, fn, QdrantContainerName, "spec")
