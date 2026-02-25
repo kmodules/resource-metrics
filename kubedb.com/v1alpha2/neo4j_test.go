@@ -67,7 +67,6 @@ func TestNeo4j(t *testing.T) {
 				},
 			},
 		},
-
 		{
 			name: "testdata/kubedb.com/v1alpha2/neo4j/cluster.yaml",
 			want: want{
@@ -85,7 +84,6 @@ func TestNeo4j(t *testing.T) {
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
-
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("500m"),
