@@ -36,6 +36,7 @@ const (
 	FerretDBContainerName    = "ferretdb"
 	IgniteContainerName      = "ignite"
 	MSSQLServerContainerName = "mssql"
+	Neo4jContainerName       = "neo4j"
 	OracleContainerName      = "oracle"
 	PgpoolContainerName      = "pgpool"
 	RabbitMQContainerName    = "rabbitmq"

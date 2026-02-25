@@ -1,0 +1,33 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Neo4j
+metadata:
+  name: neo4j
+  namespace: demo
+spec:
+  replicas: 3
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      serviceMonitor:
+        labels:
+          release: prometheus
+        interval: 10s
+  podTemplate:
+     spec:
+       containers:
+         - name: neo4j
+           resources:
+             limits:
+               cpu: 500m
+               memory: 2Gi
+             requests:
+               cpu: 500m
+               memory: 2Gi
+  version: "2025.10.1"
+  storage:
+    storageClassName: standard
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
