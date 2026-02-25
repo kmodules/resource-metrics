@@ -12,23 +12,8 @@ spec:
         labels:
           release: prometheus
         interval: 10s
-      exporter:
-        resources:
-          requests:
-            cpu: 500m
-            memory: 2Gi
-          limits:
-            cpu: 500m
-            memory: 2Gi
   podTemplate:
      spec:
-       securityContext:
-         fsGroup: 7474
-         fsGroupChangePolicy: Always
-         runAsGroup: 7474
-         runAsNonRoot: true
-         runAsUser: 7474
-       terminationGracePeriodSeconds: 3600
        containers:
          - name: neo4j
            resources:

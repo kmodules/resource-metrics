@@ -43,13 +43,13 @@ func TestNeo4j(t *testing.T) {
 				mode:     DBModeStandalone,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1000m"),
-						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("1000m"),
-						core.ResourceMemory:  resource.MustParse("4Gi"),
+						core.ResourceCPU:     resource.MustParse("500m"),
+						core.ResourceMemory:  resource.MustParse("2Gi"),
 						core.ResourceStorage: resource.MustParse("2Gi"),
 					},
 				},
@@ -74,13 +74,13 @@ func TestNeo4j(t *testing.T) {
 				mode:     DBModeCluster,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3000m"),
-						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("6Gi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("3000m"),
-						core.ResourceMemory:  resource.MustParse("12Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"),
+						core.ResourceMemory:  resource.MustParse("6Gi"),
 						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},

@@ -82,13 +82,8 @@ func (n Neo4j) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resourc
 			return nil, err
 		}
 
-		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
-		if err != nil {
-			return nil, err
-		}
 		return map[api.PodRole]api.PodInfo{
-			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
-			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
+			api.PodRoleDefault: {Resource: container, Replicas: replicas},
 		}, nil
 	}
 }
