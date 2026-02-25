@@ -86,14 +86,14 @@ func TestNeo4j(t *testing.T) {
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("2Gi"),
-						core.ResourceStorage: resource.MustParse("2Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"), // 500m × 3
+						core.ResourceMemory:  resource.MustParse("6Gi"),   // 2Gi × 3
+						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("2Gi"),
-						core.ResourceStorage: resource.MustParse("2Gi"),
+						core.ResourceCPU:     resource.MustParse("1500m"), // 500m × 3
+						core.ResourceMemory:  resource.MustParse("6Gi"),   // 2Gi × 3
+						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3
 					},
 				},
 			},
