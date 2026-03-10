@@ -34,6 +34,7 @@ const (
 	ClickHouseContainerName  = "clickhouse"
 	DruidContainerName       = "druid"
 	HazelcastContainerName   = "hazelcast"
+	HanaDBContainerName      = "hanadb"
 	FerretDBContainerName    = "ferretdb"
 	IgniteContainerName      = "ignite"
 	MSSQLServerContainerName = "mssql"
@@ -48,6 +49,7 @@ const (
 
 	SinglestoreSidecarContainerName = "singlestore-coordinator"
 	MSSQLServerSidecarContainerName = "mssql-coordinator"
+	HanaDBCoordinatorContainerName  = "hanadb-coordinator"
 	OracleSidecarContainerName      = "oracle-coordinator"
 	OracleObserverContainerName     = "observer"
 )
