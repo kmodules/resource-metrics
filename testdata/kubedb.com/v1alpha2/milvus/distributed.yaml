@@ -19,10 +19,45 @@ spec:
     distributed:
       mixcoord:
         replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 1Gi
+
       datanode:
         replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 1Gi
+
       proxy:
         replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 1Gi
       querynode:
         replicas: 2
         podTemplate:
@@ -31,12 +66,24 @@ spec:
               - name: milvus
                 resources:
                   requests:
-                    cpu: "156m"
-                    memory: "512Mi"
+                    cpu: 500m
+                    memory: 1Gi
                   limits:
-                    memory: "1Gi"
+                    cpu: 500m
+                    memory: 1Gi
       streamingnode:
         replicas: 3
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 1Gi
         storageType: Durable
         storage:
           accessModes:
@@ -44,7 +91,7 @@ spec:
           storageClassName: local-path
           resources:
             requests:
-              storage: 10Gi
+              storage: 1Gi
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -71,4 +118,3 @@ spec:
         interval: 10s
         labels:
           release: prometheus
-

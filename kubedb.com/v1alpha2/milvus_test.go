@@ -71,29 +71,29 @@ func TestMilvus(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/milvus/distributed.yaml",
 			want: want{
 				replicas: 11,
-				mode:     DBModeCluster,
+				mode:     DBModeDistributed,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("5500m"),
 						core.ResourceMemory:  resource.MustParse("11Gi"),
-						core.ResourceStorage: resource.MustParse("11Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 					Requests: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("5500m"),
 						core.ResourceMemory:  resource.MustParse("11Gi"),
-						core.ResourceStorage: resource.MustParse("11Gi"),
+						core.ResourceStorage: resource.MustParse("3Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("5500m"), // 500m × 11
 						core.ResourceMemory:  resource.MustParse("11Gi"),  // 1Gi × 11
-						core.ResourceStorage: resource.MustParse("11Gi"),  // 1Gi × 11
+						core.ResourceStorage: resource.MustParse("3Gi"),   // 1Gi × 3 Only for streaming node
 					},
 					Requests: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("5500m"), // 500m × 11
 						core.ResourceMemory:  resource.MustParse("11Gi"),  // 1Gi × 11
-						core.ResourceStorage: resource.MustParse("11Gi"),  // 1Gi × 11
+						core.ResourceStorage: resource.MustParse("3Gi"),   // 1Gi × 3 Only for streaming node
 					},
 				},
 			},

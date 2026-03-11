@@ -16,6 +16,18 @@ spec:
       - http://etcdcluster-sample-0.etcdcluster-sample.default.svc.cluster.local:2379
       - http://etcdcluster-sample-1.etcdcluster-sample.default.svc.cluster.local:2379
       - http://etcdcluster-sample-2.etcdcluster-sample.default.svc.cluster.local:2379
+  podTemplate:
+    spec:
+      containers:
+        - name: milvus
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+              storage: "1Gi"
   storageType: Durable
   storage:
     accessModes:
@@ -23,7 +35,7 @@ spec:
     storageClassName: local-path
     resources:
       requests:
-        storage: 10Gi
+        storage: 1Gi
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -31,10 +43,11 @@ spec:
         port: 9091
         resources:
           limits:
-            memory: 512Mi
+            cpu: 500m
+            memory: 1Gi
           requests:
             cpu: 500m
-            memory: 256Mi
+            memory: 1Gi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
