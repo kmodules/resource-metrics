@@ -22,6 +22,7 @@ import (
 	"kmodules.xyz/resource-metrics/api"
 
 	core "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -36,6 +37,28 @@ func init() {
 }
 
 type HanaDB struct{}
+
+var (
+	hanaDBCoordinatorDefaultResources = core.ResourceRequirements{
+		Requests: core.ResourceList{
+			core.ResourceCPU:    resource.MustParse(".200"),
+			core.ResourceMemory: resource.MustParse("256Mi"),
+		},
+		Limits: core.ResourceList{
+			core.ResourceMemory: resource.MustParse("256Mi"),
+		},
+	}
+	hanaDBArbiterDefaultResources = core.ResourceRequirements{
+		Requests: core.ResourceList{
+			core.ResourceStorage: resource.MustParse("2Gi"),
+			core.ResourceCPU:     resource.MustParse(".200"),
+			core.ResourceMemory:  resource.MustParse("256Mi"),
+		},
+		Limits: core.ResourceList{
+			core.ResourceMemory: resource.MustParse("256Mi"),
+		},
+	}
+)
 
 func (r HanaDB) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
@@ -100,7 +123,7 @@ func (r HanaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resour
 		if replicas > 1 {
 			coordinator, err := api.SidecarNodeResourcesV2(obj, fn, HanaDBCoordinatorContainerName, "spec")
 			if err != nil {
-				return nil, err
+				coordinator = fn(hanaDBCoordinatorDefaultResources)
 			}
 			result[api.PodRoleCoordinator] = api.PodInfo{Resource: coordinator, Replicas: replicas}
 		}
@@ -117,7 +140,13 @@ func (r HanaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resour
 				if err := runtime.DefaultUnstructuredConverter.FromUnstructured(arbiterObj, &arbiter); err != nil {
 					return nil, fmt.Errorf("failed to parse arbiter resources %#v: %w", arbiterObj, err)
 				}
-				result[api.PodRoleArbiter] = api.PodInfo{Resource: fn(arbiter.Resources), Replicas: 1}
+				resources := arbiter.Resources
+				if len(resources.Requests) == 0 && len(resources.Limits) == 0 {
+					resources = hanaDBArbiterDefaultResources
+				}
+				result[api.PodRoleArbiter] = api.PodInfo{Resource: fn(resources), Replicas: 1}
+			} else {
+				result[api.PodRoleArbiter] = api.PodInfo{Resource: fn(hanaDBArbiterDefaultResources), Replicas: 1}
 			}
 		}
 
