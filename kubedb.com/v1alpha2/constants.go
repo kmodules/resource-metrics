@@ -36,6 +36,7 @@ const (
 	HazelcastContainerName   = "hazelcast"
 	FerretDBContainerName    = "ferretdb"
 	IgniteContainerName      = "ignite"
+	MilvusContainerName      = "milvus"
 	MSSQLServerContainerName = "mssql"
 	Neo4jContainerName       = "neo4j"
 	OracleContainerName      = "oracle"
