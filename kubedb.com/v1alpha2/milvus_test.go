@@ -88,12 +88,12 @@ func TestMilvus(t *testing.T) {
 					Limits: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("7700m"),
 						core.ResourceMemory:  resource.MustParse("32Gi"),
-						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3 Only for streaming node
+						core.ResourceStorage: resource.MustParse("6Gi"), // 2Gi × 3 Only for streaming node
 					},
 					Requests: core.ResourceList{
 						core.ResourceCPU:     resource.MustParse("6600m"),
 						core.ResourceMemory:  resource.MustParse("20Gi"),
-						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3 Only for streaming node
+						core.ResourceStorage: resource.MustParse("6Gi"), // 2Gi × 3 Only for streaming node
 					},
 				},
 			},
