@@ -28,8 +28,8 @@ spec:
                     cpu: 500m
                     memory: 1Gi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 600m
+                    memory: 2Gi
 
       datanode:
         replicas: 2
@@ -39,11 +39,11 @@ spec:
               - name: milvus
                 resources:
                   requests:
-                    cpu: 500m
+                    cpu: 600m
                     memory: 1Gi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 700m
+                    memory: 3Gi
 
       proxy:
         replicas: 2
@@ -54,10 +54,10 @@ spec:
                 resources:
                   requests:
                     cpu: 500m
-                    memory: 1Gi
+                    memory: 2Gi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 600m
+                    memory: 4Gi
       querynode:
         replicas: 2
         podTemplate:
@@ -66,11 +66,11 @@ spec:
               - name: milvus
                 resources:
                   requests:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 800m
+                    memory: 3Gi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 900m
+                    memory: 4Gi
       streamingnode:
         replicas: 3
         podTemplate:
@@ -79,11 +79,11 @@ spec:
               - name: milvus
                 resources:
                   requests:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 600m
+                    memory: 2Gi
                   limits:
-                    cpu: 500m
-                    memory: 1Gi
+                    cpu: 700m
+                    memory: 2Gi
         storageType: Durable
         storage:
           accessModes:
@@ -91,7 +91,7 @@ spec:
           storageClassName: local-path
           resources:
             requests:
-              storage: 1Gi
+              storage: 2Gi
   monitor:
     agent: prometheus.io/operator
     prometheus:
@@ -101,12 +101,11 @@ spec:
           limits:
             memory: 512Mi
           requests:
-            cpu: 500m
+            cpu: 600m
             memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
-            add: [ "SYS_RESOURCE" ]
             drop:
               - ALL
           runAsGroup: 1000

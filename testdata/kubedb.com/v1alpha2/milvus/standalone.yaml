@@ -25,9 +25,8 @@ spec:
               cpu: "500m"
               memory: "1Gi"
             limits:
-              cpu: "500m"
-              memory: "1Gi"
-              storage: "1Gi"
+              cpu: "600m"
+              memory: "3Gi"
   storageType: Durable
   storage:
     accessModes:
@@ -43,15 +42,14 @@ spec:
         port: 9091
         resources:
           limits:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 700m
+            memory: 2Gi
           requests:
-            cpu: 500m
+            cpu: 600m
             memory: 1Gi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
-            add: [ "SYS_RESOURCE" ]
             drop:
               - ALL
           runAsGroup: 1000

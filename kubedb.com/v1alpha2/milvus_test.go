@@ -43,8 +43,8 @@ func TestMilvus(t *testing.T) {
 				mode:     DBModeStandalone,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("600m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
 						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
@@ -55,8 +55,8 @@ func TestMilvus(t *testing.T) {
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("500m"),
-						core.ResourceMemory:  resource.MustParse("1Gi"),
+						core.ResourceCPU:     resource.MustParse("600m"),
+						core.ResourceMemory:  resource.MustParse("3Gi"),
 						core.ResourceStorage: resource.MustParse("1Gi"),
 					},
 					Requests: core.ResourceList{
@@ -74,26 +74,26 @@ func TestMilvus(t *testing.T) {
 				mode:     DBModeDistributed,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5500m"),
-						core.ResourceMemory:  resource.MustParse("11Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("7700m"),
+						core.ResourceMemory:  resource.MustParse("32Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5500m"),
-						core.ResourceMemory:  resource.MustParse("11Gi"),
-						core.ResourceStorage: resource.MustParse("3Gi"),
+						core.ResourceCPU:     resource.MustParse("6600m"),
+						core.ResourceMemory:  resource.MustParse("20Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5500m"), // 500m × 11
-						core.ResourceMemory:  resource.MustParse("11Gi"),  // 1Gi × 11
-						core.ResourceStorage: resource.MustParse("3Gi"),   // 1Gi × 3 Only for streaming node
+						core.ResourceCPU:     resource.MustParse("7700m"),
+						core.ResourceMemory:  resource.MustParse("32Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3 Only for streaming node
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("5500m"), // 500m × 11
-						core.ResourceMemory:  resource.MustParse("11Gi"),  // 1Gi × 11
-						core.ResourceStorage: resource.MustParse("3Gi"),   // 1Gi × 3 Only for streaming node
+						core.ResourceCPU:     resource.MustParse("6600m"),
+						core.ResourceMemory:  resource.MustParse("20Gi"),
+						core.ResourceStorage: resource.MustParse("6Gi"),   // 2Gi × 3 Only for streaming node
 					},
 				},
 			},
