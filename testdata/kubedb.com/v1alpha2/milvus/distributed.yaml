@@ -1,0 +1,119 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Milvus
+metadata:
+  name: my-release
+  namespace: kubedb
+spec:
+  version: "2.6.11"
+  objectStorage:
+    configSecret:
+      name: "my-release-minio"
+  metaStorage:
+    externallyManaged: true
+    endpoints:
+      - http://etcdcluster-sample-0.etcdcluster-sample.default.svc.cluster.local:2379
+      - http://etcdcluster-sample-1.etcdcluster-sample.default.svc.cluster.local:2379
+      - http://etcdcluster-sample-2.etcdcluster-sample.default.svc.cluster.local:2379
+  topology:
+    mode: Distributed
+    distributed:
+      mixcoord:
+        replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 1Gi
+                  limits:
+                    cpu: 600m
+                    memory: 2Gi
+
+      datanode:
+        replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 600m
+                    memory: 1Gi
+                  limits:
+                    cpu: 700m
+                    memory: 3Gi
+
+      proxy:
+        replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 500m
+                    memory: 2Gi
+                  limits:
+                    cpu: 600m
+                    memory: 4Gi
+      querynode:
+        replicas: 2
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 800m
+                    memory: 3Gi
+                  limits:
+                    cpu: 900m
+                    memory: 4Gi
+      streamingnode:
+        replicas: 3
+        podTemplate:
+          spec:
+            containers:
+              - name: milvus
+                resources:
+                  requests:
+                    cpu: 600m
+                    memory: 2Gi
+                  limits:
+                    cpu: 700m
+                    memory: 2Gi
+        storageType: Durable
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          storageClassName: local-path
+          resources:
+            requests:
+              storage: 2Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9091
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 600m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+      serviceMonitor:
+        interval: 10s
+        labels:
+          release: prometheus
