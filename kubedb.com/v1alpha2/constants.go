@@ -17,14 +17,15 @@ limitations under the License.
 package v1alpha2
 
 const (
-	DBModeEnsemble    = "Ensemble"
-	DBModeCluster     = "Cluster"
-	DBModeSharded     = "Sharded"
-	DBModeStandalone  = "Standalone"
-	DBModeDistributed = "Distributed"
-	DBModeReplicaSet  = "ReplicaSet"
-	DBModeDedicated   = "Dedicated"
-	DBModeCombined    = "Combined"
+	DBModeEnsemble          = "Ensemble"
+	DBModeCluster           = "Cluster"
+	DBModeSharded           = "Sharded"
+	DBModeStandalone        = "Standalone"
+	DBModeDistributed       = "Distributed"
+	DBModeReplicaSet        = "ReplicaSet"
+	DBModeDedicated         = "Dedicated"
+	DBModeCombined          = "Combined"
+	DBModeSystemReplication = "SystemReplication"
 
 	DBModePrimaryOnly = "PrimaryOnly"
 )

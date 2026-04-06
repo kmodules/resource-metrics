@@ -22,9 +22,7 @@ import (
 	"kmodules.xyz/resource-metrics/api"
 
 	core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -38,32 +36,10 @@ func init() {
 
 type HanaDB struct{}
 
-var (
-	hanaDBCoordinatorDefaultResources = core.ResourceRequirements{
-		Requests: core.ResourceList{
-			core.ResourceCPU:    resource.MustParse(".200"),
-			core.ResourceMemory: resource.MustParse("256Mi"),
-		},
-		Limits: core.ResourceList{
-			core.ResourceMemory: resource.MustParse("256Mi"),
-		},
-	}
-	hanaDBArbiterDefaultResources = core.ResourceRequirements{
-		Requests: core.ResourceList{
-			core.ResourceStorage: resource.MustParse("2Gi"),
-			core.ResourceCPU:     resource.MustParse(".200"),
-			core.ResourceMemory:  resource.MustParse("256Mi"),
-		},
-		Limits: core.ResourceList{
-			core.ResourceMemory: resource.MustParse("256Mi"),
-		},
-	}
-)
-
 func (r HanaDB) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
 		AppRoles:               []api.PodRole{api.PodRoleDefault},
-		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinator, api.PodRoleExporter, api.PodRoleArbiter},
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleCoordinator, api.PodRoleExporter},
 		RoleReplicasFn:         r.roleReplicasFn,
 		ModeFn:                 r.modeFn,
 		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
@@ -83,11 +59,12 @@ func (r HanaDB) roleReplicasFn(obj map[string]any) (api.ReplicaList, error) {
 	result := api.ReplicaList{
 		api.PodRoleDefault: replicas,
 	}
-	if replicas > 1 {
+	mode, err := r.modeFn(obj)
+	if err != nil {
+		return nil, err
+	}
+	if mode == DBModeSystemReplication && replicas > 1 {
 		result[api.PodRoleCoordinator] = replicas
-		if replicas%2 == 0 {
-			result[api.PodRoleArbiter] = 1
-		}
 	}
 	return result, nil
 }
@@ -114,40 +91,23 @@ func (r HanaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resour
 			api.PodRoleDefault: {Resource: container, Replicas: replicas},
 		}
 
+		mode, err := r.modeFn(obj)
+		if err != nil {
+			return nil, err
+		}
+
 		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
 		if err != nil {
 			return nil, err
 		}
 		result[api.PodRoleExporter] = api.PodInfo{Resource: exporter, Replicas: replicas}
 
-		if replicas > 1 {
+		if mode == DBModeSystemReplication && replicas > 1 {
 			coordinator, err := api.SidecarNodeResourcesV2(obj, fn, HanaDBCoordinatorContainerName, "spec")
 			if err != nil {
-				coordinator = fn(hanaDBCoordinatorDefaultResources)
+				return nil, err
 			}
 			result[api.PodRoleCoordinator] = api.PodInfo{Resource: coordinator, Replicas: replicas}
-		}
-
-		if replicas%2 == 0 {
-			arbiterObj, found, err := unstructured.NestedMap(obj, "spec", "arbiter")
-			if err != nil {
-				return nil, fmt.Errorf("failed to read spec.arbiter %v: %w", obj, err)
-			}
-			if found {
-				var arbiter struct {
-					Resources core.ResourceRequirements `json:"resources,omitempty"`
-				}
-				if err := runtime.DefaultUnstructuredConverter.FromUnstructured(arbiterObj, &arbiter); err != nil {
-					return nil, fmt.Errorf("failed to parse arbiter resources %#v: %w", arbiterObj, err)
-				}
-				resources := arbiter.Resources
-				if len(resources.Requests) == 0 && len(resources.Limits) == 0 {
-					resources = hanaDBArbiterDefaultResources
-				}
-				result[api.PodRoleArbiter] = api.PodInfo{Resource: fn(resources), Replicas: 1}
-			} else {
-				result[api.PodRoleArbiter] = api.PodInfo{Resource: fn(hanaDBArbiterDefaultResources), Replicas: 1}
-			}
 		}
 
 		return result, nil

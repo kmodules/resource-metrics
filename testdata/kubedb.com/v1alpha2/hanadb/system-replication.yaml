@@ -15,14 +15,6 @@ spec:
     resources:
       requests:
         storage: 100Gi
-  arbiter:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 256Mi
-        storage: 2Gi
-      limits:
-        memory: 256Mi
   monitor:
     agent: prometheus.io/operator
     prometheus:

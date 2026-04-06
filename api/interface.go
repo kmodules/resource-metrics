@@ -204,9 +204,6 @@ func (c ResourceCalculatorFuncs) calcForPod(roleInfoMap map[PodRole]PodInfo) cor
 func (c ResourceCalculatorFuncs) getExtraRoles() []PodRole {
 	roles := make([]PodRole, 0)
 	for _, role := range c.RuntimeRoles {
-		if role == PodRoleArbiter {
-			continue
-		}
 		if !slices.Contains(c.AppRoles, role) {
 			roles = append(roles, role)
 		}

@@ -72,17 +72,17 @@ func TestHanaDB(t *testing.T) {
 			name: "testdata/kubedb.com/v1alpha2/hanadb/system-replication.yaml",
 			want: want{
 				replicas: 2,
-				mode:     "SystemReplication",
+				mode:     DBModeSystemReplication,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("16800m"),
-						core.ResourceMemory:  resource.MustParse("33Gi"),
-						core.ResourceStorage: resource.MustParse("202Gi"),
+						core.ResourceCPU:     resource.MustParse("16600m"),
+						core.ResourceMemory:  resource.MustParse("32.75Gi"),
+						core.ResourceStorage: resource.MustParse("200Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("8800m"),
-						core.ResourceMemory:  resource.MustParse("25Gi"),
-						core.ResourceStorage: resource.MustParse("202Gi"),
+						core.ResourceCPU:     resource.MustParse("8600m"),
+						core.ResourceMemory:  resource.MustParse("24.75Gi"),
+						core.ResourceStorage: resource.MustParse("200Gi"),
 					},
 				},
 				appResources: core.ResourceRequirements{
