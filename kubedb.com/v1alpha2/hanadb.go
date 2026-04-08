@@ -63,7 +63,7 @@ func (r HanaDB) roleReplicasFn(obj map[string]any) (api.ReplicaList, error) {
 	if err != nil {
 		return nil, err
 	}
-	if mode == DBModeSystemReplication && replicas > 1 {
+	if mode == DBModeSystemReplication {
 		result[api.PodRoleCoordinator] = replicas
 	}
 	return result, nil
