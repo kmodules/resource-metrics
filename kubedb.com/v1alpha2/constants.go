@@ -17,14 +17,15 @@ limitations under the License.
 package v1alpha2
 
 const (
-	DBModeEnsemble    = "Ensemble"
-	DBModeCluster     = "Cluster"
-	DBModeSharded     = "Sharded"
-	DBModeStandalone  = "Standalone"
-	DBModeDistributed = "Distributed"
-	DBModeReplicaSet  = "ReplicaSet"
-	DBModeDedicated   = "Dedicated"
-	DBModeCombined    = "Combined"
+	DBModeEnsemble          = "Ensemble"
+	DBModeCluster           = "Cluster"
+	DBModeSharded           = "Sharded"
+	DBModeStandalone        = "Standalone"
+	DBModeDistributed       = "Distributed"
+	DBModeReplicaSet        = "ReplicaSet"
+	DBModeDedicated         = "Dedicated"
+	DBModeCombined          = "Combined"
+	DBModeSystemReplication = "SystemReplication"
 
 	DBModePrimaryOnly = "PrimaryOnly"
 )
@@ -34,6 +35,7 @@ const (
 	ClickHouseContainerName  = "clickhouse"
 	DruidContainerName       = "druid"
 	HazelcastContainerName   = "hazelcast"
+	HanaDBContainerName      = "hanadb"
 	FerretDBContainerName    = "ferretdb"
 	IgniteContainerName      = "ignite"
 	MilvusContainerName      = "milvus"
@@ -49,6 +51,7 @@ const (
 
 	SinglestoreSidecarContainerName = "singlestore-coordinator"
 	MSSQLServerSidecarContainerName = "mssql-coordinator"
+	HanaDBCoordinatorContainerName  = "hanadb-coordinator"
 	OracleSidecarContainerName      = "oracle-coordinator"
 	OracleObserverContainerName     = "observer"
 )
