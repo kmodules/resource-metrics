@@ -1,0 +1,28 @@
+apiVersion: kubedb.com/v1alpha2
+kind: DB2
+metadata:
+  name: db2
+  namespace: demo
+spec:
+  version: 11.5.8.0
+  storageType: Durable
+  deletionPolicy: Delete
+  replicas: 1
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  podTemplate:
+    spec:
+      containers:
+        - name: db2
+          resources:
+            requests:
+              cpu: "500m"
+              memory: 1Gi
+            limits:
+              cpu: "1"
+              memory: 2Gi
+

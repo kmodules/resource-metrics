@@ -33,7 +33,9 @@ const (
 const (
 	CassandraContainerName   = "cassandra"
 	ClickHouseContainerName  = "clickhouse"
+	DB2ContainerName         = "db2"
 	DruidContainerName       = "druid"
+	DocumentDBContainerName  = "documentdb"
 	HazelcastContainerName   = "hazelcast"
 	HanaDBContainerName      = "hanadb"
 	FerretDBContainerName    = "ferretdb"
@@ -51,6 +53,7 @@ const (
 	WeaviateContainerName    = "weaviate"
 
 	SinglestoreSidecarContainerName = "singlestore-coordinator"
+	DB2SidecarContainerName         = "db2-coordinator"
 	MSSQLServerSidecarContainerName = "mssql-coordinator"
 	HanaDBCoordinatorContainerName  = "hanadb-coordinator"
 	OracleSidecarContainerName      = "oracle-coordinator"
