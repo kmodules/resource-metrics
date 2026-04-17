@@ -15,8 +15,9 @@ spec:
       requests:
         storage: 10Gi
   podTemplate:
+    spec:
       containers:
-        - name: dcoumentdb
+        - name: documentdb
           resources:
             requests:
               cpu: "500m"

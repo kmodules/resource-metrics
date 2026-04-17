@@ -36,46 +36,69 @@ func init() {
 
 type DocumentDB struct{}
 
-func (d DocumentDB) ResourceCalculator() api.ResourceCalculator {
+func (r DocumentDB) ResourceCalculator() api.ResourceCalculator {
 	return &api.ResourceCalculatorFuncs{
 		AppRoles:               []api.PodRole{api.PodRoleDefault},
-		RuntimeRoles:           []api.PodRole{api.PodRoleDefault},
-		RoleReplicasFn:         d.roleReplicasFn,
-		ModeFn:                 d.modeFn,
-		RoleResourceLimitsFn:   d.roleResourceFn(api.ResourceLimits),
-		RoleResourceRequestsFn: d.roleResourceFn(api.ResourceRequests),
+		RuntimeRoles:           []api.PodRole{api.PodRoleDefault, api.PodRoleSidecar, api.PodRoleExporter},
+		RoleReplicasFn:         r.roleReplicasFn,
+		ModeFn:                 r.modeFn,
+		UsesTLSFn:              r.usesTLSFn,
+		RoleResourceLimitsFn:   r.roleResourceFn(api.ResourceLimits),
+		RoleResourceRequestsFn: r.roleResourceFn(api.ResourceRequests),
 	}
 }
 
-func (d DocumentDB) roleReplicasFn(obj map[string]any) (api.ReplicaList, error) {
-	replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
+func (r DocumentDB) roleReplicasFn(obj map[string]any) (api.ReplicaList, error) {
+	v, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read spec.replicas %v: %w", obj, err)
 	}
 	if !found {
-		replicas = 1
+		return api.ReplicaList{api.PodRoleDefault: 1}, nil
 	}
-
-	result := api.ReplicaList{
-		api.PodRoleDefault: replicas,
-	}
-	return result, nil
+	return api.ReplicaList{api.PodRoleDefault: v}, nil
 }
 
-func (d DocumentDB) modeFn(obj map[string]any) (string, error) {
+func (r DocumentDB) modeFn(obj map[string]any) (string, error) {
+	mode, found, err := unstructured.NestedString(obj, "spec", "mode")
+	if err == nil && found {
+		return mode, nil
+	}
+	replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
+	if err == nil && found && replicas > 1 {
+		return DBModeCluster, nil
+	}
 	return DBModeStandalone, nil
 }
 
-func (d DocumentDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]any) (map[api.PodRole]api.PodInfo, error) {
+func (r DocumentDB) usesTLSFn(obj map[string]any) (bool, error) {
+	_, found, err := unstructured.NestedFieldNoCopy(obj, "spec", "tls")
+	return found, err
+}
+
+func (r DocumentDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.ResourceList) func(obj map[string]any) (map[api.PodRole]api.PodInfo, error) {
 	return func(obj map[string]any) (map[api.PodRole]api.PodInfo, error) {
 		container, replicas, err := api.AppNodeResourcesV2(obj, fn, DocumentDBContainerName, "spec")
 		if err != nil {
 			return nil, err
 		}
 
-		result := map[api.PodRole]api.PodInfo{
-			api.PodRoleDefault: {Resource: container, Replicas: replicas},
+		exporter, err := api.ContainerResources(obj, fn, "spec", "monitor", "prometheus", "exporter")
+		if err != nil {
+			return nil, err
 		}
-		return result, nil
+
+		ret := map[api.PodRole]api.PodInfo{
+			api.PodRoleDefault:  {Resource: container, Replicas: replicas},
+			api.PodRoleExporter: {Resource: exporter, Replicas: replicas},
+		}
+		if replicas > 1 {
+			sidecar, err := api.SidecarNodeResourcesV2(obj, fn, DocumentDBContainerName, "spec")
+			if err != nil {
+				return nil, err
+			}
+			ret[api.PodRoleSidecar] = api.PodInfo{Resource: sidecar, Replicas: replicas}
+		}
+		return ret, nil
 	}
 }

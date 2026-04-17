@@ -34,7 +34,7 @@ const (
 	CassandraContainerName   = "cassandra"
 	ClickHouseContainerName  = "clickhouse"
 	DruidContainerName       = "druid"
-	DocumentDBContainerName  = "dcoumentdb"
+	DocumentDBContainerName  = "documentdb"
 	HazelcastContainerName   = "hazelcast"
 	HanaDBContainerName      = "hanadb"
 	FerretDBContainerName    = "ferretdb"
