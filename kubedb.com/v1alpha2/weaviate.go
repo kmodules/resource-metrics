@@ -62,14 +62,14 @@ func (w Weaviate) roleReplicasFn(obj map[string]any) (api.ReplicaList, error) {
 
 func (w Weaviate) modeFn(obj map[string]any) (string, error) {
 	mode, found, err := unstructured.NestedString(obj, "spec", "mode")
-	if err != nil {
-		return "", fmt.Errorf("failed to read spec.mode %v: %w", obj, err)
+	if err == nil && found {
+		return mode, nil
 	}
-	if !found {
-		return DBModeStandalone, nil
+	replicas, found, err := unstructured.NestedInt64(obj, "spec", "replicas")
+	if err == nil && found && replicas > 1 {
+		return DBModeCluster, nil
 	}
-
-	return mode, nil
+	return DBModeStandalone, nil
 }
 
 func (w Weaviate) usesTLSFn(obj map[string]any) (bool, error) {
