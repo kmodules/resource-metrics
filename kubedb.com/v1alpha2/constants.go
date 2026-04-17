@@ -50,6 +50,7 @@ const (
 	SinglestoreContainerName = "singlestore"
 	SolrContainerName        = "solr"
 	ZooKeeperContainerName   = "zookeeper"
+	WeaviateContainerName    = "weaviate"
 
 	SinglestoreSidecarContainerName = "singlestore-coordinator"
 	DB2SidecarContainerName         = "db2-coordinator"
