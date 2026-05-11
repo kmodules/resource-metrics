@@ -36,10 +36,3 @@ spec:
           limits:
             cpu: "8"
             memory: 16Gi
-      - name: hanadb-coordinator
-        resources:
-          requests:
-            cpu: 200m
-            memory: 256Mi
-          limits:
-            memory: 256Mi

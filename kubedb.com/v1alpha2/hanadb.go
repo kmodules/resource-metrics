@@ -103,13 +103,45 @@ func (r HanaDB) roleResourceFn(fn func(rr core.ResourceRequirements) core.Resour
 		result[api.PodRoleExporter] = api.PodInfo{Resource: exporter, Replicas: replicas}
 
 		if mode == DBModeSystemReplication && replicas > 1 {
-			coordinator, err := api.SidecarNodeResourcesV2(obj, fn, HanaDBCoordinatorContainerName, "spec")
+			hasCoordinator, err := r.hasPodTemplateContainer(obj, HanaDBCoordinatorContainerName)
 			if err != nil {
 				return nil, err
 			}
-			result[api.PodRoleCoordinator] = api.PodInfo{Resource: coordinator, Replicas: replicas}
+			if hasCoordinator {
+				coordinator, err := api.SidecarNodeResourcesV2(obj, fn, HanaDBCoordinatorContainerName, "spec")
+				if err != nil {
+					return nil, err
+				}
+				result[api.PodRoleCoordinator] = api.PodInfo{Resource: coordinator, Replicas: replicas}
+			}
 		}
 
 		return result, nil
 	}
+}
+
+func (r HanaDB) hasPodTemplateContainer(obj map[string]any, name string) (bool, error) {
+	containers, found, err := unstructured.NestedSlice(obj, "spec", "podTemplate", "spec", "containers")
+	if err != nil {
+		return false, fmt.Errorf("failed to read spec.podTemplate.spec.containers %v: %w", obj, err)
+	}
+	if !found {
+		return false, nil
+	}
+
+	for _, container := range containers {
+		containerMap, ok := container.(map[string]any)
+		if !ok {
+			continue
+		}
+		containerName, found, err := unstructured.NestedString(containerMap, "name")
+		if err != nil {
+			return false, fmt.Errorf("failed to read podTemplate container name %v: %w", containerMap, err)
+		}
+		if found && containerName == name {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

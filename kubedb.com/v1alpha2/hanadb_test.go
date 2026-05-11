@@ -75,13 +75,13 @@ func TestHanaDB(t *testing.T) {
 				mode:     DBModeSystemReplication,
 				totalResources: core.ResourceRequirements{
 					Limits: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("16600m"),
-						core.ResourceMemory:  resource.MustParse("32.75Gi"),
+						core.ResourceCPU:     resource.MustParse("16200m"),
+						core.ResourceMemory:  resource.MustParse("32.25Gi"),
 						core.ResourceStorage: resource.MustParse("200Gi"),
 					},
 					Requests: core.ResourceList{
-						core.ResourceCPU:     resource.MustParse("8600m"),
-						core.ResourceMemory:  resource.MustParse("24.75Gi"),
+						core.ResourceCPU:     resource.MustParse("8200m"),
+						core.ResourceMemory:  resource.MustParse("24.25Gi"),
 						core.ResourceStorage: resource.MustParse("200Gi"),
 					},
 				},
