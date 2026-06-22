@@ -38,7 +38,7 @@ func (m *MilvusOpsRequest) HorizontalPathMapping() map[OpsReqPath]ReferencedObjP
 
 func (m *MilvusOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.verticalScaling.node":         "spec.podTemplate.spec.resources",
+		"spec.verticalScaling.node":          "spec.podTemplate.spec.resources",
 		"spec.verticalScaling.proxy":         "spec.topology.distributed.proxy.podTemplate.spec.resources",
 		"spec.verticalScaling.mixcoord":      "spec.topology.distributed.mixcoord.podTemplate.spec.resources",
 		"spec.verticalScaling.datanode":      "spec.topology.distributed.datanode.podTemplate.spec.resources",
@@ -49,7 +49,7 @@ func (m *MilvusOpsRequest) VerticalPathMapping() map[OpsReqPath]ReferencedObjPat
 
 func (m *MilvusOpsRequest) VolumeExpansionPathMapping() map[OpsReqPath]ReferencedObjPath {
 	return map[OpsReqPath]ReferencedObjPath{
-		"spec.volumeExpansion.node":         "spec.storage.resources.requests.storage",
+		"spec.volumeExpansion.node":          "spec.storage.resources.requests.storage",
 		"spec.volumeExpansion.streamingnode": "spec.topology.distributed.streamingnode.storage.resources.requests.storage",
 	}
 }
