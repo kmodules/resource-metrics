@@ -36,6 +36,7 @@ const (
 	DB2ContainerName         = "db2"
 	DruidContainerName       = "druid"
 	DocumentDBContainerName  = "documentdb"
+	EtcdContainerName        = "etcd"
 	HazelcastContainerName   = "hazelcast"
 	HanaDBContainerName      = "hanadb"
 	IgniteContainerName      = "ignite"
