@@ -1,0 +1,45 @@
+apiVersion: kubedb.com/v1alpha2
+kind: Etcd
+metadata:
+  name: etcd-ensemble
+  namespace: demo
+spec:
+  deletionPolicy: WipeOut
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        resources:
+          limits:
+            cpu: 150m
+            memory: 150Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      serviceMonitor:
+        interval: 30s
+        labels:
+          release: kube-prometheus-stack
+  podTemplate:
+    spec:
+      containers:
+        - name: etcd
+          resources:
+            limits:
+              cpu: 450m
+              memory: 450Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+      nodeSelector:
+        kubernetes.io/os: linux
+  replicas: 3
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: local-path
+  storageType: Durable
+  version: 3.6.4
