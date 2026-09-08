@@ -1,0 +1,39 @@
+apiVersion: elasticsearch.kubedb.com/v1alpha1
+kind: ElasticsearchDashboard
+metadata:
+  name: es-dashboard
+  namespace: demo
+spec:
+  replicas: 3
+  enableSSL: true
+  databaseRef:
+    name: es-prod
+  podTemplate:
+    spec:
+      containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 1.2Gi
+              cpu: 800m
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9091
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+  tls:
+    issuerRef:
+      apiGroup: cert-manager.io
+      kind: Issuer
+      name: es-issuer
+  deletionPolicy: WipeOut
