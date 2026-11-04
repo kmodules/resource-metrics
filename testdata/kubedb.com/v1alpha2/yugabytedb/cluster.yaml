@@ -1,0 +1,60 @@
+apiVersion: kubedb.com/v1alpha2
+kind: YugabyteDB
+metadata:
+  name: yb-cluster
+  namespace: demo
+spec:
+  version: 2025.2.8
+  replicationFactor: 3
+  topology:
+    master:
+      replicas: 3
+      podTemplate:
+        spec:
+          containers:
+            - name: yb-master
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: 2Gi
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+    tserver:
+      replicas: 3
+      podTemplate:
+        spec:
+          containers:
+            - name: yb-tserver
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 4Gi
+                requests:
+                  cpu: "1"
+                  memory: 2Gi
+      storage:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+  tls:
+    issuerRef:
+      apiGroup: cert-manager.io
+      kind: Issuer
+      name: yb-ca
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      serviceMonitor:
+        interval: 10s
+        labels:
+          release: prometheus
+  deletionPolicy: WipeOut

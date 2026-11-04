@@ -76,6 +76,9 @@ const (
 
 	PodRolePrimary   PodRole = "primary"
 	PodRoleSecondary PodRole = "secondary"
+
+	PodRoleTServer     PodRole = "tserver"
+	PodRoleReadReplica PodRole = "readreplica"
 )
 
 var ErrMissingRefObject = errors.New("referenced object not found")
